@@ -1,0 +1,61 @@
+{
+  "meta": {
+    "title": "Clairo — Comprenez n'importe quel contrat. Dans n'importe quelle langue. Instantanément.",
+    "description": "Clairo explique ce que dit votre contrat en langage simple. Pas de conseil juridique — une compréhension claire."
+  },
+  "home": {
+    "headline": "Comprenez n'importe quel contrat.",
+    "subheadline": "Dans n'importe quelle langue. Instantanément."
+  },
+  "trust": {
+    "title": "Avant de commencer",
+    "statement1": "Votre document est supprimé immédiatement après l'analyse. Il n'est jamais sauvegardé.",
+    "statement2": "Votre document n'est jamais partagé ni utilisé pour entraîner une IA.",
+    "statement3": "Ce n'est pas un conseil juridique. Nous expliquons. Vous décidez.",
+    "cta": "Je comprends — continuer",
+    "tos": "Conditions d'utilisation",
+    "privacy": "Politique de confidentialité"
+  },
+  "upload": {
+    "title": "Importez votre contrat",
+    "dragDrop": "Glissez-déposez votre fichier ici",
+    "orTap": "ou appuyez pour sélectionner",
+    "uploadFile": "Importer un fichier",
+    "takePhoto": "Prendre une photo",
+    "uploadPhoto": "Importer une photo de la galerie",
+    "privacyNote": "Votre document est traité en toute sécurité et supprimé immédiatement après l'analyse.",
+    "maxSize": "Taille maximale : 25 Mo",
+    "acceptedTypes": "PDF, DOCX, JPG, PNG, HEIC",
+    "errors": {
+      "fileType": "Ce type de fichier n'est pas pris en charge.",
+      "fileSize": "Ce fichier est trop volumineux. Maximum : 25 Mo.",
+      "generic": "Une erreur s'est produite. Veuillez réessayer."
+    }
+  },
+  "disclaimer": {
+    "text": "Cette analyse explique ce que dit votre document. Ce n'est pas un conseil juridique.",
+    "date": "Date d'analyse : {date}"
+  },
+  "errors": {
+    "404Title": "Page introuvable",
+    "404Message": "La page que vous cherchez n'existe pas.",
+    "500Title": "Une erreur s'est produite",
+    "500Message": "Nous avons rencontré une erreur. Votre document n'a pas été sauvegardé.",
+    "backHome": "Retour à l'accueil",
+    "tryAgain": "Réessayer"
+  },
+  "nav": {
+    "home": "Accueil",
+    "pricing": "Tarifs",
+    "login": "Se connecter",
+    "getStarted": "Commencer gratuitement"
+  },
+  "common": {
+    "loading": "Chargement...",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "back": "Retour",
+    "next": "Suivant",
+    "close": "Fermer"
+  }
+}

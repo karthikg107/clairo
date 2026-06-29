@@ -1,0 +1,61 @@
+{
+  "meta": {
+    "title": "Clairo — Jeden Vertrag verstehen. In jeder Sprache. Sofort.",
+    "description": "Clairo erklärt, was Ihr Vertrag in einfacher Sprache bedeutet. Keine Rechtsberatung — klares Verständnis."
+  },
+  "home": {
+    "headline": "Jeden Vertrag verstehen.",
+    "subheadline": "In jeder Sprache. Sofort."
+  },
+  "trust": {
+    "title": "Bevor wir beginnen",
+    "statement1": "Ihr Dokument wird sofort nach der Analyse gelöscht. Es wird niemals gespeichert.",
+    "statement2": "Ihr Dokument wird niemals weitergegeben oder für KI-Training verwendet.",
+    "statement3": "Dies ist keine Rechtsberatung. Wir erklären. Sie entscheiden.",
+    "cta": "Ich verstehe — weiter",
+    "tos": "Nutzungsbedingungen",
+    "privacy": "Datenschutzerklärung"
+  },
+  "upload": {
+    "title": "Vertrag hochladen",
+    "dragDrop": "Datei hierher ziehen",
+    "orTap": "oder tippen zum Auswählen",
+    "uploadFile": "Datei hochladen",
+    "takePhoto": "Foto aufnehmen",
+    "uploadPhoto": "Foto aus Galerie hochladen",
+    "privacyNote": "Ihr Dokument wird sicher verarbeitet und sofort nach der Analyse gelöscht.",
+    "maxSize": "Maximale Dateigröße: 25 MB",
+    "acceptedTypes": "PDF, DOCX, JPG, PNG, HEIC",
+    "errors": {
+      "fileType": "Dieser Dateityp wird nicht unterstützt.",
+      "fileSize": "Diese Datei ist zu groß. Maximum: 25 MB.",
+      "generic": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut."
+    }
+  },
+  "disclaimer": {
+    "text": "Diese Analyse erklärt, was Ihr Dokument besagt. Es ist keine Rechtsberatung.",
+    "date": "Analysedatum: {date}"
+  },
+  "errors": {
+    "404Title": "Seite nicht gefunden",
+    "404Message": "Die gesuchte Seite existiert nicht.",
+    "500Title": "Etwas ist schiefgelaufen",
+    "500Message": "Ein Fehler ist aufgetreten. Ihr Dokument wurde nicht gespeichert.",
+    "backHome": "Zur Startseite",
+    "tryAgain": "Erneut versuchen"
+  },
+  "nav": {
+    "home": "Startseite",
+    "pricing": "Preise",
+    "login": "Anmelden",
+    "getStarted": "Kostenlos starten"
+  },
+  "common": {
+    "loading": "Laden...",
+    "cancel": "Abbrechen",
+    "confirm": "Bestätigen",
+    "back": "Zurück",
+    "next": "Weiter",
+    "close": "Schließen"
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "meta": {
+    "title": "Clairo — Understand any contract. In any language. Instantly.",
+    "description": "Clairo explains what your contract says in plain language. Not legal advice — clear understanding."
+  },
+  "home": {
+    "headline": "Understand any contract.",
+    "subheadline": "In any language. Instantly."
+  },
+  "trust": {
+    "title": "Before we begin",
+    "statement1": "Your document is deleted immediately after analysis. It is never saved.",
+    "statement2": "Your document is never shared with anyone or used for AI training.",
+    "statement3": "This is not legal advice. We explain. You decide.",
+    "cta": "I understand — continue",
+    "tos": "Terms of Service",
+    "privacy": "Privacy Policy"
+  },
+  "upload": {
+    "title": "Upload your contract",
+    "dragDrop": "Drag and drop your file here",
+    "orTap": "or tap to select",
+    "uploadFile": "Upload file",
+    "takePhoto": "Take photo",
+    "uploadPhoto": "Upload photo from gallery",
+    "privacyNote": "Your document is processed securely and deleted immediately after analysis.",
+    "maxSize": "Maximum file size: 25MB",
+    "acceptedTypes": "PDF, DOCX, JPG, PNG, HEIC",
+    "errors": {
+      "fileType": "This file type is not supported. Please upload a PDF, DOCX, JPG, PNG, or HEIC.",
+      "fileSize": "This file is too large. Maximum size is 25MB.",
+      "generic": "Something went wrong. Please try again."
+    }
+  },
+  "disclaimer": {
+    "text": "This analysis explains what your document says. It is not legal advice.",
+    "date": "Analysis date: {date}"
+  },
+  "errors": {
+    "404Title": "Page not found",
+    "404Message": "The page you are looking for does not exist.",
+    "500Title": "Something went wrong",
+    "500Message": "We encountered an error. Your document was not stored.",
+    "backHome": "Back to home",
+    "tryAgain": "Try again"
+  },
+  "nav": {
+    "home": "Home",
+    "pricing": "Pricing",
+    "login": "Sign in",
+    "getStarted": "Get started free"
+  },
+  "common": {
+    "loading": "Loading...",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next",
+    "close": "Close"
+  }
+}

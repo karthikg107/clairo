@@ -1,0 +1,61 @@
+{
+  "meta": {
+    "title": "Clairo — Entiende cualquier contrato. En cualquier idioma. Al instante.",
+    "description": "Clairo explica lo que dice tu contrato en lenguaje sencillo. No es asesoramiento legal."
+  },
+  "home": {
+    "headline": "Entiende cualquier contrato.",
+    "subheadline": "En cualquier idioma. Al instante."
+  },
+  "trust": {
+    "title": "Antes de comenzar",
+    "statement1": "Tu documento se elimina inmediatamente después del análisis. Nunca se guarda.",
+    "statement2": "Tu documento nunca se comparte con nadie ni se usa para entrenar IA.",
+    "statement3": "Esto no es asesoramiento legal. Explicamos. Tú decides.",
+    "cta": "Entiendo — continuar",
+    "tos": "Términos de servicio",
+    "privacy": "Política de privacidad"
+  },
+  "upload": {
+    "title": "Sube tu contrato",
+    "dragDrop": "Arrastra y suelta tu archivo aquí",
+    "orTap": "o toca para seleccionar",
+    "uploadFile": "Subir archivo",
+    "takePhoto": "Tomar foto",
+    "uploadPhoto": "Subir foto de la galería",
+    "privacyNote": "Tu documento se procesa de forma segura y se elimina inmediatamente después del análisis.",
+    "maxSize": "Tamaño máximo: 25MB",
+    "acceptedTypes": "PDF, DOCX, JPG, PNG, HEIC",
+    "errors": {
+      "fileType": "Este tipo de archivo no es compatible.",
+      "fileSize": "Este archivo es demasiado grande. El máximo es 25MB.",
+      "generic": "Algo salió mal. Por favor, inténtalo de nuevo."
+    }
+  },
+  "disclaimer": {
+    "text": "Este análisis explica lo que dice tu documento. No es asesoramiento legal.",
+    "date": "Fecha de análisis: {date}"
+  },
+  "errors": {
+    "404Title": "Página no encontrada",
+    "404Message": "La página que buscas no existe.",
+    "500Title": "Algo salió mal",
+    "500Message": "Ocurrió un error. Tu documento no fue guardado.",
+    "backHome": "Volver al inicio",
+    "tryAgain": "Intentar de nuevo"
+  },
+  "nav": {
+    "home": "Inicio",
+    "pricing": "Precios",
+    "login": "Iniciar sesión",
+    "getStarted": "Comenzar gratis"
+  },
+  "common": {
+    "loading": "Cargando...",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "close": "Cerrar"
+  }
+}

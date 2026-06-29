@@ -1,0 +1,99 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main, staging, dev]
+  push:
+    branches: [dev]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ── Frontend ──────────────────────────────────────────────────────────────
+  frontend:
+    name: Frontend — lint / type-check / build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: .
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Type-check
+        run: pnpm exec tsc --noEmit
+
+      - name: Build
+        run: pnpm build
+        env:
+          # Dummy values so Next.js build succeeds without real secrets
+          NEXT_PUBLIC_APP_URL: https://clairo.app
+          NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: pk_test_placeholder
+          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: pk_test_placeholder
+          NEXT_PUBLIC_POSTHOG_KEY: phc_placeholder
+          NEXT_PUBLIC_POSTHOG_HOST: https://app.posthog.com
+
+  # ── Backend ───────────────────────────────────────────────────────────────
+  backend:
+    name: Backend — lint / type-check / tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: backend/requirements-dev.txt
+
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+
+      - name: Lint (ruff)
+        run: python -m ruff check app/ tests/
+
+      - name: Type-check (mypy)
+        run: python -m mypy app/ --ignore-missing-imports
+        continue-on-error: true   # mypy strict is aspirational — not blocking yet
+
+      - name: Tests
+        run: python -m pytest tests/ -v --cov=app --cov-report=term-missing
+        env:
+          APP_ENV: development
+          DATABASE_URL: postgresql+asyncpg://clairo:clairo@localhost:5432/clairo_test
+          REDIS_URL: redis://localhost:6379
+
+  # ── Secret scan ───────────────────────────────────────────────────────────
+  secret-scan:
+    name: Secret scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Scan for secrets (gitleaks)
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

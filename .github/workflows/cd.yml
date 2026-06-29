@@ -1,0 +1,89 @@
+name: CD
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: cd-${{ github.ref }}
+  cancel-in-progress: false   # never cancel a production deploy mid-flight
+
+jobs:
+  # ── Run CI checks first ───────────────────────────────────────────────────
+  ci-gate:
+    name: CI gate (must pass before deploy)
+    uses: ./.github/workflows/ci.yml
+
+  # ── Deploy frontend to Vercel ─────────────────────────────────────────────
+  deploy-frontend:
+    name: Deploy frontend → Vercel
+    needs: ci-gate
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Deploy to Vercel (production)
+        run: |
+          npx vercel \
+            --token ${{ secrets.VERCEL_TOKEN }} \
+            --prod \
+            --yes
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+  # ── Deploy backend to AWS ECS ─────────────────────────────────────────────
+  deploy-backend:
+    name: Deploy backend → AWS ECS
+    needs: ci-gate
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Login to Amazon ECR
+        id: ecr-login
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and push Docker image
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.ecr-login.outputs.registry }}
+          ECR_REPOSITORY: clairo-backend
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG \
+            --target base \
+            ./backend
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+      - name: Deploy to ECS
+        env:
+          IMAGE: ${{ steps.build-image.outputs.image }}
+        run: |
+          aws ecs update-service \
+            --cluster clairo-prod \
+            --service clairo-backend \
+            --force-new-deployment \
+            --region us-east-1

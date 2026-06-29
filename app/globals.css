@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+    --font-inter: 'Inter', system-ui, sans-serif;
+    --font-source-serif: 'Source Serif 4', Georgia, serif;
+    --font-jetbrains-mono: 'JetBrains Mono', Menlo, monospace;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  /* RTL support */
+  html[dir='rtl'] {
+    font-feature-settings: 'kern' 1;
+  }
+
+  body {
+    @apply bg-background text-dark-text font-sans antialiased;
+    min-height: 100dvh;
+  }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* Focus visible — always keyboard accessible */
+  *:focus-visible {
+    @apply outline-2 outline-offset-2 outline-brand-500 rounded-sm;
+  }
+
+  /* Touch targets — minimum 48px */
+  button,
+  a,
+  [role='button'],
+  input[type='submit'],
+  input[type='button'] {
+    @apply min-h-touch min-w-touch;
+  }
+}
+
+@layer components {
+  /* Legal text — always Source Serif 4 */
+  .legal-text {
+    @apply font-serif text-base leading-relaxed;
+  }
+
+  /* OCR / code text — always JetBrains Mono */
+  .ocr-text {
+    @apply font-mono text-sm leading-relaxed;
+  }
+
+  /* Card variants */
+  .card {
+    @apply rounded-card bg-white shadow-sm border border-gray-100;
+  }
+
+  .card-lg {
+    @apply rounded-card-lg bg-white shadow-md border border-gray-100;
+  }
+
+  /* Non-dismissable legal disclaimer */
+  .legal-disclaimer {
+    @apply sticky top-0 z-50 px-4 py-3 bg-danger-50 border-l-4 border-danger-700
+           text-danger-900 text-disclaimer font-sans;
+  }
+}
