@@ -220,5 +220,46 @@
     "warning_heading": "Vérifiez toujours les chiffres",
     "warning_body": "L'OCR peut mal lire les chiffres dans les documents numérisés. Vérifiez toujours ce chiffre dans votre document original avant de vous y fier.",
     "tap_aria": "Appuyez pour vérifier le chiffre {value} par rapport au document original"
+  },
+  "results": {
+    "share_aria": "Partager cette analyse",
+    "language_pair": "{from} → {to}",
+    "summary_label": "Résumé",
+    "protective_count": "{count} clauses vous protègent",
+    "review_count": "{count} clauses à examiner",
+    "clauses_label": "Clauses",
+    "clause_number": "Clause {n}",
+    "frequency_stat": "Vu dans {pct} % de contrats similaires",
+    "show_original": "Afficher le texte original",
+    "hide_original": "Masquer le texte original",
+    "document_types": {
+      "default": "Contrat"
+    },
+    "flags": {
+      "protective": "Vous protège",
+      "review": "Moins courant",
+      "uncommon": "Moins courant"
+    },
+    "share": {
+      "heading": "Partager cette analyse",
+      "close": "Fermer",
+      "whatsapp_message": "J'ai utilisé Clairo pour comprendre mon {type}. Jetez un œil : {url}",
+      "share_title": "Analyse Clairo",
+      "whatsapp": "Partager via WhatsApp",
+      "more_options": "Plus d'options",
+      "copy_link": "Copier le lien",
+      "copied": "Lien copié"
+    },
+    "professional": {
+      "heading": "Besoin d'un second avis ?",
+      "body": "Clairo explique votre contrat, mais ce n'est pas un conseil juridique. Un professionnel qualifié peut examiner votre situation spécifique.",
+      "cta": "Trouver un professionnel"
+    },
+    "upgrade": {
+      "aria_label": "Invite de mise à niveau",
+      "message": "Débloquez l'analyse illimitée des clauses et les documents enregistrés.",
+      "cta": "Mettre à niveau",
+      "dismiss": "Ignorer"
+    }
   }
 }

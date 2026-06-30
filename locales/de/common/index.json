@@ -220,5 +220,46 @@
     "warning_heading": "Zahlen immer überprüfen",
     "warning_body": "OCR kann Zahlen in gescannten Dokumenten falsch lesen. Überprüfen Sie diese Zahl immer in Ihrem Originaldokument, bevor Sie sich darauf verlassen.",
     "tap_aria": "Tippen, um die Zahl {value} gegen das Originaldokument zu überprüfen"
+  },
+  "results": {
+    "share_aria": "Diese Analyse teilen",
+    "language_pair": "{from} → {to}",
+    "summary_label": "Zusammenfassung",
+    "protective_count": "{count} Klauseln schützen Sie",
+    "review_count": "{count} Klauseln zu prüfen",
+    "clauses_label": "Klauseln",
+    "clause_number": "Klausel {n}",
+    "frequency_stat": "In {pct}% ähnlicher Verträge gesehen",
+    "show_original": "Originaltext anzeigen",
+    "hide_original": "Originaltext ausblenden",
+    "document_types": {
+      "default": "Vertrag"
+    },
+    "flags": {
+      "protective": "Schützt Sie",
+      "review": "Weniger üblich",
+      "uncommon": "Weniger üblich"
+    },
+    "share": {
+      "heading": "Diese Analyse teilen",
+      "close": "Schließen",
+      "whatsapp_message": "Ich habe Clairo benutzt, um meinen {type} zu verstehen. Schau mal: {url}",
+      "share_title": "Clairo-Analyse",
+      "whatsapp": "Über WhatsApp teilen",
+      "more_options": "Weitere Optionen",
+      "copy_link": "Link kopieren",
+      "copied": "Link kopiert"
+    },
+    "professional": {
+      "heading": "Zweite Meinung gewünscht?",
+      "body": "Clairo erklärt Ihren Vertrag, ist aber keine Rechtsberatung. Eine qualifizierte Fachperson kann Ihre spezifische Situation prüfen.",
+      "cta": "Fachperson finden"
+    },
+    "upgrade": {
+      "aria_label": "Upgrade-Hinweis",
+      "message": "Schalten Sie unbegrenzte Klauselanalyse und gespeicherte Dokumente frei.",
+      "cta": "Upgrade",
+      "dismiss": "Verwerfen"
+    }
   }
 }

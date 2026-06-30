@@ -220,5 +220,46 @@
     "warning_heading": "تحقق دائماً من الأرقام",
     "warning_body": "قد يقرأ OCR الأرقام بشكل خاطئ من المستندات الممسوحة ضوئياً. تحقق دائماً من هذا الرقم في مستندك الأصلي قبل الاعتماد عليه.",
     "tap_aria": "اضغط للتحقق من الرقم {value} مقارنةً بالمستند الأصلي"
+  },
+  "results": {
+    "share_aria": "مشاركة هذا التحليل",
+    "language_pair": "{from} ← {to}",
+    "summary_label": "الملخص",
+    "protective_count": "{count} بنود تحميك",
+    "review_count": "{count} بنود تحتاج إلى مراجعة",
+    "clauses_label": "البنود",
+    "clause_number": "البند {n}",
+    "frequency_stat": "ظهر في {pct}% من العقود المماثلة",
+    "show_original": "إظهار النص الأصلي",
+    "hide_original": "إخفاء النص الأصلي",
+    "document_types": {
+      "default": "عقد"
+    },
+    "flags": {
+      "protective": "يحميك",
+      "review": "أقل شيوعاً",
+      "uncommon": "أقل شيوعاً"
+    },
+    "share": {
+      "heading": "مشاركة هذا التحليل",
+      "close": "إغلاق",
+      "whatsapp_message": "استخدمت Clairo لفهم {type} الخاص بي. ألقِ نظرة: {url}",
+      "share_title": "تحليل Clairo",
+      "whatsapp": "مشاركة عبر واتساب",
+      "more_options": "خيارات أخرى",
+      "copy_link": "نسخ الرابط",
+      "copied": "تم نسخ الرابط"
+    },
+    "professional": {
+      "heading": "تريد رأياً ثانياً؟",
+      "body": "يشرح Clairo عقدك، لكنه ليس استشارة قانونية. يمكن لمختص مؤهل مراجعة حالتك الخاصة.",
+      "cta": "ابحث عن مختص"
+    },
+    "upgrade": {
+      "aria_label": "إشعار الترقية",
+      "message": "افتح تحليل غير محدود للبنود والمستندات المحفوظة.",
+      "cta": "ترقية",
+      "dismiss": "تجاهل"
+    }
   }
 }

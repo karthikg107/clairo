@@ -220,5 +220,46 @@
     "warning_heading": "Always verify numbers",
     "warning_body": "OCR can mis-read numbers from scanned documents. Always check this number in your original document before relying on it.",
     "tap_aria": "Tap to verify the number {value} against the original document"
+  },
+  "results": {
+    "share_aria": "Share this analysis",
+    "language_pair": "{from} → {to}",
+    "summary_label": "Summary",
+    "protective_count": "{count} clauses protect you",
+    "review_count": "{count} clauses to review",
+    "clauses_label": "Clauses",
+    "clause_number": "Clause {n}",
+    "frequency_stat": "Seen in {pct}% of similar contracts",
+    "show_original": "Show original text",
+    "hide_original": "Hide original text",
+    "document_types": {
+      "default": "Contract"
+    },
+    "flags": {
+      "protective": "Protects you",
+      "review": "Less common",
+      "uncommon": "Less common"
+    },
+    "share": {
+      "heading": "Share this analysis",
+      "close": "Close",
+      "whatsapp_message": "I used Clairo to understand my {type}. Check it out: {url}",
+      "share_title": "Clairo analysis",
+      "whatsapp": "Share via WhatsApp",
+      "more_options": "More options",
+      "copy_link": "Copy link",
+      "copied": "Link copied"
+    },
+    "professional": {
+      "heading": "Want a second opinion?",
+      "body": "Clairo explains your contract, but it isn't legal advice. A qualified professional can review your specific situation.",
+      "cta": "Find a professional"
+    },
+    "upgrade": {
+      "aria_label": "Upgrade prompt",
+      "message": "Unlock unlimited clause analysis and saved documents.",
+      "cta": "Upgrade",
+      "dismiss": "Dismiss"
+    }
   }
 }

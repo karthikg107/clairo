@@ -220,5 +220,46 @@
     "warning_heading": "Sempre verifique os números",
     "warning_body": "O OCR pode ler números incorretamente em documentos digitalizados. Sempre verifique este número no seu documento original antes de confiar nele.",
     "tap_aria": "Toque para verificar o número {value} contra o documento original"
+  },
+  "results": {
+    "share_aria": "Compartilhar esta análise",
+    "language_pair": "{from} → {to}",
+    "summary_label": "Resumo",
+    "protective_count": "{count} cláusulas protegem você",
+    "review_count": "{count} cláusulas para revisar",
+    "clauses_label": "Cláusulas",
+    "clause_number": "Cláusula {n}",
+    "frequency_stat": "Visto em {pct}% de contratos similares",
+    "show_original": "Mostrar texto original",
+    "hide_original": "Ocultar texto original",
+    "document_types": {
+      "default": "Contrato"
+    },
+    "flags": {
+      "protective": "Protege você",
+      "review": "Menos comum",
+      "uncommon": "Menos comum"
+    },
+    "share": {
+      "heading": "Compartilhar esta análise",
+      "close": "Fechar",
+      "whatsapp_message": "Usei o Clairo para entender meu {type}. Confira: {url}",
+      "share_title": "Análise Clairo",
+      "whatsapp": "Compartilhar via WhatsApp",
+      "more_options": "Mais opções",
+      "copy_link": "Copiar link",
+      "copied": "Link copiado"
+    },
+    "professional": {
+      "heading": "Quer uma segunda opinião?",
+      "body": "O Clairo explica seu contrato, mas não é aconselhamento jurídico. Um profissional qualificado pode revisar sua situação específica.",
+      "cta": "Encontrar um profissional"
+    },
+    "upgrade": {
+      "aria_label": "Aviso de upgrade",
+      "message": "Desbloqueie análise ilimitada de cláusulas e documentos salvos.",
+      "cta": "Fazer upgrade",
+      "dismiss": "Dispensar"
+    }
   }
 }
