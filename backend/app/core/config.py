@@ -33,6 +33,11 @@ class Settings(BaseSettings):
     # Security
     allowed_hosts: list[str] = Field(default=["clairo.app", "*.clairo.app", "localhost"])
 
+    # Clerk authentication
+    # JWKS URL: https://clerk.com/docs/backend-requests/handling/manual-jwt
+    clerk_jwks_url: str = "https://api.clerk.dev/v1/jwks"
+    clerk_issuer: str = ""  # e.g. https://<your-clerk-domain>.clerk.accounts.dev
+
     # Sentry
     sentry_dsn: str = ""
 

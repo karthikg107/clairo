@@ -5,6 +5,7 @@ SECURITY checklist (enforced here):
 - CORS: clairo.app and localhost:3000 only
 - Security headers: X-Frame-Options DENY, HSTS, Permissions-Policy
 - Structured JSON logging (never logs document content)
+- JWT verification via Clerk JWKS (CLR-031)
 - Rate limiting per user/IP via Redis
 - Sentry error tracking
 """
@@ -20,6 +21,7 @@ from app.api.v1.router import router as v1_router
 from app.core.config import get_settings
 from app.core.logging import configure_logging, get_logger
 from app.core.redis import close_redis
+from app.middleware.jwt_auth import JWTAuthMiddleware
 from app.middleware.logging import LoggingMiddleware
 from app.middleware.rate_limit import RateLimitMiddleware
 from app.middleware.security import SecurityHeadersMiddleware
@@ -55,10 +57,26 @@ def create_app() -> FastAPI:
         openapi_url="/openapi.json" if settings.is_development else None,
     )
 
-    # Middleware (outermost first)
-    app.add_middleware(SecurityHeadersMiddleware)
-    app.add_middleware(LoggingMiddleware)
+    # Middleware — Starlette applies in REVERSE add_middleware order,
+    # so the last add_middleware() runs first on each request.
+    #
+    # Effective order (outermost → innermost):
+    #   CORS → TrustedHost → SecurityHeaders → Logging → JWT → RateLimit → routes
+    #
+    # JWT must run before RateLimit so user_id is set for tier-aware limiting.
+
     app.add_middleware(RateLimitMiddleware)
+
+    # Skip JWT middleware if clerk_issuer is not configured (dev without Clerk)
+    if settings.clerk_issuer:
+        app.add_middleware(
+            JWTAuthMiddleware,
+            clerk_jwks_url=settings.clerk_jwks_url,
+            clerk_issuer=settings.clerk_issuer,
+        )
+
+    app.add_middleware(LoggingMiddleware)
+    app.add_middleware(SecurityHeadersMiddleware)
     app.add_middleware(TrustedHostMiddleware, allowed_hosts=settings.allowed_hosts)
     app.add_middleware(
         CORSMiddleware,
