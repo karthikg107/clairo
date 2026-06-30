@@ -17,24 +17,26 @@
     "privacy": "Politique de confidentialité"
   },
   "upload": {
-    "title": "Importez votre contrat",
-    "dragDrop": "Glissez-déposez votre fichier ici",
-    "orTap": "ou appuyez pour sélectionner",
-    "uploadFile": "Importer un fichier",
-    "takePhoto": "Prendre une photo",
-    "uploadPhoto": "Importer une photo de la galerie",
-    "privacyNote": "Votre document est traité en toute sécurité et supprimé immédiatement après l'analyse.",
-    "maxSize": "Taille maximale : 25 Mo",
-    "acceptedTypes": "PDF, DOCX, JPG, PNG, HEIC",
-    "errors": {
-      "fileType": "Ce type de fichier n'est pas pris en charge.",
-      "fileSize": "Ce fichier est trop volumineux. Maximum : 25 Mo.",
-      "generic": "Une erreur s'est produite. Veuillez réessayer."
+    "dropzone_label": "Téléchargez votre contrat",
+    "drag_or_tap": "Glissez un fichier ici ou appuyez pour sélectionner",
+    "drop_now": "Déposez pour télécharger",
+    "accepted_types": "PDF, DOCX, JPG, PNG, HEIC · Max. 25 Mo",
+    "options_label": "Ou choisissez une autre façon de télécharger",
+    "take_photo": "Prendre une photo",
+    "from_gallery": "Télécharger depuis la galerie",
+    "camera_label": "Ouvrir l'appareil photo pour photographier un document",
+    "gallery_label": "Choisir une photo depuis votre galerie",
+    "privacy_reminder": "Votre document n'est jamais stocké. Analysé en mémoire et supprimé immédiatement.",
+    "error": {
+      "type": "Type de fichier non pris en charge. Utilisez PDF, DOCX, JPG, PNG ou HEIC.",
+      "size": "Fichier trop volumineux. Taille maximale : 25 Mo.",
+      "generic": "Échec du téléchargement. Veuillez réessayer."
     }
   },
   "disclaimer": {
-    "text": "Cette analyse explique ce que dit votre document. Ce n'est pas un conseil juridique.",
-    "date": "Date d'analyse : {date}"
+    "label": "Avertissement légal",
+    "upload": "Clairo fournit des résumés générés par IA à titre informatif uniquement — pas de conseil juridique. Consultez toujours un avocat qualifié avant de signer.",
+    "review": "Vérifiez attentivement : l'extraction par IA peut contenir des erreurs. Vous êtes responsable de vérifier tous les textes, notamment les chiffres, les dates et les noms des parties."
   },
   "errors": {
     "404Title": "Page introuvable",
@@ -57,5 +59,68 @@
     "back": "Retour",
     "next": "Suivant",
     "close": "Fermer"
+  },
+  "camera": {
+    "issue": {
+      "too_dark": "Trop sombre — cherchez un meilleur éclairage",
+      "too_bright": "Trop lumineux — évitez la lumière directe",
+      "blurry": "Restez immobile — le document est flou"
+    },
+    "quality": {
+      "good": "Parfait — ne bougez pas",
+      "ok": "Ajustez la position pour une meilleure qualité",
+      "poor": "Rapprochez-vous et améliorez l'éclairage",
+      "label": "Qualité du document",
+      "auto_capture": "Capture automatique dans 3..."
+    },
+    "countdown": "{count}",
+    "capture": "Prendre la photo",
+    "retake": "Reprendre",
+    "use_photo": "Utiliser cette photo",
+    "flip": "Retourner la caméra",
+    "loading": "Démarrage de la caméra...",
+    "viewfinder_label": "Viseur de la caméra",
+    "preview": {
+      "alt": "Aperçu du document capturé"
+    },
+    "torch": {
+      "on": "Activer le flash",
+      "off": "Désactiver le flash"
+    },
+    "warning": {
+      "low_quality": "Photo de faible qualité détectée",
+      "low_quality_hint": "Envisagez de reprendre pour de meilleurs résultats"
+    },
+    "error": {
+      "permission": "Accès à la caméra refusé",
+      "permission_hint": "Autorisez l'accès à la caméra dans les paramètres de votre navigateur."
+    },
+    "fallback": {
+      "use_gallery": "Télécharger depuis la galerie"
+    }
+  },
+  "review": {
+    "heading": "Vérifiez votre document",
+    "subheading": "Vérifiez le texte extrait de \"{filename}\" avant l'analyse. Appuyez sur un mot pour le corriger.",
+    "legend": {
+      "label": "Légende de confiance",
+      "high": "Haute confiance",
+      "medium": "Moyen — à vérifier",
+      "low": "Faible — à vérifier impérativement",
+      "number": "Nombre — toujours vérifier"
+    },
+    "page_label": "Page {n}",
+    "low_confidence_pct": "{pct}% mots à faible confiance",
+    "text_region_label": "Texte extrait — page {n}",
+    "empty_page": "Aucun texte détecté sur cette page.",
+    "warning": {
+      "low_words": "{count} mot(s) n'a(ont) pas pu être lu(s) clairement — veuillez vérifier.",
+      "number_words": "{count} nombre(s) ou montant(s) détecté(s) — vérifiez-les attentivement."
+    },
+    "source": "Extrait via : {source}",
+    "confirm_label": "J'ai vérifié et confirmé que le texte ci-dessus est correct avant de procéder à l'analyse.",
+    "confirm_hint": "Vous devez confirmer que le texte est correct avant de continuer.",
+    "cancel": "Renvoyer",
+    "continue": "Continuer vers l'analyse"
   }
 }

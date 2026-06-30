@@ -17,24 +17,26 @@
     "privacy": "Política de privacidade"
   },
   "upload": {
-    "title": "Envie seu contrato",
-    "dragDrop": "Arraste e solte seu arquivo aqui",
-    "orTap": "ou toque para selecionar",
-    "uploadFile": "Enviar arquivo",
-    "takePhoto": "Tirar foto",
-    "uploadPhoto": "Enviar foto da galeria",
-    "privacyNote": "Seu documento é processado com segurança e excluído imediatamente após a análise.",
-    "maxSize": "Tamanho máximo: 25MB",
-    "acceptedTypes": "PDF, DOCX, JPG, PNG, HEIC",
-    "errors": {
-      "fileType": "Este tipo de arquivo não é suportado.",
-      "fileSize": "Este arquivo é muito grande. O máximo é 25MB.",
-      "generic": "Algo deu errado. Por favor, tente novamente."
+    "dropzone_label": "Carregue o seu contrato",
+    "drag_or_tap": "Arraste um ficheiro aqui ou toque para selecionar",
+    "drop_now": "Solte para carregar",
+    "accepted_types": "PDF, DOCX, JPG, PNG, HEIC · Máx. 25 MB",
+    "options_label": "Ou escolha outra forma de carregar",
+    "take_photo": "Tirar foto",
+    "from_gallery": "Carregar da galeria",
+    "camera_label": "Abrir câmara para fotografar um documento",
+    "gallery_label": "Escolher foto da galeria",
+    "privacy_reminder": "O seu documento nunca é armazenado. Analisado em memória e eliminado imediatamente.",
+    "error": {
+      "type": "Tipo de ficheiro não suportado. Use PDF, DOCX, JPG, PNG ou HEIC.",
+      "size": "Ficheiro demasiado grande. Tamanho máximo: 25 MB.",
+      "generic": "Falha no carregamento. Por favor, tente novamente."
     }
   },
   "disclaimer": {
-    "text": "Esta análise explica o que seu documento diz. Não é aconselhamento jurídico.",
-    "date": "Data da análise: {date}"
+    "label": "Aviso legal",
+    "upload": "A Clairo fornece resumos gerados por IA apenas para fins informativos — não como aconselhamento jurídico. Consulte sempre um advogado qualificado antes de assinar.",
+    "review": "Revise com cuidado: a extração por IA pode conter erros. Você é responsável por verificar todo o texto, especialmente números, datas e nomes das partes."
   },
   "errors": {
     "404Title": "Página não encontrada",
@@ -57,5 +59,68 @@
     "back": "Voltar",
     "next": "Próximo",
     "close": "Fechar"
+  },
+  "camera": {
+    "issue": {
+      "too_dark": "Muito escuro — procure melhor iluminação",
+      "too_bright": "Muito brilhante — evite luz direta",
+      "blurry": "Fique quieto — o documento está desfocado"
+    },
+    "quality": {
+      "good": "Ótimo — não se mova",
+      "ok": "Ajuste a posição para melhor qualidade",
+      "poor": "Aproxime-se e melhore a iluminação",
+      "label": "Qualidade do documento",
+      "auto_capture": "Captura automática em 3..."
+    },
+    "countdown": "{count}",
+    "capture": "Capturar foto",
+    "retake": "Tirar novamente",
+    "use_photo": "Usar esta foto",
+    "flip": "Virar câmara",
+    "loading": "A iniciar câmara...",
+    "viewfinder_label": "Visor da câmara",
+    "preview": {
+      "alt": "Pré-visualização do documento capturado"
+    },
+    "torch": {
+      "on": "Ligar flash",
+      "off": "Desligar flash"
+    },
+    "warning": {
+      "low_quality": "Foto de baixa qualidade detetada",
+      "low_quality_hint": "Considere tirar novamente para melhores resultados"
+    },
+    "error": {
+      "permission": "Acesso à câmara negado",
+      "permission_hint": "Permita o acesso à câmara nas definições do navegador."
+    },
+    "fallback": {
+      "use_gallery": "Carregar da galeria"
+    }
+  },
+  "review": {
+    "heading": "Revise seu documento",
+    "subheading": "Verifique o texto extraído de \"{filename}\" antes da análise. Toque em qualquer palavra para corrigir.",
+    "legend": {
+      "label": "Legenda de confiança",
+      "high": "Alta confiança",
+      "medium": "Médio — verificar",
+      "low": "Baixo — verificar obrigatoriamente",
+      "number": "Número — verificar sempre"
+    },
+    "page_label": "Página {n}",
+    "low_confidence_pct": "{pct}% palavras de baixa confiança",
+    "text_region_label": "Texto extraído — página {n}",
+    "empty_page": "Nenhum texto detectado nesta página.",
+    "warning": {
+      "low_words": "{count} palavra(s) não pôde(ram) ser lida(s) claramente — por favor verifique.",
+      "number_words": "{count} número(s) ou valor(es) detectado(s) — verifique-os com cuidado."
+    },
+    "source": "Extraído via: {source}",
+    "confirm_label": "Revisei e confirmei que o texto acima está correto antes de prosseguir para a análise.",
+    "confirm_hint": "Você deve confirmar que o texto está correto antes de continuar.",
+    "cancel": "Reenviar",
+    "continue": "Continuar para análise"
   }
 }

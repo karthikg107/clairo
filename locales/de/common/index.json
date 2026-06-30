@@ -17,24 +17,26 @@
     "privacy": "Datenschutzerklärung"
   },
   "upload": {
-    "title": "Vertrag hochladen",
-    "dragDrop": "Datei hierher ziehen",
-    "orTap": "oder tippen zum Auswählen",
-    "uploadFile": "Datei hochladen",
-    "takePhoto": "Foto aufnehmen",
-    "uploadPhoto": "Foto aus Galerie hochladen",
-    "privacyNote": "Ihr Dokument wird sicher verarbeitet und sofort nach der Analyse gelöscht.",
-    "maxSize": "Maximale Dateigröße: 25 MB",
-    "acceptedTypes": "PDF, DOCX, JPG, PNG, HEIC",
-    "errors": {
-      "fileType": "Dieser Dateityp wird nicht unterstützt.",
-      "fileSize": "Diese Datei ist zu groß. Maximum: 25 MB.",
-      "generic": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut."
+    "dropzone_label": "Vertrag hochladen",
+    "drag_or_tap": "Datei hierher ziehen oder tippen",
+    "drop_now": "Zum Hochladen loslassen",
+    "accepted_types": "PDF, DOCX, JPG, PNG, HEIC · Max. 25 MB",
+    "options_label": "Oder anderen Weg wählen",
+    "take_photo": "Foto aufnehmen",
+    "from_gallery": "Aus Galerie hochladen",
+    "camera_label": "Kamera öffnen zum Fotografieren",
+    "gallery_label": "Foto aus der Galerie auswählen",
+    "privacy_reminder": "Ihr Dokument wird nie gespeichert. Im Arbeitsspeicher analysiert und sofort gelöscht.",
+    "error": {
+      "type": "Dateityp nicht unterstützt. Bitte PDF, DOCX, JPG, PNG oder HEIC verwenden.",
+      "size": "Datei zu groß. Maximale Größe ist 25 MB.",
+      "generic": "Upload fehlgeschlagen. Bitte erneut versuchen."
     }
   },
   "disclaimer": {
-    "text": "Diese Analyse erklärt, was Ihr Dokument besagt. Es ist keine Rechtsberatung.",
-    "date": "Analysedatum: {date}"
+    "label": "Rechtlicher Hinweis",
+    "upload": "Clairo stellt KI-generierte Zusammenfassungen nur zu Informationszwecken bereit — keine Rechtsberatung. Konsultieren Sie vor der Unterzeichnung immer einen qualifizierten Anwalt.",
+    "review": "Sorgfältig prüfen: Die KI-Erkennung kann Fehler enthalten. Sie sind verantwortlich für die Überprüfung aller Texte, insbesondere Zahlen, Daten und Parteinamen."
   },
   "errors": {
     "404Title": "Seite nicht gefunden",
@@ -57,5 +59,68 @@
     "back": "Zurück",
     "next": "Weiter",
     "close": "Schließen"
+  },
+  "camera": {
+    "issue": {
+      "too_dark": "Zu dunkel — bessere Beleuchtung suchen",
+      "too_bright": "Zu hell — direktes Licht vermeiden",
+      "blurry": "Stillhalten — Dokument ist unscharf"
+    },
+    "quality": {
+      "good": "Sehr gut — Stillhalten",
+      "ok": "Position für bessere Qualität anpassen",
+      "poor": "Näher herangehen und Beleuchtung verbessern",
+      "label": "Dokumentqualität",
+      "auto_capture": "Automatische Aufnahme in 3..."
+    },
+    "countdown": "{count}",
+    "capture": "Foto aufnehmen",
+    "retake": "Erneut aufnehmen",
+    "use_photo": "Dieses Foto verwenden",
+    "flip": "Kamera wechseln",
+    "loading": "Kamera startet...",
+    "viewfinder_label": "Kamerasucher",
+    "preview": {
+      "alt": "Vorschau des aufgenommenen Dokuments"
+    },
+    "torch": {
+      "on": "Blitz einschalten",
+      "off": "Blitz ausschalten"
+    },
+    "warning": {
+      "low_quality": "Foto mit niedriger Qualität erkannt",
+      "low_quality_hint": "Für bessere Ergebnisse erneut aufnehmen"
+    },
+    "error": {
+      "permission": "Kamerazugriff verweigert",
+      "permission_hint": "Kamerazugriff in den Browsereinstellungen erlauben."
+    },
+    "fallback": {
+      "use_gallery": "Stattdessen aus Galerie hochladen"
+    }
+  },
+  "review": {
+    "heading": "Dokument überprüfen",
+    "subheading": "Überprüfen Sie den aus \"{filename}\" extrahierten Text, bevor Sie fortfahren. Tippen Sie auf ein Wort, um es zu korrigieren.",
+    "legend": {
+      "label": "Vertrauenslegende",
+      "high": "Hohe Zuverlässigkeit",
+      "medium": "Mittel — prüfen",
+      "low": "Niedrig — prüfen Sie unbedingt",
+      "number": "Zahl — immer prüfen"
+    },
+    "page_label": "Seite {n}",
+    "low_confidence_pct": "{pct}% unsichere Wörter",
+    "text_region_label": "Extrahierter Text — Seite {n}",
+    "empty_page": "Auf dieser Seite wurde kein Text erkannt.",
+    "warning": {
+      "low_words": "{count} Wort/Wörter konnte(n) nicht eindeutig gelesen werden — bitte überprüfen.",
+      "number_words": "{count} Zahl(en) oder Betrag/Beträge erkannt — bitte sorgfältig prüfen."
+    },
+    "source": "Extrahiert über: {source}",
+    "confirm_label": "Ich habe den obigen Text geprüft und bestätige, dass er vor der Analyse korrekt ist.",
+    "confirm_hint": "Sie müssen den Text bestätigen, bevor Sie fortfahren.",
+    "cancel": "Erneut hochladen",
+    "continue": "Zur Analyse"
   }
 }

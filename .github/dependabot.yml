@@ -1,0 +1,46 @@
+version: 2
+updates:
+  # Frontend — npm/pnpm
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "03:00"
+      timezone: UTC
+    open-pull-requests-limit: 10
+    groups:
+      # Batch non-breaking minor/patch updates
+      frontend-minor-patch:
+        update-types:
+          - minor
+          - patch
+    ignore:
+      # Pin Next.js major — intentional upgrades only
+      - dependency-name: next
+        update-types: [version-update:semver-major]
+
+  # Backend — pip
+  - package-ecosystem: pip
+    directory: "/backend"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "03:00"
+      timezone: UTC
+    open-pull-requests-limit: 10
+    groups:
+      backend-minor-patch:
+        update-types:
+          - minor
+          - patch
+
+  # GitHub Actions
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "03:00"
+      timezone: UTC
+    open-pull-requests-limit: 5

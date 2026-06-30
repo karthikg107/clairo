@@ -17,24 +17,26 @@
     "privacy": "Privacy Policy"
   },
   "upload": {
-    "title": "Upload your contract",
-    "dragDrop": "Drag and drop your file here",
-    "orTap": "or tap to select",
-    "uploadFile": "Upload file",
-    "takePhoto": "Take photo",
-    "uploadPhoto": "Upload photo from gallery",
-    "privacyNote": "Your document is processed securely and deleted immediately after analysis.",
-    "maxSize": "Maximum file size: 25MB",
-    "acceptedTypes": "PDF, DOCX, JPG, PNG, HEIC",
-    "errors": {
-      "fileType": "This file type is not supported. Please upload a PDF, DOCX, JPG, PNG, or HEIC.",
-      "fileSize": "This file is too large. Maximum size is 25MB.",
-      "generic": "Something went wrong. Please try again."
+    "dropzone_label": "Upload your contract",
+    "drag_or_tap": "Drag a file here, or tap to select",
+    "drop_now": "Drop to upload",
+    "accepted_types": "PDF, DOCX, JPG, PNG, HEIC · Max 25 MB",
+    "options_label": "Or choose another way to upload",
+    "take_photo": "Take a photo",
+    "from_gallery": "Upload from gallery",
+    "camera_label": "Open camera to photograph a document",
+    "gallery_label": "Choose a photo from your gallery",
+    "privacy_reminder": "Your document is never stored. Analysed in memory and deleted immediately.",
+    "error": {
+      "type": "File type not supported. Please use PDF, DOCX, JPG, PNG, or HEIC.",
+      "size": "File is too large. Maximum size is 25 MB.",
+      "generic": "Upload failed. Please try again."
     }
   },
   "disclaimer": {
-    "text": "This analysis explains what your document says. It is not legal advice.",
-    "date": "Analysis date: {date}"
+    "label": "Legal disclaimer",
+    "upload": "Clairo provides AI-generated summaries for informational purposes only — not legal advice. Always consult a qualified lawyer before signing.",
+    "review": "Review carefully: AI extraction may contain errors. You are responsible for verifying all text, especially numbers, dates, and party names, before proceeding."
   },
   "errors": {
     "404Title": "Page not found",
@@ -57,5 +59,68 @@
     "back": "Back",
     "next": "Next",
     "close": "Close"
+  },
+  "camera": {
+    "issue": {
+      "too_dark": "Too dark — move to better lighting",
+      "too_bright": "Too bright — avoid direct light",
+      "blurry": "Hold still — document is blurry"
+    },
+    "quality": {
+      "good": "Looking great — hold still",
+      "ok": "Adjust position for better quality",
+      "poor": "Move closer and improve lighting",
+      "label": "Document quality",
+      "auto_capture": "Auto-capturing in 3..."
+    },
+    "countdown": "{count}",
+    "capture": "Capture photo",
+    "retake": "Retake",
+    "use_photo": "Use this photo",
+    "flip": "Flip camera",
+    "loading": "Starting camera...",
+    "viewfinder_label": "Camera viewfinder",
+    "preview": {
+      "alt": "Captured document preview"
+    },
+    "torch": {
+      "on": "Turn on flash",
+      "off": "Turn off flash"
+    },
+    "warning": {
+      "low_quality": "Low quality photo detected",
+      "low_quality_hint": "Consider retaking for better results"
+    },
+    "error": {
+      "permission": "Camera access denied",
+      "permission_hint": "Allow camera access in your browser settings to take photos."
+    },
+    "fallback": {
+      "use_gallery": "Upload from gallery instead"
+    }
+  },
+  "review": {
+    "heading": "Review Your Document",
+    "subheading": "Verify the text extracted from \"{filename}\" before analysis. Tap any word to correct it.",
+    "legend": {
+      "label": "Confidence key",
+      "high": "High confidence",
+      "medium": "Medium — check",
+      "low": "Low — must verify",
+      "number": "Number — always verify"
+    },
+    "page_label": "Page {n}",
+    "low_confidence_pct": "{pct}% low-confidence words",
+    "text_region_label": "Extracted text — page {n}",
+    "empty_page": "No text detected on this page.",
+    "warning": {
+      "low_words": "{count} word(s) could not be read clearly — please verify.",
+      "number_words": "{count} number(s) or amount(s) detected — always verify these carefully."
+    },
+    "source": "Extracted via: {source}",
+    "confirm_label": "I have reviewed and confirmed the text above is accurate before proceeding to analysis.",
+    "confirm_hint": "You must confirm the text is correct before continuing.",
+    "cancel": "Re-upload",
+    "continue": "Continue to Analysis"
   }
 }
