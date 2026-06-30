@@ -8,13 +8,28 @@
     "subheadline": "In jeder Sprache. Sofort."
   },
   "trust": {
-    "title": "Bevor wir beginnen",
-    "statement1": "Ihr Dokument wird sofort nach der Analyse gelöscht. Es wird niemals gespeichert.",
-    "statement2": "Ihr Dokument wird niemals weitergegeben oder für KI-Training verwendet.",
-    "statement3": "Dies ist keine Rechtsberatung. Wir erklären. Sie entscheiden.",
-    "cta": "Ich verstehe — weiter",
-    "tos": "Nutzungsbedingungen",
-    "privacy": "Datenschutzerklärung"
+    "heading": "Bevor wir beginnen",
+    "subheading": "So geht Clairo mit Ihrem Dokument um",
+    "statements": {
+      "privacy": {
+        "title": "Nur im Arbeitsspeicher verarbeitet",
+        "body": "Ihr Dokument wird nie auf Disk gespeichert. Es wird nach der Analyse sofort aus dem Speicher gelöscht."
+      },
+      "deletion": {
+        "title": "Sofort gelöscht",
+        "body": "Keine Kopie Ihres Dokuments wird in unserer Datenbank, Protokollen oder Cache gespeichert."
+      },
+      "explain": {
+        "title": "Erklärung, kein Rechtsrat",
+        "body": "Clairo hilft Ihnen, Ihren Vertrag in einfacher Sprache zu verstehen. Es bietet keinen Rechtsrat."
+      }
+    },
+    "checkbox_label": "Ich habe die <terms>Nutzungsbedingungen</terms> und die <privacy>Datenschutzerklärung</privacy> gelesen und stimme ihnen zu.",
+    "links_hint": "Links öffnen in einem neuen Tab",
+    "button_accept": "Verstanden — weiter",
+    "button_loading": "Wird gespeichert…",
+    "error_generic": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.",
+    "legal_note": "⚠️ Rechtlicher Hinweis: Clairo ist keine Anwaltskanzlei und bietet keine Rechtsberatung. Die Analyse dient nur zu Informationszwecken."
   },
   "upload": {
     "dropzone_label": "Vertrag hochladen",
@@ -34,9 +49,9 @@
     }
   },
   "disclaimer": {
-    "label": "Rechtlicher Hinweis",
-    "upload": "Clairo stellt KI-generierte Zusammenfassungen nur zu Informationszwecken bereit — keine Rechtsberatung. Konsultieren Sie vor der Unterzeichnung immer einen qualifizierten Anwalt.",
-    "review": "Sorgfältig prüfen: Die KI-Erkennung kann Fehler enthalten. Sie sind verantwortlich für die Überprüfung aller Texte, insbesondere Zahlen, Daten und Parteinamen."
+    "aria_label": "Rechtlicher Hinweis",
+    "heading": "Kein Rechtsrat.",
+    "body": "Clairo erklärt, was Ihr Vertrag in einfacher Sprache besagt. Es gibt keinen Rechtsrat und kann nicht sagen, ob Sie unterschreiben sollten. Für rechtliche Entscheidungen wenden Sie sich an einen qualifizierten Anwalt."
   },
   "errors": {
     "404Title": "Seite nicht gefunden",
@@ -122,5 +137,88 @@
     "confirm_hint": "Sie müssen den Text bestätigen, bevor Sie fortfahren.",
     "cancel": "Erneut hochladen",
     "continue": "Zur Analyse"
+  },
+  "language_mismatch": {
+    "heading": "Sprachkonflikt erkannt",
+    "body": "Wir haben festgestellt, dass Ihr Dokument auf {detected} ist, aber Sie haben {selected} ausgewählt. Welche Sprache möchten Sie verwenden?",
+    "use_detected": "{lang} verwenden (erkannt)",
+    "keep_selected": "{lang} behalten (meine Auswahl)"
+  },
+  "language_selection": {
+    "heading": "Sprachkontext festlegen",
+    "subheading": "Teilen Sie uns Details zu Ihrem Dokument mit, damit wir es im richtigen Rechtskontext erklären.",
+    "doc_lang": {
+      "label": "Dokumentsprache",
+      "placeholder": "Dokumentsprache auswählen"
+    },
+    "country": {
+      "label": "Land",
+      "placeholder": "Land auswählen",
+      "tooltip": "Legt den rechtlichen Kontext fest — Vertragsnormen variieren je nach Land erheblich."
+    },
+    "expl_lang": {
+      "label": "Erklärungssprache",
+      "placeholder": "Erklärungssprache auswählen"
+    },
+    "confidence": {
+      "high": "Hohe Zuverlässigkeit — dieses Sprach-Land-Paar wird gut unterstützt",
+      "medium": "Mittlere Zuverlässigkeit — Ergebnisse können bei dieser Kombination variieren"
+    },
+    "cta": "Dokument analysieren",
+    "cta_hint": "Alle drei Felder sind erforderlich"
+  },
+  "processing": {
+    "steps_label": "Analyseschritte",
+    "steps": {
+      "reading": "Dokument lesen",
+      "identifying": "Klauseln identifizieren",
+      "generating": "Erklärung erstellen",
+      "finishing": "Fast fertig"
+    },
+    "estimate": "Normalerweise 20–40 Sekunden",
+    "encouragement": "Dauert etwas länger als üblich — fast fertig",
+    "privacy": "Sicher verarbeitet. Ihr Dokument wird nach der Analyse sofort gelöscht.",
+    "privacy_label": "Datenschutzhinweis",
+    "cancel": "Abbrechen",
+    "cancel_dialog": {
+      "heading": "Analyse abbrechen?",
+      "body": "Ihr Dokument wird sofort gelöscht.",
+      "keep_going": "Weitermachen",
+      "confirm_cancel": "Ja, abbrechen"
+    }
+  },
+  "auth": {
+    "sign_in": {
+      "page_title": "Anmelden — Clairo"
+    },
+    "sign_up": {
+      "page_title": "Konto erstellen — Clairo"
+    }
+  },
+  "prohibited": {
+    "heading": "Wir können dieses Dokument nicht analysieren",
+    "reasons": {
+      "court_order": "Gerichtsbeschlüsse erfordern professionelle Rechtsvertretung.",
+      "immigration": "Einwanderungsdokumente haben weitreichende rechtliche Konsequenzen. Bitte wenden Sie sich an einen Anwalt.",
+      "medical_consent": "Medizinische Einwilligungsformulare erfordern professionelle medizinische und rechtliche Beratung.",
+      "financial_instrument": "Finanzinstrumente erfordern regulierte Finanzberatung.",
+      "minor_involved": "Dokumente mit Beteiligung von Minderjährigen erfordern spezialisierte Rechtsberatung.",
+      "default": "Dieser Dokumenttyp erfordert spezialisierte professionelle Beratung."
+    },
+    "referral_label": "Kostenlose Hilfe verfügbar",
+    "referral_link_text": "Hilfe von dieser Organisation erhalten",
+    "referral_link_aria": "Hilfe von {org} erhalten (öffnet in neuem Tab)",
+    "no_partial_analysis": "Es wurde keine Analyse durchgeführt und kein Kontingent verbraucht.",
+    "upload_different": "Ein anderes Dokument hochladen"
+  },
+  "number_verification": {
+    "heading": "Diese Zahl überprüfen",
+    "close": "Schließen",
+    "in_clause": "In Klausel: {clause}",
+    "source_label": "Originaldokumenttext (OCR)",
+    "source_aria": "Originaltext aus Ihrem Dokument, der diese Zahl enthält",
+    "warning_heading": "Zahlen immer überprüfen",
+    "warning_body": "OCR kann Zahlen in gescannten Dokumenten falsch lesen. Überprüfen Sie diese Zahl immer in Ihrem Originaldokument, bevor Sie sich darauf verlassen.",
+    "tap_aria": "Tippen, um die Zahl {value} gegen das Originaldokument zu überprüfen"
   }
 }

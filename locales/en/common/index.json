@@ -8,13 +8,28 @@
     "subheadline": "In any language. Instantly."
   },
   "trust": {
-    "title": "Before we begin",
-    "statement1": "Your document is deleted immediately after analysis. It is never saved.",
-    "statement2": "Your document is never shared with anyone or used for AI training.",
-    "statement3": "This is not legal advice. We explain. You decide.",
-    "cta": "I understand — continue",
-    "tos": "Terms of Service",
-    "privacy": "Privacy Policy"
+    "heading": "Before we start",
+    "subheading": "Here's how Clairo handles your document",
+    "statements": {
+      "privacy": {
+        "title": "Processed in memory only",
+        "body": "Your document is never saved to disk. It is deleted from memory the moment analysis is complete."
+      },
+      "deletion": {
+        "title": "Deleted immediately",
+        "body": "No copy of your document is ever stored in our database, logs, or cache. Ever."
+      },
+      "explain": {
+        "title": "Explanation, not legal advice",
+        "body": "Clairo helps you understand your contract in plain language. It does not give legal advice. Always consult a lawyer for legal decisions."
+      }
+    },
+    "checkbox_label": "I have read and agree to the <terms>Terms of Service</terms> and <privacy>Privacy Policy</privacy>.",
+    "links_hint": "Links open in a new tab",
+    "button_accept": "I understand — continue",
+    "button_loading": "Saving…",
+    "error_generic": "Something went wrong. Please try again.",
+    "legal_note": "⚠️ LEGAL DISCLAIMER: Clairo is not a law firm and does not provide legal advice. Analysis is for informational purposes only."
   },
   "upload": {
     "dropzone_label": "Upload your contract",
@@ -34,9 +49,9 @@
     }
   },
   "disclaimer": {
-    "label": "Legal disclaimer",
-    "upload": "Clairo provides AI-generated summaries for informational purposes only — not legal advice. Always consult a qualified lawyer before signing.",
-    "review": "Review carefully: AI extraction may contain errors. You are responsible for verifying all text, especially numbers, dates, and party names, before proceeding."
+    "aria_label": "Legal disclaimer",
+    "heading": "Not legal advice.",
+    "body": "Clairo explains what your contract says in plain language. It does not give legal advice and cannot tell you whether to sign. For legal decisions, consult a qualified lawyer."
   },
   "errors": {
     "404Title": "Page not found",
@@ -122,5 +137,88 @@
     "confirm_hint": "You must confirm the text is correct before continuing.",
     "cancel": "Re-upload",
     "continue": "Continue to Analysis"
+  },
+  "language_mismatch": {
+    "heading": "Language mismatch detected",
+    "body": "We detected your document is in {detected}, but you selected {selected}. Which would you like to use?",
+    "use_detected": "Use {lang} (detected)",
+    "keep_selected": "Keep {lang} (my selection)"
+  },
+  "language_selection": {
+    "heading": "Set language context",
+    "subheading": "Tell us about your document so we explain it in the right legal context.",
+    "doc_lang": {
+      "label": "Document language",
+      "placeholder": "Select document language"
+    },
+    "country": {
+      "label": "Country",
+      "placeholder": "Select country",
+      "tooltip": "Sets the legal context — contract norms vary significantly by country."
+    },
+    "expl_lang": {
+      "label": "Explanation language",
+      "placeholder": "Select explanation language"
+    },
+    "confidence": {
+      "high": "High confidence — this language and country pair is well supported",
+      "medium": "Medium confidence — results may vary for this combination"
+    },
+    "cta": "Analyse document",
+    "cta_hint": "All three fields required to continue"
+  },
+  "processing": {
+    "steps_label": "Analysis steps",
+    "steps": {
+      "reading": "Reading document",
+      "identifying": "Identifying clauses",
+      "generating": "Generating explanation",
+      "finishing": "Almost ready"
+    },
+    "estimate": "Usually 20–40 seconds",
+    "encouragement": "Taking a little longer than usual — almost there",
+    "privacy": "Processed securely. Your document is deleted when analysis is complete.",
+    "privacy_label": "Privacy reminder",
+    "cancel": "Cancel",
+    "cancel_dialog": {
+      "heading": "Cancel analysis?",
+      "body": "Your document will be deleted immediately and the analysis will stop.",
+      "keep_going": "Keep going",
+      "confirm_cancel": "Yes, cancel"
+    }
+  },
+  "auth": {
+    "sign_in": {
+      "page_title": "Sign in — Clairo"
+    },
+    "sign_up": {
+      "page_title": "Create account — Clairo"
+    }
+  },
+  "prohibited": {
+    "heading": "We can't analyse this document",
+    "reasons": {
+      "court_order": "Court orders, judgments, and legal proceedings require professional legal representation. Automated analysis of these documents could cause serious harm.",
+      "immigration": "Immigration documents have life-changing legal consequences. Please seek help from a qualified immigration lawyer or authorised organisation.",
+      "medical_consent": "Medical consent forms involve complex legal and ethical considerations that require professional medical and legal advice.",
+      "financial_instrument": "Financial instruments such as securities, derivatives, and loan agreements require regulated financial advice.",
+      "minor_involved": "Documents involving minors require specialist legal advice to protect the child's best interests.",
+      "default": "This type of document requires specialist professional advice that Clairo cannot provide."
+    },
+    "referral_label": "Free help available",
+    "referral_link_text": "Get help from this organisation",
+    "referral_link_aria": "Get help from {org} (opens in new tab)",
+    "no_partial_analysis": "No analysis has been performed and no quota has been used.",
+    "upload_different": "Upload a different document"
+  },
+  "number_verification": {
+    "heading": "Verify this number",
+    "close": "Close",
+    "in_clause": "In clause: {clause}",
+    "source_label": "Original document text (OCR)",
+    "source_aria": "Original text from your document containing this number",
+    "warning_heading": "Always verify numbers",
+    "warning_body": "OCR can mis-read numbers from scanned documents. Always check this number in your original document before relying on it.",
+    "tap_aria": "Tap to verify the number {value} against the original document"
   }
 }

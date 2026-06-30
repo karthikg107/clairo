@@ -8,13 +8,28 @@
     "subheadline": "En cualquier idioma. Al instante."
   },
   "trust": {
-    "title": "Antes de comenzar",
-    "statement1": "Tu documento se elimina inmediatamente después del análisis. Nunca se guarda.",
-    "statement2": "Tu documento nunca se comparte con nadie ni se usa para entrenar IA.",
-    "statement3": "Esto no es asesoramiento legal. Explicamos. Tú decides.",
-    "cta": "Entiendo — continuar",
-    "tos": "Términos de servicio",
-    "privacy": "Política de privacidad"
+    "heading": "Antes de comenzar",
+    "subheading": "Así maneja Clairo su documento",
+    "statements": {
+      "privacy": {
+        "title": "Procesado solo en memoria",
+        "body": "Su documento nunca se guarda en disco. Se elimina de la memoria en cuanto el análisis termina."
+      },
+      "deletion": {
+        "title": "Eliminado de inmediato",
+        "body": "Ninguna copia de su documento se almacena en nuestra base de datos, registros o caché."
+      },
+      "explain": {
+        "title": "Explicación, no asesoramiento legal",
+        "body": "Clairo le ayuda a entender su contrato en lenguaje sencillo. No ofrece asesoramiento legal."
+      }
+    },
+    "checkbox_label": "He leído y acepto los <terms>Términos de servicio</terms> y la <privacy>Política de privacidad</privacy>.",
+    "links_hint": "Los enlaces se abren en una nueva pestaña",
+    "button_accept": "Entendido — continuar",
+    "button_loading": "Guardando…",
+    "error_generic": "Algo salió mal. Inténtelo de nuevo.",
+    "legal_note": "⚠️ Aviso legal: Clairo no es un bufete de abogados y no proporciona asesoramiento legal. El análisis es solo informativo."
   },
   "upload": {
     "dropzone_label": "Sube tu contrato",
@@ -34,9 +49,9 @@
     }
   },
   "disclaimer": {
-    "label": "Aviso legal",
-    "upload": "Clairo proporciona resúmenes generados por IA solo con fines informativos, no como asesoramiento legal. Consulte siempre a un abogado cualificado antes de firmar.",
-    "review": "Revisa con cuidado: la extracción de IA puede contener errores. Eres responsable de verificar todo el texto, especialmente números, fechas y nombres de partes."
+    "aria_label": "Aviso legal",
+    "heading": "No es asesoramiento legal.",
+    "body": "Clairo explica en lenguaje sencillo lo que dice su contrato. No da asesoramiento legal ni puede decirle si debe firmar. Para decisiones legales, consulte a un abogado calificado."
   },
   "errors": {
     "404Title": "Página no encontrada",
@@ -122,5 +137,88 @@
     "confirm_hint": "Debes confirmar que el texto es correcto antes de continuar.",
     "cancel": "Volver a subir",
     "continue": "Continuar al análisis"
+  },
+  "language_mismatch": {
+    "heading": "Se detectó un conflicto de idioma",
+    "body": "Detectamos que su documento está en {detected}, pero seleccionó {selected}. ¿Cuál desea usar?",
+    "use_detected": "Usar {lang} (detectado)",
+    "keep_selected": "Mantener {lang} (mi selección)"
+  },
+  "language_selection": {
+    "heading": "Establecer contexto de idioma",
+    "subheading": "Cuéntenos sobre su documento para explicarlo en el contexto legal correcto.",
+    "doc_lang": {
+      "label": "Idioma del documento",
+      "placeholder": "Seleccionar idioma del documento"
+    },
+    "country": {
+      "label": "País",
+      "placeholder": "Seleccionar país",
+      "tooltip": "Establece el contexto legal: las normas contractuales varían significativamente por país."
+    },
+    "expl_lang": {
+      "label": "Idioma de explicación",
+      "placeholder": "Seleccionar idioma de explicación"
+    },
+    "confidence": {
+      "high": "Alta confianza — este par idioma/país está bien soportado",
+      "medium": "Confianza media — los resultados pueden variar para esta combinación"
+    },
+    "cta": "Analizar documento",
+    "cta_hint": "Los tres campos son obligatorios para continuar"
+  },
+  "processing": {
+    "steps_label": "Pasos del análisis",
+    "steps": {
+      "reading": "Leyendo documento",
+      "identifying": "Identificando cláusulas",
+      "generating": "Generando explicación",
+      "finishing": "Casi listo"
+    },
+    "estimate": "Normalmente 20-40 segundos",
+    "encouragement": "Tardando un poco más de lo habitual — casi listo",
+    "privacy": "Procesado de forma segura. Su documento se elimina al completar el análisis.",
+    "privacy_label": "Recordatorio de privacidad",
+    "cancel": "Cancelar",
+    "cancel_dialog": {
+      "heading": "¿Cancelar análisis?",
+      "body": "Su documento se eliminará inmediatamente.",
+      "keep_going": "Continuar",
+      "confirm_cancel": "Sí, cancelar"
+    }
+  },
+  "auth": {
+    "sign_in": {
+      "page_title": "Iniciar sesión — Clairo"
+    },
+    "sign_up": {
+      "page_title": "Crear cuenta — Clairo"
+    }
+  },
+  "prohibited": {
+    "heading": "No podemos analizar este documento",
+    "reasons": {
+      "court_order": "Las órdenes judiciales requieren representación legal profesional.",
+      "immigration": "Los documentos de inmigración tienen consecuencias legales que cambian la vida. Busque ayuda de un abogado calificado.",
+      "medical_consent": "Los formularios de consentimiento médico requieren asesoramiento profesional.",
+      "financial_instrument": "Los instrumentos financieros requieren asesoramiento financiero regulado.",
+      "minor_involved": "Los documentos que involucran menores requieren asesoramiento legal especializado.",
+      "default": "Este tipo de documento requiere asesoramiento profesional especializado."
+    },
+    "referral_label": "Ayuda gratuita disponible",
+    "referral_link_text": "Obtener ayuda de esta organización",
+    "referral_link_aria": "Obtener ayuda de {org} (se abre en una nueva pestaña)",
+    "no_partial_analysis": "No se ha realizado ningún análisis y no se ha utilizado ninguna cuota.",
+    "upload_different": "Subir un documento diferente"
+  },
+  "number_verification": {
+    "heading": "Verificar este número",
+    "close": "Cerrar",
+    "in_clause": "En cláusula: {clause}",
+    "source_label": "Texto original del documento (OCR)",
+    "source_aria": "Texto original de su documento que contiene este número",
+    "warning_heading": "Siempre verifique los números",
+    "warning_body": "El OCR puede leer mal los números de documentos escaneados. Siempre verifique este número en su documento original antes de confiar en él.",
+    "tap_aria": "Toque para verificar el número {value} contra el documento original"
   }
 }
