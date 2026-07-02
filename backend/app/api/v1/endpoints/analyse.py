@@ -24,7 +24,7 @@ from pydantic import BaseModel, Field, field_validator
 from app.core.redis import flush_analysis_cache
 from app.db.session import get_session_factory
 from app.models.audit_log import AuditLog
-from app.services.analysis import AnalysisResult, analyse_document
+from app.services.analysis import AnalysisResult, AnalysisServiceError, analyse_document
 from app.services.document_type import PERMITTED_TYPES
 
 logger = structlog.get_logger(__name__)
@@ -91,11 +91,14 @@ async def analyse_endpoint(body: AnalyseRequest, request: Request) -> AnalyseRes
 
     SECURITY:
     - document_type must be a permitted type (prohibited types raise 400).
-    - verified_text is deleted from memory immediately after analysis.
+    - verified_text is deleted from memory immediately after analysis —
+      on every path, including both error branches below (CLR-032/CLR-020).
     - System prompt cannot be overridden by any field in this request.
     - Response validated against strict schema before returning.
     - CLR-019: a cache hit is recorded in the audit log (metadata only,
       never document content).
+    - CLR-020: Claude timeouts/unavailability surface as a clear 503;
+      malformed responses (after Claude's own correction retry) as a 422.
     """
     # Extract text then delete reference — will del after analysis
     verified_text = body.verified_text
@@ -108,13 +111,19 @@ async def analyse_endpoint(body: AnalyseRequest, request: Request) -> AnalyseRes
             output_language=body.output_language,
             document_type=body.document_type,
         )
+    except AnalysisServiceError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail={"error": "analysis_unavailable", "message": str(exc)},
+        )
     except ValueError as exc:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail={"error": "analysis_failed", "message": str(exc)},
         )
     finally:
-        # CLR-032: purge document from memory immediately
+        # CLR-032: purge document from memory immediately — runs on success
+        # AND on both error branches above.
         del verified_text
 
     if result.cache_hit:

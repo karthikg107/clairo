@@ -24,6 +24,16 @@ CLR-019 — Analysis caching:
   - Cache is keyed by hash + output_language + country — never by raw text.
   - Only the validated Claude JSON result is ever cached — never document content.
   - Cache reads/writes fail open: a Redis outage never blocks analysis.
+
+CLR-020 — Fallback and error handling:
+  - 30s timeout per Claude call; one retry on timeout/connection/5xx errors,
+    then AnalysisServiceError ("clear error").
+  - Malformed JSON gets one correction retry (re-prompted), then ValueError.
+  - Every failure path leaves verified_text to be deleted by the caller's
+    finally block — nothing here stores or retains document content.
+  - Circuit breaker (app.core.circuit_breaker): 5 failures/minute pauses all
+    analyses for 60 seconds. Every outcome also feeds a rolling error-rate
+    counter that alerts Sentry above a 1% error rate.
 """
 from __future__ import annotations
 
@@ -35,11 +45,27 @@ from typing import Any
 
 import anthropic
 
+from app.core import circuit_breaker
 from app.core.logging import get_logger
 from app.core.redis import cache_analysis_result, get_cached_analysis_result
 from app.core.secrets import get_secret
 
 logger = get_logger(__name__)
+
+CLAUDE_TIMEOUT_SECONDS = 30.0
+
+# Transport-level failures eligible for a single retry (CLR-020)
+_RETRYABLE_ERRORS = (
+    anthropic.APITimeoutError,
+    anthropic.APIConnectionError,
+    anthropic.InternalServerError,
+    anthropic.RateLimitError,
+)
+
+
+class AnalysisServiceError(Exception):
+    """Claude API unavailable (timeout/connection/5xx after retry, or breaker open)."""
+
 
 # ── CLR-016: Explain-not-advise system prompt ─────────────────────────────────
 # HARD RULE: This constant must NEVER be constructed from user input.
@@ -212,6 +238,63 @@ async def _store_cache(
         log.warning("analysis.cache_store_failed", error=str(exc))
 
 
+# ── CLR-020: Claude call with timeout/retry and JSON-correction retry ─────────
+
+async def _call_claude_with_retry(
+    client: anthropic.AsyncAnthropic, user_message: str, log: Any
+) -> Any:
+    """One retry on timeout/connection/5xx/rate-limit errors, then AnalysisServiceError."""
+    last_exc: Exception | None = None
+    for attempt in range(2):
+        try:
+            return await client.messages.create(
+                model="claude-sonnet-4-6",
+                max_tokens=4096,
+                system=_SYSTEM_PROMPT,       # hardcoded constant
+                messages=[{"role": "user", "content": user_message}],
+                timeout=CLAUDE_TIMEOUT_SECONDS,
+            )
+        except _RETRYABLE_ERRORS as exc:
+            last_exc = exc
+            log.warning(
+                "analysis.claude_call_failed", attempt=attempt + 1, error_type=type(exc).__name__
+            )
+    raise AnalysisServiceError("Analysis service is temporarily unavailable.") from last_exc
+
+
+def _extract_json_text(message: Any) -> str:
+    raw_text = message.content[0].text.strip()
+    if raw_text.startswith("```"):
+        raw_text = re.sub(r"^```[a-z]*\n?", "", raw_text)
+        raw_text = re.sub(r"\n?```$", "", raw_text)
+    return raw_text
+
+
+_JSON_CORRECTION_NOTE = (
+    "\n\nYour previous response was not valid JSON. Return ONLY the JSON object "
+    "described in the instructions above — no markdown, no commentary."
+)
+
+
+async def _get_valid_json(
+    client: anthropic.AsyncAnthropic, user_message: str, log: Any
+) -> dict[str, Any]:
+    """Call Claude and parse JSON, with one correction retry on malformed output."""
+    for attempt in range(2):
+        message = await _call_claude_with_retry(client, user_message, log)
+        raw_text = _extract_json_text(message)
+        log.info("analysis.response_received", chars=len(raw_text))
+        try:
+            return json.loads(raw_text)
+        except json.JSONDecodeError as exc:
+            log.warning("analysis.json_parse_error", attempt=attempt + 1)
+            if attempt == 0:
+                user_message = user_message + _JSON_CORRECTION_NOTE
+                continue
+            raise ValueError("Claude returned non-JSON response after correction retry") from exc
+    raise AssertionError("unreachable")  # pragma: no cover
+
+
 # ── Analysis function ─────────────────────────────────────────────────────────
 
 async def analyse_document(
@@ -243,8 +326,10 @@ async def analyse_document(
         AnalysisResult with validated clause data.
 
     Raises:
-        ValueError: Schema validation failed after Claude response.
-        anthropic.APIError: API call failed.
+        ValueError: Schema validation failed, or Claude returned malformed
+            JSON after one correction retry.
+        AnalysisServiceError: Claude API unavailable (timeout/connection/5xx
+            after one retry) or the circuit breaker is currently open.
     """
     text_hash = hash_verified_text(verified_text)
 
@@ -264,6 +349,13 @@ async def analyse_document(
         return _result_from_json(cached, cache_hit=True)
     log.info("analysis.cache_miss")
 
+    # CLR-020: circuit breaker — pause all analyses after repeated failures
+    if await circuit_breaker.is_open():
+        log.error("analysis.circuit_breaker_open")
+        raise AnalysisServiceError(
+            "Analysis is temporarily paused after repeated failures. Please try again shortly."
+        )
+
     log.info("analysis.start")
 
     secrets = get_secret("clairo/anthropic")
@@ -280,29 +372,15 @@ async def analyse_document(
         f"DOCUMENT TEXT:\n{verified_text}"
     )
 
-    message = await client.messages.create(
-        model="claude-sonnet-4-6",
-        max_tokens=4096,
-        system=_SYSTEM_PROMPT,           # hardcoded constant
-        messages=[{"role": "user", "content": user_message}],
-    )
-
-    raw_text = message.content[0].text.strip()
-    log.info("analysis.response_received", chars=len(raw_text))
-
-    # Strip markdown code fences if present (defensive)
-    if raw_text.startswith("```"):
-        raw_text = re.sub(r"^```[a-z]*\n?", "", raw_text)
-        raw_text = re.sub(r"\n?```$", "", raw_text)
-
     try:
-        parsed = json.loads(raw_text)
-    except json.JSONDecodeError as exc:
-        log.error("analysis.json_parse_error", error=str(exc))
-        raise ValueError(f"Claude returned non-JSON response") from exc
+        parsed = await _get_valid_json(client, user_message, log)
+        _validate_schema(parsed)
+    except (AnalysisServiceError, ValueError):
+        await circuit_breaker.record_failure()
+        await circuit_breaker.record_outcome_for_error_rate(is_error=True)
+        raise
 
-    # Strict schema validation — non-matching is discarded (not partially used)
-    _validate_schema(parsed)
+    await circuit_breaker.record_outcome_for_error_rate(is_error=False)
 
     log.info(
         "analysis.complete",
