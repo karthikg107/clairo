@@ -123,11 +123,25 @@ def _price_id_for(tier: SubscriptionTier, interval: BillingInterval) -> str:
 
 
 async def _get_or_create_stripe_customer(
-    db: AsyncSession, user: User, *, api_key: str
+    db: AsyncSession,
+    user: User,
+    *,
+    api_key: str,
+    existing_subscription: Subscription | None = None,
 ) -> str:
-    """Returns the Stripe customer id, creating one on first use."""
-    result = await db.execute(select(Subscription).where(Subscription.user_id == user.id))
-    subscription = result.scalar_one_or_none()
+    """
+    Returns the Stripe customer id, creating one on first use.
+
+    Accepts an already-fetched `existing_subscription` so callers that have
+    already looked up the row (e.g. the checkout-session endpoint, deciding
+    between a new Checkout session and an in-place tier change) don't pay
+    for a second identical query.
+    """
+    if existing_subscription is not None:
+        subscription = existing_subscription
+    else:
+        result = await db.execute(select(Subscription).where(Subscription.user_id == user.id))
+        subscription = result.scalar_one_or_none()
 
     if subscription is not None and subscription.stripe_customer_id:
         return subscription.stripe_customer_id
@@ -161,6 +175,7 @@ async def create_checkout_session(
     interval: BillingInterval,
     success_url: str,
     cancel_url: str,
+    existing_subscription: Subscription | None = None,
 ) -> str:
     """Creates a Stripe Checkout Session for the given tier/interval and returns its URL."""
     if tier not in PAID_TIERS:
@@ -172,7 +187,9 @@ async def create_checkout_session(
         raise BillingError("Stripe secret key not configured")
 
     price_id = _price_id_for(tier, interval)
-    customer_id = await _get_or_create_stripe_customer(db, user, api_key=api_key)
+    customer_id = await _get_or_create_stripe_customer(
+        db, user, api_key=api_key, existing_subscription=existing_subscription
+    )
 
     try:
         session = stripe.checkout.Session.create(
@@ -195,6 +212,76 @@ async def create_checkout_session(
     if not session.url:
         raise BillingError("Stripe did not return a checkout URL")
     return session.url
+
+
+async def change_subscription_tier(
+    db: AsyncSession,
+    *,
+    user: User,
+    tier: SubscriptionTier,
+    interval: BillingInterval,
+    existing_subscription: Subscription | None = None,
+) -> None:
+    """
+    CLR-028 — For a user who ALREADY has an active Stripe subscription,
+    changes their tier/interval in place rather than starting a second
+    Checkout session (which would create a second, parallel subscription).
+
+    Uses proration_behavior="create_prorations" so Stripe automatically
+    credits/charges the difference for the remainder of the current
+    billing period — this is what "prorated upgrades handled by Stripe"
+    means in practice: we don't compute proration ourselves, Stripe does.
+
+    The local `subscriptions` row is updated optimistically so the UI
+    reflects the change immediately; the customer.subscription.updated
+    webhook will also sync it shortly after (belt and suspenders — the
+    two must never meaningfully disagree since both derive from the same
+    Stripe subscription object).
+
+    Accepts an already-fetched `existing_subscription` for the same reason
+    as create_checkout_session — avoids a second identical query when the
+    caller (the checkout-session endpoint) has already looked the row up.
+    """
+    if tier not in PAID_TIERS:
+        raise BillingError(f"Cannot change to tier {tier.value!r}")
+
+    if existing_subscription is not None:
+        subscription = existing_subscription
+    else:
+        result = await db.execute(select(Subscription).where(Subscription.user_id == user.id))
+        subscription = result.scalar_one_or_none()
+
+    if subscription is None or not subscription.stripe_subscription_id:
+        raise BillingError("No active subscription to change")
+
+    secrets = _stripe_secrets()
+    api_key = secrets.get("secret_key", "")
+    if not api_key:
+        raise BillingError("Stripe secret key not configured")
+
+    price_id = _price_id_for(tier, interval)
+
+    try:
+        stripe_sub = stripe.Subscription.retrieve(
+            subscription.stripe_subscription_id, api_key=api_key
+        )
+        item_id = stripe_sub["items"]["data"][0]["id"]
+
+        stripe.Subscription.modify(
+            subscription.stripe_subscription_id,
+            items=[{"id": item_id, "price": price_id}],
+            proration_behavior="create_prorations",
+            metadata={"tier": tier.value, "interval": interval.value},
+            api_key=api_key,
+        )
+    except stripe.StripeError as exc:
+        logger.error("billing.change_tier_failed", error=str(exc))
+        raise BillingError("Could not change subscription tier") from exc
+
+    subscription.tier = tier
+    subscription.billing_interval = interval
+    await db.commit()
+    logger.info("billing.tier_changed", tier=tier.value, interval=interval.value)
 
 
 # ── Webhook event handling ─────────────────────────────────────────────────────

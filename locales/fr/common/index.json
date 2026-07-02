@@ -349,6 +349,11 @@
       "body": "Passez à un forfait supérieur pour continuer à analyser des contrats sans limite.",
       "cta": "Voir les forfaits"
     },
+    "upgraded_banner": {
+      "heading": "Tout est prêt !",
+      "body": "Votre abonnement a été mis à niveau avec succès.",
+      "dismiss": "Fermer"
+    },
     "empty": {
       "heading": "Aucune analyse pour l'instant",
       "body": "Téléchargez un contrat pour obtenir votre première explication en langage simple.",

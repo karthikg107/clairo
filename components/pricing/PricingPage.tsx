@@ -12,9 +12,13 @@
  * the actual discount applied by Stripe, and there is no countdown timer,
  * fake scarcity, or pre-checked upsell anywhere on this page.
  *
- * Paid-tier CTAs call POST /api/v1/billing/checkout-session (CLR-026)
- * and redirect to the returned Stripe Checkout URL. Signed-out visitors
- * are sent to sign-up first — Stripe Checkout requires an account.
+ * Paid-tier CTAs call POST /api/v1/billing/checkout-session (CLR-026).
+ * A brand-new subscriber gets a `checkout_url` to redirect to. An already
+ * active/trialing subscriber instead gets `applied_immediately: true`
+ * (CLR-028) — their existing Stripe subscription was changed in place with
+ * proration, so we send them straight to the dashboard instead of through
+ * Checkout again. Signed-out visitors are sent to sign-up first — Stripe
+ * Checkout requires an account.
  */
 
 import { useState, useCallback } from 'react'
@@ -68,8 +72,17 @@ export function PricingPage() {
 
         if (!res.ok) throw new Error(`Checkout failed: ${res.status}`)
 
-        const data: { checkout_url: string } = await res.json()
-        window.location.href = data.checkout_url
+        const data: { checkout_url: string | null; applied_immediately: boolean } =
+          await res.json()
+
+        if (data.applied_immediately) {
+          router.push('/dashboard?upgraded=true')
+          return
+        }
+
+        if (data.checkout_url) {
+          window.location.href = data.checkout_url
+        }
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Unknown error')
         setLoadingTier(null)

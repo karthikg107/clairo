@@ -345,6 +345,11 @@
       "body": "Actualice para seguir analizando contratos sin límites.",
       "cta": "Ver planes"
     },
+    "upgraded_banner": {
+      "heading": "¡Todo listo!",
+      "body": "Tu suscripción se ha actualizado correctamente.",
+      "dismiss": "Cerrar"
+    },
     "empty": {
       "heading": "Aún no hay análisis",
       "body": "Suba un contrato para obtener su primera explicación en lenguaje sencillo.",

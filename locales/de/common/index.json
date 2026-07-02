@@ -341,6 +341,11 @@
       "body": "Upgraden Sie, um Verträge ohne Limit zu analysieren.",
       "cta": "Pläne ansehen"
     },
+    "upgraded_banner": {
+      "heading": "Alles bereit!",
+      "body": "Ihr Abo wurde erfolgreich aktualisiert.",
+      "dismiss": "Schließen"
+    },
     "empty": {
       "heading": "Noch keine Analysen",
       "body": "Laden Sie einen Vertrag hoch, um Ihre erste Erklärung in einfacher Sprache zu erhalten.",

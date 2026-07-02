@@ -26,14 +26,20 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.config import get_settings
 from app.core.http import require_user
 from app.db.session import get_db
-from app.models.subscription import BillingInterval, Subscription, SubscriptionTier
+from app.models.subscription import BillingInterval, Subscription, SubscriptionStatus, SubscriptionTier
 from app.services.billing import (
     TIER_PRICING,
     BillingError,
+    change_subscription_tier,
     create_checkout_session,
     dispatch_webhook_event,
     verify_webhook_signature,
 )
+
+# Subscription states for which changing tier in place makes sense — a
+# canceled/unpaid subscription has no active Stripe subscription item to
+# modify, so those still go through a fresh Checkout session instead.
+_MODIFIABLE_STATUSES = {SubscriptionStatus.active, SubscriptionStatus.trialing}
 
 logger = structlog.get_logger(__name__)
 
@@ -48,7 +54,12 @@ class CheckoutSessionRequest(BaseModel):
 
 
 class CheckoutSessionResponse(BaseModel):
-    checkout_url: str
+    # Set when a NEW subscription is starting — frontend must redirect here.
+    checkout_url: str | None = None
+    # Set when an ALREADY-subscribed user changed tiers in place (prorated,
+    # see app/services/billing.py:change_subscription_tier) — no redirect,
+    # the change already happened.
+    applied_immediately: bool = False
 
 
 @router.post("/checkout-session", response_model=CheckoutSessionResponse)
@@ -71,16 +82,43 @@ async def checkout_session_endpoint(
         )
 
     user = await require_user(request, db)
-    settings = get_settings()
+    tier = SubscriptionTier(body.tier)
 
+    # CLR-028: a user who already has an active/trialing paid subscription
+    # gets their EXISTING Stripe subscription modified in place (prorated)
+    # rather than a second Checkout session, which would create a second,
+    # parallel subscription instead of changing the current one.
+    existing_result = await db.execute(
+        select(Subscription).where(Subscription.user_id == user.id)
+    )
+    existing = existing_result.scalar_one_or_none()
+
+    if (
+        existing is not None
+        and existing.stripe_subscription_id
+        and existing.status in _MODIFIABLE_STATUSES
+    ):
+        try:
+            await change_subscription_tier(
+                db, user=user, tier=tier, interval=interval, existing_subscription=existing
+            )
+        except BillingError as exc:
+            raise HTTPException(
+                status_code=status.HTTP_502_BAD_GATEWAY,
+                detail={"error": "tier_change_failed", "message": str(exc)},
+            )
+        return CheckoutSessionResponse(applied_immediately=True)
+
+    settings = get_settings()
     try:
         checkout_url = await create_checkout_session(
             db,
             user=user,
-            tier=SubscriptionTier(body.tier),
+            tier=tier,
             interval=interval,
-            success_url=f"{settings.frontend_base_url}/billing/success?session_id={{CHECKOUT_SESSION_ID}}",
+            success_url=f"{settings.frontend_base_url}/dashboard?upgraded=true",
             cancel_url=f"{settings.frontend_base_url}/pricing",
+            existing_subscription=existing,
         )
     except BillingError as exc:
         raise HTTPException(

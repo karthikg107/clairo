@@ -8,10 +8,10 @@
  * and the free-tier upgrade banner reuse useQuota (CLR-025).
  */
 
-import { useMemo, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useEffect, useMemo, useState } from 'react'
+import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 import { useTranslations, useFormatter } from 'next-intl'
-import { Search, Upload, Sparkles } from 'lucide-react'
+import { Search, Upload, Sparkles, CheckCircle2, X } from 'lucide-react'
 import { useAnalysisHistory, type AnalysisHistoryItem } from '@/hooks/useAnalysisHistory'
 import { useQuota } from '@/hooks/useQuota'
 import { DOCUMENT_LANGUAGES } from '@/components/forms/LanguageSelection'
@@ -31,12 +31,23 @@ export function DashboardPage() {
   const tDocTypes = useTranslations('results.document_types')
   const format = useFormatter()
   const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
 
   const { loading, items } = useAnalysisHistory()
   const quota = useQuota()
 
   const [search, setSearch] = useState('')
   const [filter, setFilter] = useState<FilterChip>('all')
+  const [showUpgradedBanner, setShowUpgradedBanner] = useState(false)
+
+  useEffect(() => {
+    if (searchParams.get('upgraded') === 'true') {
+      setShowUpgradedBanner(true)
+      router.replace(pathname)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams])
 
   const filteredItems = useMemo(() => {
     const query = search.trim().toLowerCase()
@@ -60,6 +71,35 @@ export function DashboardPage() {
   return (
     <div className="min-h-screen bg-background px-4 py-6">
       <div className="max-w-2xl mx-auto flex flex-col gap-5">
+        {showUpgradedBanner && (
+          <div className="rounded-2xl bg-success-50 border border-success-200 p-4 flex items-start gap-3">
+            <CheckCircle2
+              className="w-5 h-5 shrink-0 text-success-600 mt-0.5"
+              aria-hidden
+            />
+            <div className="flex-1 min-w-0">
+              <h2 className="text-sm font-semibold text-success-900">
+                {t('upgraded_banner.heading')}
+              </h2>
+              <p className="text-xs text-success-700 mt-0.5 leading-relaxed">
+                {t('upgraded_banner.body')}
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setShowUpgradedBanner(false)}
+              aria-label={t('upgraded_banner.dismiss')}
+              className="
+                shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-success-600
+                hover:bg-success-100 transition-colors
+                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-success-500
+              "
+            >
+              <X className="w-4 h-4" aria-hidden />
+            </button>
+          </div>
+        )}
+
         {showUpgradeBanner && (
           <div className="rounded-2xl bg-brand-700 text-white p-4 flex items-start gap-3">
             <Sparkles className="w-5 h-5 shrink-0 text-accent-300 mt-0.5" aria-hidden />

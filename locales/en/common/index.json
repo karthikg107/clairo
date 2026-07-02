@@ -337,6 +337,11 @@
       "body": "Upgrade to keep analysing contracts without limits.",
       "cta": "View plans"
     },
+    "upgraded_banner": {
+      "heading": "You're all set!",
+      "body": "Your subscription has been upgraded successfully.",
+      "dismiss": "Dismiss"
+    },
     "empty": {
       "heading": "No analyses yet",
       "body": "Upload a contract to get your first plain-language explanation.",
