@@ -264,5 +264,63 @@
       "cta": "Mettre à niveau",
       "dismiss": "Ignorer"
     }
+  },
+  "pricingPage": {
+    "heading": "Des tarifs simples et transparents",
+    "subheading": "Comprenez n'importe quel contrat, dans votre langue. Choisissez le forfait adapté à votre usage.",
+    "toggle": {
+      "monthly": "Mensuel",
+      "annual": "Annuel",
+      "annual_badge": "Économisez 25 %"
+    },
+    "per_month": "/mois",
+    "per_year": "/an, facturé annuellement",
+    "free_price": "Gratuit",
+    "current_plan": "Forfait actuel",
+    "cta": {
+      "free": "Commencer gratuitement",
+      "paid": "Choisir {tier}",
+      "signing_in": "Redirection…"
+    },
+    "tiers": {
+      "free": {
+        "name": "Free",
+        "description": "Essayez Clairo avec deux analyses, gratuitement.",
+        "features": [
+          "2 analyses gratuites",
+          "8 langues prises en charge",
+          "Explications des clauses en langage simple"
+        ]
+      },
+      "starter": {
+        "name": "Starter",
+        "description": "Pour des contrats et baux occasionnels.",
+        "features": [
+          "Analyses illimitées",
+          "Tout ce qui est dans Free",
+          "Historique des analyses"
+        ]
+      },
+      "pro": {
+        "name": "Pro",
+        "description": "Pour un examen fréquent des contrats.",
+        "features": [
+          "Tout ce qui est dans Starter",
+          "Traitement prioritaire",
+          "Support prioritaire"
+        ]
+      },
+      "team": {
+        "name": "Team",
+        "description": "Pour les petites équipes qui examinent des contrats ensemble.",
+        "features": [
+          "Tout ce qui est dans Pro",
+          "Plusieurs membres d'équipe",
+          "Facturation centralisée"
+        ]
+      }
+    },
+    "disclaimer": "Prix en USD. Annulez à tout moment.",
+    "not_legal_advice": "Clairo explique les contrats en langage simple — cela ne remplace pas un conseil juridique professionnel."
   }
 }

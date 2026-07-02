@@ -264,5 +264,51 @@
       "cta": "Upgrade",
       "dismiss": "Dismiss"
     }
+  },
+  "pricingPage": {
+    "heading": "Simple, transparent pricing",
+    "subheading": "Understand any contract, in your language. Choose the plan that fits how often you need Clairo.",
+    "toggle": {
+      "monthly": "Monthly",
+      "annual": "Annual",
+      "annual_badge": "Save 25%"
+    },
+    "per_month": "/mo",
+    "per_year": "/yr billed annually",
+    "free_price": "Free",
+    "current_plan": "Current plan",
+    "cta": {
+      "free": "Get started free",
+      "paid": "Choose {tier}",
+      "signing_in": "Redirecting…"
+    },
+    "tiers": {
+      "free": {
+        "name": "Free",
+        "description": "Try Clairo with two analyses, on us.",
+        "features": [
+          "2 free analyses",
+          "8 languages supported",
+          "Plain-language clause explanations"
+        ]
+      },
+      "starter": {
+        "name": "Starter",
+        "description": "For occasional contracts and leases.",
+        "features": ["Unlimited analyses", "Everything in Free", "Analysis history"]
+      },
+      "pro": {
+        "name": "Pro",
+        "description": "For frequent contract review.",
+        "features": ["Everything in Starter", "Priority processing", "Priority support"]
+      },
+      "team": {
+        "name": "Team",
+        "description": "For small teams reviewing contracts together.",
+        "features": ["Everything in Pro", "Multiple team members", "Centralized billing"]
+      }
+    },
+    "disclaimer": "Prices in USD. Cancel anytime.",
+    "not_legal_advice": "Clairo explains contracts in plain language — it is not a substitute for professional legal advice."
   }
 }

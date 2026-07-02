@@ -264,5 +264,55 @@
       "cta": "Upgrade",
       "dismiss": "Verwerfen"
     }
+  },
+  "pricingPage": {
+    "heading": "Einfache, transparente Preise",
+    "subheading": "Verstehen Sie jeden Vertrag, in Ihrer Sprache. Wählen Sie den Plan, der zu Ihrer Nutzung passt.",
+    "toggle": {
+      "monthly": "Monatlich",
+      "annual": "Jährlich",
+      "annual_badge": "25 % sparen"
+    },
+    "per_month": "/Monat",
+    "per_year": "/Jahr, jährlich abgerechnet",
+    "free_price": "Kostenlos",
+    "current_plan": "Aktueller Plan",
+    "cta": {
+      "free": "Kostenlos starten",
+      "paid": "{tier} wählen",
+      "signing_in": "Weiterleitung…"
+    },
+    "tiers": {
+      "free": {
+        "name": "Free",
+        "description": "Testen Sie Clairo mit zwei Analysen, kostenlos.",
+        "features": [
+          "2 kostenlose Analysen",
+          "8 Sprachen verfügbar",
+          "Klauseln in einfacher Sprache erklärt"
+        ]
+      },
+      "starter": {
+        "name": "Starter",
+        "description": "Für gelegentliche Verträge und Mietverträge.",
+        "features": ["Unbegrenzte Analysen", "Alles aus Free", "Analyseverlauf"]
+      },
+      "pro": {
+        "name": "Pro",
+        "description": "Für häufige Vertragsprüfungen.",
+        "features": [
+          "Alles aus Starter",
+          "Bevorzugte Verarbeitung",
+          "Bevorzugter Support"
+        ]
+      },
+      "team": {
+        "name": "Team",
+        "description": "Für kleine Teams, die gemeinsam Verträge prüfen.",
+        "features": ["Alles aus Pro", "Mehrere Teammitglieder", "Zentrale Abrechnung"]
+      }
+    },
+    "disclaimer": "Preise in USD. Jederzeit kündbar.",
+    "not_legal_advice": "Clairo erklärt Verträge in einfacher Sprache — das ersetzt keine professionelle Rechtsberatung."
   }
 }

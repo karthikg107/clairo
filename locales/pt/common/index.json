@@ -264,5 +264,59 @@
       "cta": "Fazer upgrade",
       "dismiss": "Dispensar"
     }
+  },
+  "pricingPage": {
+    "heading": "Preços simples e transparentes",
+    "subheading": "Entenda qualquer contrato, no seu idioma. Escolha o plano que se encaixa no seu uso.",
+    "toggle": {
+      "monthly": "Mensal",
+      "annual": "Anual",
+      "annual_badge": "Economize 25%"
+    },
+    "per_month": "/mês",
+    "per_year": "/ano, cobrado anualmente",
+    "free_price": "Grátis",
+    "current_plan": "Plano atual",
+    "cta": {
+      "free": "Começar grátis",
+      "paid": "Escolher {tier}",
+      "signing_in": "Redirecionando…"
+    },
+    "tiers": {
+      "free": {
+        "name": "Free",
+        "description": "Experimente o Clairo com duas análises, grátis.",
+        "features": [
+          "2 análises gratuitas",
+          "8 idiomas suportados",
+          "Explicações de cláusulas em linguagem simples"
+        ]
+      },
+      "starter": {
+        "name": "Starter",
+        "description": "Para contratos e locações ocasionais.",
+        "features": ["Análises ilimitadas", "Tudo do Free", "Histórico de análises"]
+      },
+      "pro": {
+        "name": "Pro",
+        "description": "Para revisão frequente de contratos.",
+        "features": [
+          "Tudo do Starter",
+          "Processamento prioritário",
+          "Suporte prioritário"
+        ]
+      },
+      "team": {
+        "name": "Team",
+        "description": "Para pequenas equipes que revisam contratos juntas.",
+        "features": [
+          "Tudo do Pro",
+          "Vários membros da equipe",
+          "Faturamento centralizado"
+        ]
+      }
+    },
+    "disclaimer": "Preços em USD. Cancele quando quiser.",
+    "not_legal_advice": "O Clairo explica contratos em linguagem simples — isso não substitui o aconselhamento jurídico profissional."
   }
 }

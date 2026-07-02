@@ -9,6 +9,7 @@ out/
 build/
 dist/
 tsconfig.tsbuildinfo
+next-env.d.ts
 
 # Env — NEVER commit real values
 .env
