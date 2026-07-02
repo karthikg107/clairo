@@ -355,5 +355,41 @@
       "body": "Pruebe con otro término de búsqueda o filtro."
     },
     "item_aria": "Ver análisis: {type}, {date}"
+  },
+  "account": {
+    "heading": "Configuración de la cuenta",
+    "email_label": "Correo electrónico",
+    "plan_label": "Plan",
+    "member_since_label": "Miembro desde",
+    "language_preferences": {
+      "heading": "Preferencias de idioma",
+      "doc_language_label": "Idioma del documento",
+      "output_language_label": "Idioma de explicación",
+      "country_label": "País",
+      "save": "Guardar cambios",
+      "saved": "Preferencias guardadas",
+      "not_set": "No establecido"
+    },
+    "export": {
+      "heading": "Exportar sus datos",
+      "body": "Descargue una copia de todo lo que Clairo ha almacenado sobre su cuenta.",
+      "cta": "Descargar JSON"
+    },
+    "danger_zone": {
+      "heading": "Eliminar cuenta",
+      "body": "Esto elimina permanentemente su cuenta, suscripción e historial de análisis. Esto no se puede deshacer.",
+      "cta": "Eliminar cuenta"
+    },
+    "delete_dialog": {
+      "heading": "¿Eliminar su cuenta?",
+      "body": "Esto eliminará permanentemente su cuenta, suscripción y todo el historial de análisis en segundos. Esto no se puede deshacer.",
+      "confirm_instructions": "Escriba DELETE para confirmar.",
+      "confirm_placeholder": "DELETE",
+      "confirm_aria": "Escriba DELETE para confirmar la eliminación de la cuenta",
+      "cancel": "Cancelar",
+      "confirm_cta": "Eliminar permanentemente",
+      "deleting": "Eliminando…",
+      "close": "Cerrar"
+    }
   }
 }

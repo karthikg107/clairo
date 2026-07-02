@@ -359,5 +359,41 @@
       "body": "Essayez un autre terme de recherche ou filtre."
     },
     "item_aria": "Voir l'analyse : {type}, {date}"
+  },
+  "account": {
+    "heading": "Paramètres du compte",
+    "email_label": "E-mail",
+    "plan_label": "Forfait",
+    "member_since_label": "Membre depuis",
+    "language_preferences": {
+      "heading": "Préférences linguistiques",
+      "doc_language_label": "Langue du document",
+      "output_language_label": "Langue d'explication",
+      "country_label": "Pays",
+      "save": "Enregistrer les modifications",
+      "saved": "Préférences enregistrées",
+      "not_set": "Non défini"
+    },
+    "export": {
+      "heading": "Exporter vos données",
+      "body": "Téléchargez une copie de tout ce que Clairo a stocké concernant votre compte.",
+      "cta": "Télécharger le JSON"
+    },
+    "danger_zone": {
+      "heading": "Supprimer le compte",
+      "body": "Cela supprime définitivement votre compte, votre abonnement et votre historique d'analyses. Cette action est irréversible.",
+      "cta": "Supprimer le compte"
+    },
+    "delete_dialog": {
+      "heading": "Supprimer votre compte ?",
+      "body": "Cela supprimera définitivement votre compte, votre abonnement et tout votre historique d'analyses en quelques secondes. Cette action est irréversible.",
+      "confirm_instructions": "Tapez DELETE pour confirmer.",
+      "confirm_placeholder": "DELETE",
+      "confirm_aria": "Tapez DELETE pour confirmer la suppression du compte",
+      "cancel": "Annuler",
+      "confirm_cta": "Supprimer définitivement",
+      "deleting": "Suppression…",
+      "close": "Fermer"
+    }
   }
 }

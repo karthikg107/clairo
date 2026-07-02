@@ -21,6 +21,12 @@ def test_user_has_free_analyses_used_column():
     assert "free_analyses_used" in cols
 
 
+def test_user_has_language_preference_columns():
+    """CLR-024 — saved language preferences for account settings."""
+    cols = column_names(User)
+    assert {"doc_language", "output_language", "country"} <= cols
+
+
 def test_user_has_no_document_content_columns():
     """SECURITY: user table must never contain document content."""
     cols = column_names(User)

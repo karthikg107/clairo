@@ -351,5 +351,41 @@
       "body": "Versuchen Sie einen anderen Suchbegriff oder Filter."
     },
     "item_aria": "Analyse ansehen: {type}, {date}"
+  },
+  "account": {
+    "heading": "Kontoeinstellungen",
+    "email_label": "E-Mail",
+    "plan_label": "Plan",
+    "member_since_label": "Mitglied seit",
+    "language_preferences": {
+      "heading": "Spracheinstellungen",
+      "doc_language_label": "Dokumentsprache",
+      "output_language_label": "Erklärungssprache",
+      "country_label": "Land",
+      "save": "Änderungen speichern",
+      "saved": "Einstellungen gespeichert",
+      "not_set": "Nicht festgelegt"
+    },
+    "export": {
+      "heading": "Ihre Daten exportieren",
+      "body": "Laden Sie eine Kopie aller über Ihr Konto gespeicherten Daten herunter.",
+      "cta": "JSON herunterladen"
+    },
+    "danger_zone": {
+      "heading": "Konto löschen",
+      "body": "Dies löscht dauerhaft Ihr Konto, Abonnement und Ihren Analyseverlauf. Dies kann nicht rückgängig gemacht werden.",
+      "cta": "Konto löschen"
+    },
+    "delete_dialog": {
+      "heading": "Konto löschen?",
+      "body": "Dies löscht innerhalb von Sekunden dauerhaft Ihr Konto, Abonnement und Ihren gesamten Analyseverlauf. Dies kann nicht rückgängig gemacht werden.",
+      "confirm_instructions": "Geben Sie DELETE ein, um zu bestätigen.",
+      "confirm_placeholder": "DELETE",
+      "confirm_aria": "Geben Sie DELETE ein, um die Kontolöschung zu bestätigen",
+      "cancel": "Abbrechen",
+      "confirm_cta": "Endgültig löschen",
+      "deleting": "Wird gelöscht…",
+      "close": "Schließen"
+    }
   }
 }

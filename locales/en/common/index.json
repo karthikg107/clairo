@@ -347,5 +347,41 @@
       "body": "Try a different search term or filter."
     },
     "item_aria": "View analysis: {type}, {date}"
+  },
+  "account": {
+    "heading": "Account settings",
+    "email_label": "Email",
+    "plan_label": "Plan",
+    "member_since_label": "Member since",
+    "language_preferences": {
+      "heading": "Language preferences",
+      "doc_language_label": "Document language",
+      "output_language_label": "Explanation language",
+      "country_label": "Country",
+      "save": "Save changes",
+      "saved": "Preferences saved",
+      "not_set": "Not set"
+    },
+    "export": {
+      "heading": "Export your data",
+      "body": "Download a copy of everything Clairo has stored about your account.",
+      "cta": "Download JSON"
+    },
+    "danger_zone": {
+      "heading": "Delete account",
+      "body": "This permanently deletes your account, subscription, and analysis history. This cannot be undone.",
+      "cta": "Delete account"
+    },
+    "delete_dialog": {
+      "heading": "Delete your account?",
+      "body": "This will permanently delete your account, subscription, and all analysis history within seconds. This cannot be undone.",
+      "confirm_instructions": "Type DELETE to confirm.",
+      "confirm_placeholder": "DELETE",
+      "confirm_aria": "Type DELETE to confirm account deletion",
+      "cancel": "Cancel",
+      "confirm_cta": "Permanently delete",
+      "deleting": "Deleting…",
+      "close": "Close"
+    }
   }
 }

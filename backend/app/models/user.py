@@ -43,6 +43,12 @@ class User(Base, UUIDPrimaryKeyMixin, TimestampMixin):
     # not a rolling window. See app/services/quota.py.
     free_analyses_used: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
 
+    # Saved language preferences (CLR-024) — null until the user sets them
+    # from account settings; pre-fills the upload flow (CLR-014) thereafter.
+    doc_language: Mapped[str | None] = mapped_column(String(10), nullable=True)
+    output_language: Mapped[str | None] = mapped_column(String(10), nullable=True)
+    country: Mapped[str | None] = mapped_column(String(2), nullable=True)
+
     # Relationships
     analyses: Mapped[list["Analysis"]] = relationship(  # noqa: F821
         "Analysis", back_populates="user", cascade="all, delete-orphan"

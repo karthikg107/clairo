@@ -343,5 +343,41 @@
       "body": "جرّب مصطلح بحث أو فلتر مختلف."
     },
     "item_aria": "عرض التحليل: {type}، {date}"
+  },
+  "account": {
+    "heading": "إعدادات الحساب",
+    "email_label": "البريد الإلكتروني",
+    "plan_label": "الخطة",
+    "member_since_label": "عضو منذ",
+    "language_preferences": {
+      "heading": "تفضيلات اللغة",
+      "doc_language_label": "لغة المستند",
+      "output_language_label": "لغة الشرح",
+      "country_label": "الدولة",
+      "save": "حفظ التغييرات",
+      "saved": "تم حفظ التفضيلات",
+      "not_set": "غير محدد"
+    },
+    "export": {
+      "heading": "تصدير بياناتك",
+      "body": "قم بتنزيل نسخة من كل ما خزّنه Clairo عن حسابك.",
+      "cta": "تنزيل JSON"
+    },
+    "danger_zone": {
+      "heading": "حذف الحساب",
+      "body": "سيؤدي هذا إلى حذف حسابك واشتراكك وسجل التحليلات نهائيًا. لا يمكن التراجع عن هذا.",
+      "cta": "حذف الحساب"
+    },
+    "delete_dialog": {
+      "heading": "حذف حسابك؟",
+      "body": "سيؤدي هذا إلى حذف حسابك واشتراكك وكل سجل التحليلات نهائيًا خلال ثوانٍ. لا يمكن التراجع عن هذا.",
+      "confirm_instructions": "اكتب DELETE للتأكيد.",
+      "confirm_placeholder": "DELETE",
+      "confirm_aria": "اكتب DELETE لتأكيد حذف الحساب",
+      "cancel": "إلغاء",
+      "confirm_cta": "حذف نهائيًا",
+      "deleting": "جارٍ الحذف…",
+      "close": "إغلاق"
+    }
   }
 }

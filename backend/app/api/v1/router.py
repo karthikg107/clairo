@@ -2,6 +2,7 @@
 from fastapi import APIRouter
 
 from app.api.v1.endpoints import (
+    account,
     analyse,
     billing,
     classify,
@@ -25,3 +26,4 @@ router.include_router(consent.router)
 router.include_router(quota.router)
 router.include_router(billing.router)
 router.include_router(history.router)
+router.include_router(account.router)
