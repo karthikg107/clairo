@@ -253,7 +253,10 @@
     "professional": {
       "heading": "¿Quiere una segunda opinión?",
       "body": "Clairo explica su contrato, pero no es asesoría legal. Un profesional calificado puede revisar su situación específica.",
-      "cta": "Buscar un profesional"
+      "cta": "Buscar un profesional",
+      "referral_label": "Sugerido para usted",
+      "link_text": "Contactar a {org}",
+      "link_aria": "Contactar a {org} (se abre en una nueva pestaña)"
     },
     "upgrade": {
       "aria_label": "Aviso de actualización",

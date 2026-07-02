@@ -13,7 +13,7 @@
  * for anything direction-sensitive (chevrons, icons).
  */
 
-import { useEffect, useMemo, useRef, useState, useCallback } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 import { useTranslations } from 'next-intl'
 import { Share2 } from 'lucide-react'
 import { LegalDisclaimer } from '@/components/ui/LegalDisclaimer'
@@ -33,7 +33,8 @@ interface AnalysisResultsScreenProps {
   docLanguageName: string
   outputLanguageName: string
   shareUrl: string
-  professionalHref?: string
+  /** ISO 3166-1 alpha-2 country code selected during language selection (CLR-014) — used to resolve the CLR-037 professional referral */
+  country: string
   isFreeTier: boolean
   onUpgrade: () => void
 }
@@ -43,7 +44,7 @@ export function AnalysisResultsScreen({
   docLanguageName,
   outputLanguageName,
   shareUrl,
-  professionalHref,
+  country,
   isFreeTier,
   onUpgrade,
 }: AnalysisResultsScreenProps) {
@@ -156,7 +157,9 @@ export function AnalysisResultsScreen({
               {protectiveCount > 0 && (
                 <span>{t('protective_count', { count: protectiveCount })}</span>
               )}
-              {reviewCount > 0 && <span>{t('review_count', { count: reviewCount })}</span>}
+              {reviewCount > 0 && (
+                <span>{t('review_count', { count: reviewCount })}</span>
+              )}
             </div>
           )}
         </section>
@@ -182,11 +185,14 @@ export function AnalysisResultsScreen({
           ))}
         </section>
 
-        <FindProfessionalCard href={professionalHref} />
+        <FindProfessionalCard country={country} documentType={result.document_type} />
       </main>
 
       {showUpgradePrompt && (
-        <UpgradePrompt onUpgrade={onUpgrade} onDismiss={() => setUpgradeDismissed(true)} />
+        <UpgradePrompt
+          onUpgrade={onUpgrade}
+          onDismiss={() => setUpgradeDismissed(true)}
+        />
       )}
 
       {shareOpen && (

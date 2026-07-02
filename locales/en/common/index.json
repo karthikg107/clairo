@@ -253,7 +253,10 @@
     "professional": {
       "heading": "Want a second opinion?",
       "body": "Clairo explains your contract, but it isn't legal advice. A qualified professional can review your specific situation.",
-      "cta": "Find a professional"
+      "cta": "Find a professional",
+      "referral_label": "Suggested for you",
+      "link_text": "Contact {org}",
+      "link_aria": "Contact {org} (opens in new tab)"
     },
     "upgrade": {
       "aria_label": "Upgrade prompt",

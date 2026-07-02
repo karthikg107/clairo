@@ -253,7 +253,10 @@
     "professional": {
       "heading": "Besoin d'un second avis ?",
       "body": "Clairo explique votre contrat, mais ce n'est pas un conseil juridique. Un professionnel qualifié peut examiner votre situation spécifique.",
-      "cta": "Trouver un professionnel"
+      "cta": "Trouver un professionnel",
+      "referral_label": "Suggéré pour vous",
+      "link_text": "Contacter {org}",
+      "link_aria": "Contacter {org} (s'ouvre dans un nouvel onglet)"
     },
     "upgrade": {
       "aria_label": "Invite de mise à niveau",

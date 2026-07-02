@@ -253,7 +253,10 @@
     "professional": {
       "heading": "Zweite Meinung gewünscht?",
       "body": "Clairo erklärt Ihren Vertrag, ist aber keine Rechtsberatung. Eine qualifizierte Fachperson kann Ihre spezifische Situation prüfen.",
-      "cta": "Fachperson finden"
+      "cta": "Fachperson finden",
+      "referral_label": "Für Sie empfohlen",
+      "link_text": "{org} kontaktieren",
+      "link_aria": "{org} kontaktieren (öffnet in neuem Tab)"
     },
     "upgrade": {
       "aria_label": "Upgrade-Hinweis",
