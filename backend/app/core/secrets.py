@@ -53,6 +53,14 @@ def _dev_fallback(secret_name: str) -> dict[str, Any]:
         "clairo/stripe": {
             "secret_key": os.getenv("STRIPE_SECRET_KEY", ""),
             "webhook_secret": os.getenv("STRIPE_WEBHOOK_SECRET", ""),
+            # Price IDs are created once per Stripe account (Dashboard or
+            # `stripe prices create`) and referenced here — never hardcoded.
+            "price_starter_monthly": os.getenv("STRIPE_PRICE_STARTER_MONTHLY", ""),
+            "price_starter_annual": os.getenv("STRIPE_PRICE_STARTER_ANNUAL", ""),
+            "price_pro_monthly": os.getenv("STRIPE_PRICE_PRO_MONTHLY", ""),
+            "price_pro_annual": os.getenv("STRIPE_PRICE_PRO_ANNUAL", ""),
+            "price_team_monthly": os.getenv("STRIPE_PRICE_TEAM_MONTHLY", ""),
+            "price_team_annual": os.getenv("STRIPE_PRICE_TEAM_ANNUAL", ""),
         },
         "clairo/clerk": {"secret_key": os.getenv("CLERK_SECRET_KEY", "")},
         "clairo/google-vision": {

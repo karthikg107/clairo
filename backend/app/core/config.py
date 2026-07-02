@@ -30,6 +30,9 @@ class Settings(BaseSettings):
         default=["https://clairo.app", "https://www.clairo.app", "http://localhost:3000"]
     )
 
+    # Frontend base URL — used to build Stripe Checkout success/cancel redirects (CLR-026)
+    frontend_base_url: str = "http://localhost:3000"
+
     # Security
     allowed_hosts: list[str] = Field(default=["clairo.app", "*.clairo.app", "localhost"])
 

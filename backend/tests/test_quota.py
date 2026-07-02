@@ -93,8 +93,12 @@ class TestIsPaidTier:
         user = _make_user(tier=SubscriptionTier.pro)
         assert _is_paid_tier(user) is True
 
-    def test_enterprise_subscription_is_paid(self):
-        user = _make_user(tier=SubscriptionTier.enterprise)
+    def test_starter_subscription_is_paid(self):
+        user = _make_user(tier=SubscriptionTier.starter)
+        assert _is_paid_tier(user) is True
+
+    def test_team_subscription_is_paid(self):
+        user = _make_user(tier=SubscriptionTier.team)
         assert _is_paid_tier(user) is True
 
 

@@ -25,7 +25,13 @@ from app.core.rate_limit import RateLimitTier, check_endpoint_rate_limit, check_
 logger = get_logger(__name__)
 
 # Paths that bypass ALL rate limiting
-_EXEMPT_PATHS = {"/api/v1/health", "/api/v1/ready", "/docs", "/openapi.json"}
+_EXEMPT_PATHS = {
+    "/api/v1/health",
+    "/api/v1/ready",
+    "/docs",
+    "/openapi.json",
+    "/api/v1/billing/webhook",  # called by Stripe, not end users (CLR-026)
+}
 
 # Path-prefix → endpoint key for hourly limits
 _ENDPOINT_KEYS: list[tuple[str, str]] = [

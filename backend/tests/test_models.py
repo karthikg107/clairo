@@ -52,10 +52,23 @@ def test_audit_log_has_required_columns():
 
 
 def test_subscription_tier_enum_values():
+    """CLR-026 — the four real product tiers: Free, Starter, Pro, Team."""
     from app.models.subscription import SubscriptionTier
     assert set(SubscriptionTier) == {
-        SubscriptionTier.free, SubscriptionTier.pro, SubscriptionTier.enterprise
+        SubscriptionTier.free, SubscriptionTier.starter,
+        SubscriptionTier.pro, SubscriptionTier.team,
     }
+
+
+def test_billing_interval_enum_values():
+    from app.models.subscription import BillingInterval
+    assert set(BillingInterval) == {BillingInterval.monthly, BillingInterval.annual}
+
+
+def test_subscription_has_billing_columns():
+    cols = column_names(Subscription)
+    assert {"billing_interval", "stripe_price_id", "stripe_customer_id",
+            "stripe_subscription_id"} <= cols
 
 
 def test_document_type_enum_excludes_prohibited():

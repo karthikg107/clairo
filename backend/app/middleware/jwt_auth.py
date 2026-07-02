@@ -38,6 +38,10 @@ _PUBLIC_PREFIXES = (
     "/docs",
     "/redoc",
     "/openapi.json",
+    # Called by Stripe, not the frontend — no Clerk JWT is ever present.
+    # Authenticity is verified separately via the Stripe webhook signature
+    # (CLR-026, app/services/billing.py:verify_webhook_signature).
+    "/api/v1/billing/webhook",
 )
 
 _JWKS_TTL_SECONDS = 3600  # refresh JWKS every hour

@@ -12,8 +12,9 @@ from app.models.base import Base, TimestampMixin, UUIDPrimaryKeyMixin
 
 class SubscriptionTier(str, enum.Enum):
     free = "free"
+    starter = "starter"
     pro = "pro"
-    enterprise = "enterprise"
+    team = "team"
 
 
 class SubscriptionStatus(str, enum.Enum):
@@ -22,6 +23,11 @@ class SubscriptionStatus(str, enum.Enum):
     past_due = "past_due"
     trialing = "trialing"
     unpaid = "unpaid"
+
+
+class BillingInterval(str, enum.Enum):
+    monthly = "monthly"
+    annual = "annual"
 
 
 class Subscription(Base, UUIDPrimaryKeyMixin, TimestampMixin):
@@ -40,6 +46,11 @@ class Subscription(Base, UUIDPrimaryKeyMixin, TimestampMixin):
         nullable=False,
         default=SubscriptionStatus.active,
     )
+    # Null for the free tier — set when a paid checkout completes (CLR-026)
+    billing_interval: Mapped[BillingInterval | None] = mapped_column(
+        Enum(BillingInterval, name="billing_interval_enum"), nullable=True
+    )
+    stripe_price_id: Mapped[str | None] = mapped_column(String(64), nullable=True)
     stripe_customer_id: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)
     stripe_subscription_id: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)
     current_period_end: Mapped[datetime | None] = mapped_column(
