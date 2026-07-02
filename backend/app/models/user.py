@@ -8,7 +8,7 @@ SECURITY:
 """
 from datetime import datetime
 
-from sqlalchemy import DateTime, String
+from sqlalchemy import DateTime, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import Base, TimestampMixin, UUIDPrimaryKeyMixin
@@ -38,6 +38,10 @@ class User(Base, UUIDPrimaryKeyMixin, TimestampMixin):
     # Soft-delete timestamp — actual hard delete done by gdpr_delete_user()
     # Row stays briefly for audit trail, then purged by nightly job
     deleted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+
+    # Lifetime free-tier analysis count (CLR-025) — 2 free analyses per user,
+    # not a rolling window. See app/services/quota.py.
+    free_analyses_used: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
 
     # Relationships
     analyses: Mapped[list["Analysis"]] = relationship(  # noqa: F821

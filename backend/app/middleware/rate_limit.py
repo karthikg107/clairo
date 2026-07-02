@@ -18,6 +18,7 @@ from fastapi import Request, Response
 from fastapi.responses import JSONResponse
 from starlette.middleware.base import BaseHTTPMiddleware
 
+from app.core.http import get_client_ip
 from app.core.logging import get_logger
 from app.core.rate_limit import RateLimitTier, check_endpoint_rate_limit, check_rate_limit
 
@@ -32,13 +33,6 @@ _ENDPOINT_KEYS: list[tuple[str, str]] = [
     ("/api/v1/auth",   "auth"),
     ("/api/v1/sign",   "auth"),   # Clerk webhook paths
 ]
-
-
-def _get_client_ip(request: Request) -> str:
-    forwarded = request.headers.get("X-Forwarded-For")
-    if forwarded:
-        return forwarded.split(",")[0].strip()
-    return request.client.host if request.client else "unknown"
 
 
 def _endpoint_key(path: str) -> str:
@@ -59,7 +53,7 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         authenticated = user_id is not None
 
         # For hourly endpoint limiting: prefer user_id, fall back to IP
-        identifier = user_id or _get_client_ip(request)
+        identifier = user_id or get_client_ip(request)
         endpoint = _endpoint_key(request.url.path)
 
         result = await check_endpoint_rate_limit(

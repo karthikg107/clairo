@@ -15,6 +15,12 @@ def test_user_has_required_columns():
     assert {"id", "clerk_id", "email", "created_at", "updated_at", "deleted_at"} <= cols
 
 
+def test_user_has_free_analyses_used_column():
+    """CLR-025 — lifetime free-tier quota counter."""
+    cols = column_names(User)
+    assert "free_analyses_used" in cols
+
+
 def test_user_has_no_document_content_columns():
     """SECURITY: user table must never contain document content."""
     cols = column_names(User)
