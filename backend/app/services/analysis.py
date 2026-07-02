@@ -17,17 +17,26 @@ SECURITY:
   - Zero data retention: we use the Anthropic API with zero-retention enabled
     (configured on the Anthropic account — not enforced here in code).
   - Document text is NOT logged — only safe metadata.
+
+CLR-019 — Analysis caching:
+  - Verified text is hashed (SHA-256) once the user has confirmed OCR review
+    (i.e. as soon as verified_text reaches this service).
+  - Cache is keyed by hash + output_language + country — never by raw text.
+  - Only the validated Claude JSON result is ever cached — never document content.
+  - Cache reads/writes fail open: a Redis outage never blocks analysis.
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import re
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Any
 
 import anthropic
 
 from app.core.logging import get_logger
+from app.core.redis import cache_analysis_result, get_cached_analysis_result
 from app.core.secrets import get_secret
 
 logger = get_logger(__name__)
@@ -151,6 +160,56 @@ class AnalysisResult:
     clauses: list[dict[str, Any]]
     protective_clause_count: int
     review_clause_count: int
+    cache_hit: bool = False       # CLR-019 — True if served from the analysis cache
+
+
+def _result_from_json(data: dict[str, Any], *, cache_hit: bool) -> AnalysisResult:
+    return AnalysisResult(
+        raw=data,
+        document_type=data["document_type"],
+        summary=data["summary"],
+        clauses=data["clauses"],
+        protective_clause_count=data["protective_clause_count"],
+        review_clause_count=data["review_clause_count"],
+        cache_hit=cache_hit,
+    )
+
+
+# ── CLR-019: content-hash analysis cache ───────────────────────────────────────
+
+def hash_verified_text(verified_text: str) -> str:
+    """SHA-256 hash of user-verified document text, used as the cache key."""
+    return hashlib.sha256(verified_text.encode("utf-8")).hexdigest()
+
+
+async def _check_cache(
+    text_hash: str, output_language: str, country: str, log: Any
+) -> dict[str, Any] | None:
+    try:
+        cached = await get_cached_analysis_result(text_hash, output_language, country)
+    except Exception as exc:
+        log.warning("analysis.cache_check_failed", error=str(exc))
+        return None
+
+    if cached is None:
+        return None
+
+    try:
+        _validate_schema(cached)
+    except ValueError as exc:
+        log.warning("analysis.cache_invalid_entry", error=str(exc))
+        return None
+
+    return cached
+
+
+async def _store_cache(
+    text_hash: str, output_language: str, country: str, result: dict[str, Any], log: Any
+) -> None:
+    try:
+        await cache_analysis_result(text_hash, output_language, country, result)
+    except Exception as exc:
+        log.warning("analysis.cache_store_failed", error=str(exc))
 
 
 # ── Analysis function ─────────────────────────────────────────────────────────
@@ -187,13 +246,24 @@ async def analyse_document(
         ValueError: Schema validation failed after Claude response.
         anthropic.APIError: API call failed.
     """
+    text_hash = hash_verified_text(verified_text)
+
     log = logger.bind(
         doc_language=doc_language,
         country=country,
         output_language=output_language,
         document_type=document_type,
         text_chars=len(verified_text),   # length only — never content
+        text_hash=text_hash,
     )
+
+    # CLR-019: check cache before calling Claude
+    cached = await _check_cache(text_hash, output_language, country, log)
+    if cached is not None:
+        log.info("analysis.cache_hit")
+        return _result_from_json(cached, cache_hit=True)
+    log.info("analysis.cache_miss")
+
     log.info("analysis.start")
 
     secrets = get_secret("clairo/anthropic")
@@ -241,11 +311,7 @@ async def analyse_document(
         review=parsed["review_clause_count"],
     )
 
-    return AnalysisResult(
-        raw=parsed,
-        document_type=parsed["document_type"],
-        summary=parsed["summary"],
-        clauses=parsed["clauses"],
-        protective_clause_count=parsed["protective_clause_count"],
-        review_clause_count=parsed["review_clause_count"],
-    )
+    # CLR-019: store only the validated JSON result — never document content
+    await _store_cache(text_hash, output_language, country, parsed, log)
+
+    return _result_from_json(parsed, cache_hit=False)

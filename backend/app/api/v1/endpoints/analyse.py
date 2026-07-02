@@ -5,23 +5,52 @@ POST /api/v1/analyse
 Orchestrates the full analysis pipeline:
   1. Validate input
   2. Check document_type is not prohibited (CLR-013 must have run first)
-  3. Run Claude analysis (CLR-015/016)
+  3. Run Claude analysis (CLR-015/016), served from cache when available (CLR-019)
   4. del verified_text immediately after analysis (CLR-032 memory isolation)
   5. Return structured result
 
 QUOTA: decremented only for permitted types (enforced here).
+
+DELETE /api/v1/analyse/cache
+Manual cache flush (CLR-019) — for when legal review requires an updated
+analysis of a previously-cached template. Audit logged.
 """
 from __future__ import annotations
 
+import structlog
+from fastapi import APIRouter, HTTPException, Request, status
 from pydantic import BaseModel, Field, field_validator
-from fastapi import APIRouter, HTTPException, status
 
-from app.services.analysis import analyse_document, AnalysisResult
-from app.services.document_type import PERMITTED_TYPES, DocumentType
+from app.core.redis import flush_analysis_cache
+from app.db.session import get_session_factory
+from app.models.audit_log import AuditLog
+from app.services.analysis import AnalysisResult, analyse_document
+from app.services.document_type import PERMITTED_TYPES
+
+logger = structlog.get_logger(__name__)
 
 router = APIRouter()
 
 _PERMITTED_TYPE_STRINGS = {t.value for t in PERMITTED_TYPES}
+
+
+async def _write_audit_log(*, action: str, metadata: dict, request: Request) -> None:
+    """
+    Best-effort audit log write — never blocks or fails the caller's response.
+    Metadata must never contain document content (only safe, structured fields).
+    """
+    try:
+        factory = get_session_factory()
+        async with factory() as session:
+            session.add(AuditLog(
+                action=action,
+                metadata_json=metadata,
+                ip_address=request.client.host if request.client else None,
+                user_agent=request.headers.get("user-agent", "")[:200],
+            ))
+            await session.commit()
+    except Exception as exc:
+        logger.warning("analyse.audit_log_failed", action=action, error=str(exc))
 
 
 class AnalyseRequest(BaseModel):
@@ -56,7 +85,7 @@ class AnalyseResponse(BaseModel):
     tags=["analysis"],
     summary="Analyse a document and return structured clause explanations",
 )
-async def analyse_endpoint(body: AnalyseRequest) -> AnalyseResponse:
+async def analyse_endpoint(body: AnalyseRequest, request: Request) -> AnalyseResponse:
     """
     Run Claude analysis on user-reviewed, verified document text.
 
@@ -65,6 +94,8 @@ async def analyse_endpoint(body: AnalyseRequest) -> AnalyseResponse:
     - verified_text is deleted from memory immediately after analysis.
     - System prompt cannot be overridden by any field in this request.
     - Response validated against strict schema before returning.
+    - CLR-019: a cache hit is recorded in the audit log (metadata only,
+      never document content).
     """
     # Extract text then delete reference — will del after analysis
     verified_text = body.verified_text
@@ -86,10 +117,51 @@ async def analyse_endpoint(body: AnalyseRequest) -> AnalyseResponse:
         # CLR-032: purge document from memory immediately
         del verified_text
 
+    if result.cache_hit:
+        await _write_audit_log(
+            action="analysis_cache_hit",
+            metadata={
+                "document_type": result.document_type,
+                "output_language": body.output_language,
+                "country": body.country,
+            },
+            request=request,
+        )
+
     return AnalyseResponse(
         document_type=result.document_type,
         summary=result.summary,
         clauses=result.clauses,
         protective_clause_count=result.protective_clause_count,
         review_clause_count=result.review_clause_count,
+    )
+
+
+class CacheFlushRequest(BaseModel):
+    text_hash: str = Field(..., pattern=r"^[a-f0-9]{64}$")
+    output_language: str = Field(..., pattern=r"^[a-z]{2}(-[a-zA-Z]{2,4})?$")
+    country: str = Field(..., pattern=r"^[A-Z]{2}$")
+
+
+@router.delete(
+    "/analyse/cache",
+    status_code=status.HTTP_204_NO_CONTENT,
+    tags=["analysis"],
+    summary="Manually flush a cached analysis result (CLR-019)",
+)
+async def flush_cache_endpoint(body: CacheFlushRequest, request: Request) -> None:
+    """
+    Manual cache flush — used when legal review requires an updated analysis
+    of a template that is already cached. Requires a valid JWT (enforced by
+    JWTAuthMiddleware, CLR-031, on every non-public route).
+    """
+    await flush_analysis_cache(body.text_hash, body.output_language, body.country)
+    await _write_audit_log(
+        action="analysis_cache_flushed",
+        metadata={
+            "text_hash": body.text_hash,
+            "output_language": body.output_language,
+            "country": body.country,
+        },
+        request=request,
     )

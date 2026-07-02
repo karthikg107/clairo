@@ -27,7 +27,7 @@ PREFIX_RATE     = "rl:"            # rate limit counters
 PREFIX_SESSION  = "session:"       # user session metadata (tier, limits)
 
 # TTLs (seconds)
-TTL_ANALYSIS = 60 * 60 * 24       # 24 h — analysis results
+TTL_ANALYSIS = 60 * 60 * 24 * 30  # 30 days (CLR-019) — analysis results
 TTL_RATE_WINDOW = 60               # 1 min sliding window for rate limits
 TTL_SESSION = 60 * 60 * 2         # 2 h — session metadata
 
@@ -110,6 +110,34 @@ async def get_cached_analysis(analysis_id: str) -> dict[str, Any] | None:
 
 async def invalidate_analysis(analysis_id: str) -> None:
     await cache_delete(f"{PREFIX_ANALYSIS}{analysis_id}")
+
+
+# ── Content-hash analysis cache (CLR-019) ─────────────────────────────────────
+# Caches analysis results for common contract templates, keyed by a SHA-256
+# hash of the user-verified document text (never the text itself).
+
+def analysis_cache_key(text_hash: str, output_language: str, country: str) -> str:
+    return f"{PREFIX_ANALYSIS}{text_hash}:{output_language}:{country}"
+
+
+async def cache_analysis_result(
+    text_hash: str, output_language: str, country: str, result: dict[str, Any]
+) -> None:
+    """Cache a validated analysis JSON result. NEVER pass document content here."""
+    await cache_set(
+        analysis_cache_key(text_hash, output_language, country), result, TTL_ANALYSIS
+    )
+
+
+async def get_cached_analysis_result(
+    text_hash: str, output_language: str, country: str
+) -> dict[str, Any] | None:
+    return await cache_get(analysis_cache_key(text_hash, output_language, country))
+
+
+async def flush_analysis_cache(text_hash: str, output_language: str, country: str) -> None:
+    """Manual flush — used when legal review requires an updated analysis."""
+    await cache_delete(analysis_cache_key(text_hash, output_language, country))
 
 
 # ── Session metadata cache ────────────────────────────────────────────────────
