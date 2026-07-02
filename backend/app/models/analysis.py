@@ -39,7 +39,9 @@ class Analysis(Base, UUIDPrimaryKeyMixin, TimestampMixin):
     document_type: Mapped[DocumentType] = mapped_column(
         Enum(DocumentType, name="document_type_enum"), nullable=False
     )
-    locale: Mapped[str] = mapped_column(String(10), nullable=False)  # e.g. "en", "ar"
+    # CLR-023: full language pair, needed for the dashboard history list
+    doc_language: Mapped[str] = mapped_column(String(10), nullable=False)  # e.g. "en", "ar"
+    output_language: Mapped[str] = mapped_column(String(10), nullable=False)
     page_count: Mapped[int | None] = mapped_column(Integer, nullable=True)
     processing_time_ms: Mapped[int | None] = mapped_column(Integer, nullable=True)
 

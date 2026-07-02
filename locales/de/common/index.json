@@ -233,7 +233,12 @@
     "show_original": "Originaltext anzeigen",
     "hide_original": "Originaltext ausblenden",
     "document_types": {
-      "default": "Vertrag"
+      "default": "Vertrag",
+      "rental": "Mietvertrag",
+      "employment": "Arbeitsvertrag",
+      "freelance": "Freiberufler-Vertrag",
+      "tos": "Nutzungsbedingungen",
+      "other_permitted": "Anderes Dokument"
     },
     "flags": {
       "protective": "Schützt Sie",
@@ -314,5 +319,37 @@
     },
     "disclaimer": "Preise in USD. Jederzeit kündbar.",
     "not_legal_advice": "Clairo erklärt Verträge in einfacher Sprache — das ersetzt keine professionelle Rechtsberatung."
+  },
+  "dashboard": {
+    "heading": "Ihre Analysen",
+    "search_placeholder": "Nach Typ oder Datum suchen",
+    "search_aria": "Analysen durchsuchen",
+    "filters": {
+      "all": "Alle",
+      "rental": "Miete",
+      "employment": "Arbeit",
+      "freelance": "Freiberuflich",
+      "other": "Andere"
+    },
+    "usage": {
+      "label": "Kostenlose Analysen verwendet",
+      "used_of_limit": "{used} von {limit} verwendet",
+      "unlimited": "Unbegrenzte Analysen in Ihrem Plan"
+    },
+    "upgrade_banner": {
+      "heading": "Sie haben alle kostenlosen Analysen aufgebraucht",
+      "body": "Upgraden Sie, um Verträge ohne Limit zu analysieren.",
+      "cta": "Pläne ansehen"
+    },
+    "empty": {
+      "heading": "Noch keine Analysen",
+      "body": "Laden Sie einen Vertrag hoch, um Ihre erste Erklärung in einfacher Sprache zu erhalten.",
+      "cta": "Dokument hochladen"
+    },
+    "no_results": {
+      "heading": "Keine Treffer",
+      "body": "Versuchen Sie einen anderen Suchbegriff oder Filter."
+    },
+    "item_aria": "Analyse ansehen: {type}, {date}"
   }
 }

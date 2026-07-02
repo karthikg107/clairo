@@ -35,6 +35,13 @@ def test_analysis_has_no_document_content_columns():
     assert cols.isdisjoint(forbidden), f"Forbidden columns found: {cols & forbidden}"
 
 
+def test_analysis_has_language_pair_columns():
+    """CLR-023 — dashboard history needs the full language pair, not one locale field."""
+    cols = column_names(Analysis)
+    assert {"doc_language", "output_language"} <= cols
+    assert "locale" not in cols
+
+
 def test_analysis_has_result_json():
     cols = column_names(Analysis)
     assert "result_json" in cols

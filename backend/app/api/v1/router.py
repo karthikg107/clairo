@@ -8,6 +8,7 @@ from app.api.v1.endpoints import (
     consent,
     detect,
     health,
+    history,
     ocr,
     quota,
     upload,
@@ -23,3 +24,4 @@ router.include_router(analyse.router)
 router.include_router(consent.router)
 router.include_router(quota.router)
 router.include_router(billing.router)
+router.include_router(history.router)

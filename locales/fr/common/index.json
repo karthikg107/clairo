@@ -233,7 +233,12 @@
     "show_original": "Afficher le texte original",
     "hide_original": "Masquer le texte original",
     "document_types": {
-      "default": "Contrat"
+      "default": "Contrat",
+      "rental": "Contrat de location",
+      "employment": "Contrat de travail",
+      "freelance": "Contrat freelance",
+      "tos": "Conditions d'utilisation",
+      "other_permitted": "Autre document"
     },
     "flags": {
       "protective": "Vous protège",
@@ -322,5 +327,37 @@
     },
     "disclaimer": "Prix en USD. Annulez à tout moment.",
     "not_legal_advice": "Clairo explique les contrats en langage simple — cela ne remplace pas un conseil juridique professionnel."
+  },
+  "dashboard": {
+    "heading": "Vos analyses",
+    "search_placeholder": "Rechercher par type ou date",
+    "search_aria": "Rechercher des analyses",
+    "filters": {
+      "all": "Toutes",
+      "rental": "Location",
+      "employment": "Emploi",
+      "freelance": "Freelance",
+      "other": "Autre"
+    },
+    "usage": {
+      "label": "Analyses gratuites utilisées",
+      "used_of_limit": "{used} sur {limit} utilisées",
+      "unlimited": "Analyses illimitées sur votre forfait"
+    },
+    "upgrade_banner": {
+      "heading": "Vous avez utilisé toutes vos analyses gratuites",
+      "body": "Passez à un forfait supérieur pour continuer à analyser des contrats sans limite.",
+      "cta": "Voir les forfaits"
+    },
+    "empty": {
+      "heading": "Aucune analyse pour l'instant",
+      "body": "Téléchargez un contrat pour obtenir votre première explication en langage simple.",
+      "cta": "Télécharger un document"
+    },
+    "no_results": {
+      "heading": "Aucun résultat",
+      "body": "Essayez un autre terme de recherche ou filtre."
+    },
+    "item_aria": "Voir l'analyse : {type}, {date}"
   }
 }

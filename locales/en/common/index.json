@@ -233,7 +233,12 @@
     "show_original": "Show original text",
     "hide_original": "Hide original text",
     "document_types": {
-      "default": "Contract"
+      "default": "Contract",
+      "rental": "Rental agreement",
+      "employment": "Employment contract",
+      "freelance": "Freelance agreement",
+      "tos": "Terms of service",
+      "other_permitted": "Other document"
     },
     "flags": {
       "protective": "Protects you",
@@ -310,5 +315,37 @@
     },
     "disclaimer": "Prices in USD. Cancel anytime.",
     "not_legal_advice": "Clairo explains contracts in plain language — it is not a substitute for professional legal advice."
+  },
+  "dashboard": {
+    "heading": "Your analyses",
+    "search_placeholder": "Search by type or date",
+    "search_aria": "Search analyses",
+    "filters": {
+      "all": "All",
+      "rental": "Rental",
+      "employment": "Employment",
+      "freelance": "Freelance",
+      "other": "Other"
+    },
+    "usage": {
+      "label": "Free analyses used",
+      "used_of_limit": "{used} of {limit} used",
+      "unlimited": "Unlimited analyses on your plan"
+    },
+    "upgrade_banner": {
+      "heading": "You've used all your free analyses",
+      "body": "Upgrade to keep analysing contracts without limits.",
+      "cta": "View plans"
+    },
+    "empty": {
+      "heading": "No analyses yet",
+      "body": "Upload a contract to get your first plain-language explanation.",
+      "cta": "Upload a document"
+    },
+    "no_results": {
+      "heading": "No matches",
+      "body": "Try a different search term or filter."
+    },
+    "item_aria": "View analysis: {type}, {date}"
   }
 }

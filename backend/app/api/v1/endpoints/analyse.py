@@ -23,12 +23,15 @@ from __future__ import annotations
 import structlog
 from fastapi import APIRouter, HTTPException, Request, status
 from pydantic import BaseModel, Field, field_validator
+from sqlalchemy import select
 
 from app.api.v1.endpoints.quota import QuotaResponse
 from app.core.http import get_clerk_id, get_client_ip
 from app.core.redis import flush_analysis_cache
 from app.db.session import get_session_factory
+from app.models.analysis import Analysis, DocumentType
 from app.models.audit_log import AuditLog
+from app.models.user import User
 from app.services.analysis import AnalysisResult, AnalysisServiceError, analyse_document
 from app.services.document_type import PERMITTED_TYPES
 from app.services.quota import check_quota, consume_quota
@@ -57,6 +60,45 @@ async def _write_audit_log(*, action: str, metadata: dict, request: Request) -> 
             await session.commit()
     except Exception as exc:
         logger.warning("analyse.audit_log_failed", action=action, error=str(exc))
+
+
+async def _persist_analysis(
+    *,
+    clerk_id: str | None,
+    document_type: str,
+    doc_language: str,
+    output_language: str,
+    result: AnalysisResult,
+) -> None:
+    """
+    CLR-023 — best-effort save for the dashboard history list. Never blocks
+    or fails the caller's response.
+
+    Only persisted for authenticated users — an anonymous analysis has no
+    account to attach it to, and therefore never appears in any history.
+    result_json stores the same validated Claude JSON already returned to
+    the caller (document_type, summary, clauses, counts) — never
+    verified_text or any other raw document content.
+    """
+    if not clerk_id:
+        return
+    try:
+        factory = get_session_factory()
+        async with factory() as session:
+            user_result = await session.execute(select(User).where(User.clerk_id == clerk_id))
+            user = user_result.scalar_one_or_none()
+            if user is None:
+                return
+            session.add(Analysis(
+                user_id=user.id,
+                document_type=DocumentType(document_type),
+                doc_language=doc_language,
+                output_language=output_language,
+                result_json=result.raw,
+            ))
+            await session.commit()
+    except Exception as exc:
+        logger.warning("analyse.persist_failed", error=str(exc))
 
 
 class AnalyseRequest(BaseModel):
@@ -169,6 +211,14 @@ async def analyse_endpoint(body: AnalyseRequest, request: Request) -> AnalyseRes
     if quota.is_free_tier:
         await consume_quota(clerk_id=clerk_id, anonymous_id=anonymous_id, ip=ip)
         quota = await check_quota(clerk_id=clerk_id, anonymous_id=anonymous_id, ip=ip)
+
+    await _persist_analysis(
+        clerk_id=clerk_id,
+        document_type=body.document_type,
+        doc_language=body.doc_language,
+        output_language=body.output_language,
+        result=result,
+    )
 
     return AnalyseResponse(
         document_type=result.document_type,

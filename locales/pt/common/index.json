@@ -233,7 +233,12 @@
     "show_original": "Mostrar texto original",
     "hide_original": "Ocultar texto original",
     "document_types": {
-      "default": "Contrato"
+      "default": "Contrato",
+      "rental": "Contrato de aluguel",
+      "employment": "Contrato de trabalho",
+      "freelance": "Contrato de freelancer",
+      "tos": "Termos de serviço",
+      "other_permitted": "Outro documento"
     },
     "flags": {
       "protective": "Protege você",
@@ -318,5 +323,37 @@
     },
     "disclaimer": "Preços em USD. Cancele quando quiser.",
     "not_legal_advice": "O Clairo explica contratos em linguagem simples — isso não substitui o aconselhamento jurídico profissional."
+  },
+  "dashboard": {
+    "heading": "Suas análises",
+    "search_placeholder": "Pesquisar por tipo ou data",
+    "search_aria": "Pesquisar análises",
+    "filters": {
+      "all": "Todas",
+      "rental": "Aluguel",
+      "employment": "Emprego",
+      "freelance": "Freelance",
+      "other": "Outro"
+    },
+    "usage": {
+      "label": "Análises gratuitas usadas",
+      "used_of_limit": "{used} de {limit} usadas",
+      "unlimited": "Análises ilimitadas no seu plano"
+    },
+    "upgrade_banner": {
+      "heading": "Você usou todas as suas análises gratuitas",
+      "body": "Faça upgrade para continuar analisando contratos sem limites.",
+      "cta": "Ver planos"
+    },
+    "empty": {
+      "heading": "Nenhuma análise ainda",
+      "body": "Envie um contrato para obter sua primeira explicação em linguagem simples.",
+      "cta": "Enviar documento"
+    },
+    "no_results": {
+      "heading": "Nenhum resultado",
+      "body": "Tente outro termo de pesquisa ou filtro."
+    },
+    "item_aria": "Ver análise: {type}, {date}"
   }
 }
