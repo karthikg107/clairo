@@ -398,6 +398,17 @@
         }
       }
     },
+    "referrals": {
+      "heading": "Invita a tus amigos",
+      "body": "Comparte tu enlace. Cuando un amigo se registre y complete su primer análisis, ambos recibirán 1 análisis extra — hasta 10 bonos.",
+      "copy_aria": "Copiar enlace de referido",
+      "stats": {
+        "completed": "Amigos unidos",
+        "bonuses": "Bonos ganados",
+        "bonuses_value": "{earned}/{max}",
+        "available": "Análisis extra"
+      }
+    },
     "language_preferences": {
       "heading": "Preferencias de idioma",
       "doc_language_label": "Idioma del documento",

@@ -12,6 +12,7 @@ from app.api.v1.endpoints import (
     history,
     ocr,
     quota,
+    referrals,
     share,
     upload,
 )
@@ -29,3 +30,4 @@ router.include_router(billing.router)
 router.include_router(history.router)
 router.include_router(account.router)
 router.include_router(share.router)
+router.include_router(referrals.router)

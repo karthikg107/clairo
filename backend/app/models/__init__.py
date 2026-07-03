@@ -8,6 +8,7 @@ from app.models.subscription import (
 )
 from app.models.analysis import Analysis, DocumentType
 from app.models.audit_log import AuditLog
+from app.models.referral import Referral
 from app.models.share_link import ShareLink
 
 __all__ = [
@@ -21,4 +22,5 @@ __all__ = [
     "DocumentType",
     "AuditLog",
     "ShareLink",
+    "Referral",
 ]

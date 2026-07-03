@@ -6,6 +6,7 @@ import { Inter, Source_Serif_4, JetBrains_Mono } from 'next/font/google'
 import { notFound } from 'next/navigation'
 import { locales, rtlLocales, type Locale } from '@/middleware'
 import { cn } from '@/lib/utils'
+import { ReferralClaimer } from '@/components/referrals/ReferralClaimer'
 import '../globals.css'
 
 const inter = Inter({
@@ -59,14 +60,12 @@ export default async function LocaleLayout({
       <html
         lang={locale}
         dir={isRtl ? 'rtl' : 'ltr'}
-        className={cn(
-          inter.variable,
-          sourceSerif4.variable,
-          jetbrainsMono.variable
-        )}
+        className={cn(inter.variable, sourceSerif4.variable, jetbrainsMono.variable)}
       >
         <body>
           <NextIntlClientProvider messages={messages}>
+            {/* CLR-044 — claims a stored referral once signed in; renders nothing */}
+            <ReferralClaimer />
             {children}
           </NextIntlClientProvider>
         </body>

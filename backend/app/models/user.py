@@ -43,6 +43,10 @@ class User(Base, UUIDPrimaryKeyMixin, TimestampMixin):
     # not a rolling window. See app/services/quota.py.
     free_analyses_used: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
 
+    # Referral programme (CLR-044) — extra lifetime analyses earned via
+    # referrals; extends the free-tier limit (2 + bonus_analyses).
+    bonus_analyses: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+
     # Saved language preferences (CLR-024) — null until the user sets them
     # from account settings; pre-fills the upload flow (CLR-014) thereafter.
     doc_language: Mapped[str | None] = mapped_column(String(10), nullable=True)

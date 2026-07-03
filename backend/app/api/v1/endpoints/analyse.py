@@ -35,6 +35,7 @@ from app.models.user import User
 from app.services.analysis import AnalysisResult, AnalysisServiceError, analyse_document
 from app.services.document_type import PERMITTED_TYPES
 from app.services.quota import check_quota, consume_quota
+from app.services.referrals import complete_referral_for_clerk_id
 
 logger = structlog.get_logger(__name__)
 
@@ -228,6 +229,10 @@ async def analyse_endpoint(body: AnalyseRequest, request: Request) -> AnalyseRes
         output_language=body.output_language,
         result=result,
     )
+
+    # CLR-044 — completing an analysis completes a pending referral (both
+    # sides earn a bonus analysis). Best-effort, never blocks the response.
+    await complete_referral_for_clerk_id(clerk_id)
 
     return AnalyseResponse(
         document_type=result.document_type,

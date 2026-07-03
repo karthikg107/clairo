@@ -67,13 +67,15 @@ def _status_for_user(user: User) -> QuotaStatus:
             allowed=True, is_free_tier=False,
             used=0, limit=FREE_LIFETIME_LIMIT, remaining=FREE_LIFETIME_LIMIT,
         )
+    # CLR-044 — referral bonuses extend the lifetime limit.
+    limit = FREE_LIFETIME_LIMIT + (user.bonus_analyses or 0)
     used = user.free_analyses_used
     return QuotaStatus(
-        allowed=used < FREE_LIFETIME_LIMIT,
+        allowed=used < limit,
         is_free_tier=True,
         used=used,
-        limit=FREE_LIFETIME_LIMIT,
-        remaining=max(0, FREE_LIFETIME_LIMIT - used),
+        limit=limit,
+        remaining=max(0, limit - used),
     )
 
 

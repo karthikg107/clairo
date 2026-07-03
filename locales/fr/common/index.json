@@ -402,6 +402,17 @@
         }
       }
     },
+    "referrals": {
+      "heading": "Invitez vos amis",
+      "body": "Partagez votre lien. Quand un ami s'inscrit et termine sa première analyse, vous recevez chacun 1 analyse bonus — jusqu'à 10 bonus.",
+      "copy_aria": "Copier le lien de parrainage",
+      "stats": {
+        "completed": "Amis inscrits",
+        "bonuses": "Bonus gagnés",
+        "bonuses_value": "{earned}/{max}",
+        "available": "Analyses bonus"
+      }
+    },
     "language_preferences": {
       "heading": "Préférences linguistiques",
       "doc_language_label": "Langue du document",

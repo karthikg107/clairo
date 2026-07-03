@@ -394,6 +394,17 @@
         }
       }
     },
+    "referrals": {
+      "heading": "Freunde einladen",
+      "body": "Teilen Sie Ihren Link. Wenn sich jemand anmeldet und die erste Analyse abschließt, erhalten Sie beide 1 Bonus-Analyse — bis zu 10 Boni.",
+      "copy_aria": "Empfehlungslink kopieren",
+      "stats": {
+        "completed": "Beigetretene Freunde",
+        "bonuses": "Verdiente Boni",
+        "bonuses_value": "{earned}/{max}",
+        "available": "Bonus-Analysen"
+      }
+    },
     "language_preferences": {
       "heading": "Spracheinstellungen",
       "doc_language_label": "Dokumentsprache",

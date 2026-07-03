@@ -398,6 +398,17 @@
         }
       }
     },
+    "referrals": {
+      "heading": "Convide amigos",
+      "body": "Compartilhe seu link. Quando um amigo se cadastrar e concluir a primeira análise, vocês dois ganham 1 análise bônus — até 10 bônus.",
+      "copy_aria": "Copiar link de indicação",
+      "stats": {
+        "completed": "Amigos que entraram",
+        "bonuses": "Bônus ganhos",
+        "bonuses_value": "{earned}/{max}",
+        "available": "Análises bônus"
+      }
+    },
     "language_preferences": {
       "heading": "Preferências de idioma",
       "doc_language_label": "Idioma do documento",

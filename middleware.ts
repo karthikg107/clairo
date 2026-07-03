@@ -33,6 +33,9 @@ const isPublicRoute = createRouteMatcher([
   // shared analyses (CLR-042) — recipients have no account
   '/s/(.*)',
   '/:locale/s/(.*)',
+  // referral landing (CLR-044) — visitors have no account yet
+  '/ref/(.*)',
+  '/:locale/ref/(.*)',
   // health check
   '/api/health',
 ])

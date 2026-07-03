@@ -8,7 +8,7 @@ from sqlalchemy.ext.asyncio import create_async_engine
 
 # Import all models so Alembic sees them for autogenerate
 from app.models import Base  # noqa: F401 — triggers model registration
-from app.models import User, Subscription, Analysis, AuditLog, ShareLink  # noqa: F401
+from app.models import User, Subscription, Analysis, AuditLog, ShareLink, Referral  # noqa: F401
 
 config = context.config
 if config.config_file_name:

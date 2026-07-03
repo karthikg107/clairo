@@ -390,6 +390,17 @@
         }
       }
     },
+    "referrals": {
+      "heading": "Invite friends",
+      "body": "Share your link. When a friend signs up and completes their first analysis, you both get 1 bonus analysis — up to 10 bonuses.",
+      "copy_aria": "Copy referral link",
+      "stats": {
+        "completed": "Friends joined",
+        "bonuses": "Bonuses earned",
+        "bonuses_value": "{earned}/{max}",
+        "available": "Bonus analyses"
+      }
+    },
     "language_preferences": {
       "heading": "Language preferences",
       "doc_language_label": "Document language",
