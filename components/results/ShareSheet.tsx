@@ -1,24 +1,45 @@
 'use client'
 
 /**
- * CLR-018 — Share sheet for the analysis results screen.
+ * CLR-043 — WhatsApp-first share sheet.
  *
- * WhatsApp is the primary share channel (highest-intent target audience).
- * Falls back to the Web Share API where available, with copy-link always present.
+ * Order and hierarchy are deliberate (WhatsApp is the highest-intent
+ * channel for the target audience):
+ *   1. WhatsApp — first and visually largest
+ *   2. Copy link — second
+ *   3. Native share — last, framed as "More options" (only where the
+ *      Web Share API exists)
  *
- * Scope note: this is the share UI only. Shareable link generation (CLR-041)
- * and the public shared-analysis page (CLR-042) are separate tickets — this
- * component accepts a pre-built `shareUrl` and does not generate one itself.
+ * The WhatsApp message is the analysis' first summary sentence plus the
+ * share link — enough context to make the link worth tapping, nothing
+ * from the document itself (the summary is AI-generated plain language).
+ *
+ * Dialog shell (button backdrop + document-level Escape) matches
+ * DeleteAccountDialog — the jsx-a11y-clean pattern.
  */
 
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { X, Copy, Check, Share2 } from 'lucide-react'
 
 interface ShareSheetProps {
   shareUrl: string
-  documentType: string
+  /** Analysis summary — its first sentence seeds the WhatsApp message. */
+  summary: string
   onClose: () => void
+}
+
+// Sentence terminators across supported output languages:
+// Latin-script . ! ? — plus Devanagari danda (।) and Arabic/Urdu full stop (۔)
+const SENTENCE_END = /[.!?।۔]/
+
+/** First sentence of the summary, capped so the WhatsApp message stays scannable. */
+export function firstSentence(text: string, maxChars = 160): string {
+  const trimmed = text.trim()
+  const match = SENTENCE_END.exec(trimmed)
+  const sentence = match ? trimmed.slice(0, match.index + 1) : trimmed
+  if (sentence.length <= maxChars) return sentence
+  return `${sentence.slice(0, maxChars - 1)}…`
 }
 
 function WhatsAppIcon({ className }: { className?: string }) {
@@ -30,27 +51,42 @@ function WhatsAppIcon({ className }: { className?: string }) {
   )
 }
 
-export function ShareSheet({ shareUrl, documentType, onClose }: ShareSheetProps) {
+export function ShareSheet({ shareUrl, summary, onClose }: ShareSheetProps) {
   const t = useTranslations('results.share')
   const [copied, setCopied] = useState(false)
   const closeBtnRef = useRef<HTMLButtonElement>(null)
-  const panelRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     closeBtnRef.current?.focus()
   }, [])
 
-  const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent<HTMLDivElement>) => {
+  // Document-level Escape handling — avoids key listeners on
+  // non-interactive elements (jsx-a11y).
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose()
-    },
-    [onClose]
-  )
+    }
+    document.addEventListener('keydown', handler)
+    return () => document.removeEventListener('keydown', handler)
+  }, [onClose])
 
-  const message = t('whatsapp_message', { type: documentType, url: shareUrl })
+  const message = t('whatsapp_message', {
+    summary: firstSentence(summary),
+    url: shareUrl,
+  })
 
   const handleWhatsApp = () => {
-    window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer')
+    window.open(
+      `https://wa.me/?text=${encodeURIComponent(message)}`,
+      '_blank',
+      'noopener,noreferrer'
+    )
+  }
+
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(shareUrl)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
   }
 
   const handleNativeShare = async () => {
@@ -63,29 +99,26 @@ export function ShareSheet({ shareUrl, documentType, onClose }: ShareSheetProps)
     }
   }
 
-  const handleCopy = async () => {
-    await navigator.clipboard.writeText(shareUrl)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }
-
   return (
-    <div
-      className="fixed inset-0 z-50 bg-black/40 flex items-end sm:items-center justify-center px-0 sm:px-4"
-      onClick={(e) => {
-        if (e.target === e.currentTarget) onClose()
-      }}
-    >
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center px-0 sm:px-4">
+      <button
+        type="button"
+        tabIndex={-1}
+        aria-hidden="true"
+        onClick={onClose}
+        className="absolute inset-0 bg-black/40 cursor-default"
+      />
       <div
-        ref={panelRef}
         role="dialog"
         aria-modal="true"
         aria-labelledby="share-sheet-heading"
-        onKeyDown={handleKeyDown}
-        className="w-full sm:max-w-sm bg-white rounded-t-3xl sm:rounded-2xl shadow-xl flex flex-col max-h-[85vh] overflow-y-auto"
+        className="relative w-full sm:max-w-sm bg-white rounded-t-3xl sm:rounded-2xl shadow-xl flex flex-col max-h-[85vh] overflow-y-auto"
       >
         <div className="flex items-center justify-between px-5 pt-5 pb-3">
-          <h2 id="share-sheet-heading" className="text-base font-semibold text-neutral-900">
+          <h2
+            id="share-sheet-heading"
+            className="text-base font-semibold text-neutral-900"
+          >
             {t('heading')}
           </h2>
           <button
@@ -100,37 +133,22 @@ export function ShareSheet({ shareUrl, documentType, onClose }: ShareSheetProps)
         </div>
 
         <div className="px-5 pb-5 flex flex-col gap-2">
-          {/* WhatsApp — primary share option */}
+          {/* 1. WhatsApp — first and largest */}
           <button
             type="button"
             onClick={handleWhatsApp}
             className="
-              flex items-center gap-3 w-full min-h-touch px-4 rounded-2xl
-              bg-[#25D366] text-white font-medium text-sm
+              flex items-center justify-center gap-3 w-full h-14 px-4 rounded-2xl
+              bg-[#25D366] text-white font-semibold text-base
               hover:brightness-95 transition
               focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#25D366]
             "
           >
-            <WhatsAppIcon className="w-5 h-5 shrink-0" />
+            <WhatsAppIcon className="w-6 h-6 shrink-0" />
             {t('whatsapp')}
           </button>
 
-          {typeof navigator !== 'undefined' && 'share' in navigator && (
-            <button
-              type="button"
-              onClick={handleNativeShare}
-              className="
-                flex items-center gap-3 w-full min-h-touch px-4 rounded-2xl
-                border border-neutral-200 text-neutral-700 font-medium text-sm
-                hover:bg-neutral-50 transition
-                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500
-              "
-            >
-              <Share2 className="w-5 h-5 shrink-0" aria-hidden />
-              {t('more_options')}
-            </button>
-          )}
-
+          {/* 2. Copy link */}
           <button
             type="button"
             onClick={handleCopy}
@@ -148,6 +166,23 @@ export function ShareSheet({ shareUrl, documentType, onClose }: ShareSheetProps)
             )}
             {copied ? t('copied') : t('copy_link')}
           </button>
+
+          {/* 3. Native share — "More options", only where the API exists */}
+          {typeof navigator !== 'undefined' && 'share' in navigator && (
+            <button
+              type="button"
+              onClick={handleNativeShare}
+              className="
+                flex items-center gap-3 w-full min-h-touch px-4 rounded-2xl
+                border border-neutral-200 text-neutral-700 font-medium text-sm
+                hover:bg-neutral-50 transition
+                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500
+              "
+            >
+              <Share2 className="w-5 h-5 shrink-0" aria-hidden />
+              {t('more_options')}
+            </button>
+          )}
         </div>
       </div>
     </div>

@@ -248,7 +248,7 @@
     "share": {
       "heading": "مشاركة هذا التحليل",
       "close": "إغلاق",
-      "whatsapp_message": "استخدمت Clairo لفهم {type} الخاص بي. ألقِ نظرة: {url}",
+      "whatsapp_message": "“{summary}” — عقدي، بشرح Clairo: {url}",
       "share_title": "تحليل Clairo",
       "whatsapp": "مشاركة عبر واتساب",
       "more_options": "خيارات أخرى",

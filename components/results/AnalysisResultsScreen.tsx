@@ -239,7 +239,7 @@ export function AnalysisResultsScreen({
       {shareOpen && shareLink && (
         <ShareSheet
           shareUrl={shareLink.shareUrl}
-          documentType={result.document_type}
+          summary={result.summary}
           onClose={() => setShareOpen(false)}
         />
       )}

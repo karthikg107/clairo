@@ -248,7 +248,7 @@
     "share": {
       "heading": "Diese Analyse teilen",
       "close": "Schließen",
-      "whatsapp_message": "Ich habe Clairo benutzt, um meinen {type} zu verstehen. Schau mal: {url}",
+      "whatsapp_message": "„{summary}“ — mein Vertrag, erklärt von Clairo: {url}",
       "share_title": "Clairo-Analyse",
       "whatsapp": "Über WhatsApp teilen",
       "more_options": "Weitere Optionen",
