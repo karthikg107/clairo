@@ -520,5 +520,20 @@
       "terms": "AGB",
       "pricing": "Preise"
     }
+  },
+  "errorPages": {
+    "not_found": {
+      "heading": "Seite nicht gefunden",
+      "body": "Diese Seite existiert nicht — vielleicht wurde der Link falsch getippt oder verschoben. Ihr Vertrag ist aber nur einen Tipp entfernt.",
+      "upload_cta": "Vertrag analysieren",
+      "home_cta": "Zur Startseite"
+    },
+    "server_error": {
+      "heading": "Entschuldigung — etwas ist schiefgelaufen",
+      "body": "Auf unserer Seite ist ein unerwarteter Fehler aufgetreten. Bitte versuchen Sie es gleich noch einmal.",
+      "not_stored": "Ihr Dokument wurde nicht gespeichert — Clairo speichert niemals Dokumentinhalte, auch nicht bei Fehlern.",
+      "retry_cta": "Erneut versuchen",
+      "home_cta": "Zur Startseite"
+    }
   }
 }

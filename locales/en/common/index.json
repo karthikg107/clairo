@@ -516,5 +516,20 @@
       "terms": "Terms",
       "pricing": "Pricing"
     }
+  },
+  "errorPages": {
+    "not_found": {
+      "heading": "Page not found",
+      "body": "That page doesn't exist — maybe the link was mistyped or has moved. Your contract is one tap away, though.",
+      "upload_cta": "Analyse a contract",
+      "home_cta": "Go home"
+    },
+    "server_error": {
+      "heading": "Sorry — something went wrong",
+      "body": "An unexpected error happened on our side. Please try again in a moment.",
+      "not_stored": "Your document was not stored — Clairo never keeps document content, including when errors happen.",
+      "retry_cta": "Try again",
+      "home_cta": "Go home"
+    }
   }
 }

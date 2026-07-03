@@ -528,5 +528,20 @@
       "terms": "Conditions",
       "pricing": "Tarifs"
     }
+  },
+  "errorPages": {
+    "not_found": {
+      "heading": "Page introuvable",
+      "body": "Cette page n'existe pas — le lien a peut-être été mal saisi ou déplacé. Votre contrat n'est pourtant qu'à un geste.",
+      "upload_cta": "Analyser un contrat",
+      "home_cta": "Retour à l'accueil"
+    },
+    "server_error": {
+      "heading": "Désolé — une erreur est survenue",
+      "body": "Une erreur inattendue s'est produite de notre côté. Veuillez réessayer dans un instant.",
+      "not_stored": "Votre document n'a pas été conservé — Clairo ne garde jamais le contenu des documents, même en cas d'erreur.",
+      "retry_cta": "Réessayer",
+      "home_cta": "Retour à l'accueil"
+    }
   }
 }

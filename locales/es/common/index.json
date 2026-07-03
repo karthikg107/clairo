@@ -524,5 +524,20 @@
       "terms": "Términos",
       "pricing": "Precios"
     }
+  },
+  "errorPages": {
+    "not_found": {
+      "heading": "Página no encontrada",
+      "body": "Esa página no existe — quizá el enlace está mal escrito o se ha movido. Pero tu contrato está a un toque de distancia.",
+      "upload_cta": "Analizar un contrato",
+      "home_cta": "Ir al inicio"
+    },
+    "server_error": {
+      "heading": "Lo sentimos — algo salió mal",
+      "body": "Ocurrió un error inesperado de nuestro lado. Inténtalo de nuevo en un momento.",
+      "not_stored": "Tu documento no se guardó — Clairo nunca conserva el contenido de los documentos, tampoco cuando hay errores.",
+      "retry_cta": "Reintentar",
+      "home_cta": "Ir al inicio"
+    }
   }
 }
