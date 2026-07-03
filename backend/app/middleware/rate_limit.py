@@ -38,6 +38,7 @@ _ENDPOINT_KEYS: list[tuple[str, str]] = [
     ("/api/v1/upload", "upload"),
     ("/api/v1/auth",   "auth"),
     ("/api/v1/sign",   "auth"),   # Clerk webhook paths
+    ("/api/v1/shared", "share_view"),  # public shared-analysis reads (CLR-041)
 ]
 
 

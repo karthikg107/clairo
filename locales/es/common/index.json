@@ -253,7 +253,8 @@
       "whatsapp": "Compartir vía WhatsApp",
       "more_options": "Más opciones",
       "copy_link": "Copiar enlace",
-      "copied": "Enlace copiado"
+      "copied": "Enlace copiado",
+      "link_error": "No se pudo crear el enlace para compartir. Inténtalo de nuevo."
     },
     "professional": {
       "heading": "¿Quiere una segunda opinión?",

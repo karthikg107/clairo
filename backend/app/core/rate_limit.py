@@ -59,6 +59,14 @@ _ENDPOINT_HOURLY_LIMITS: dict[str, tuple[int, int]] = {
     "upload":  (3, 20),
     "auth":    (10, 10),
     "default": (3, 20),
+    # CLR-041 — public shared-analysis reads. Two planes:
+    #   share_view — per-IP ceiling (middleware), generous enough for a
+    #                human re-reading a shared page, tight enough to slow
+    #                single-IP scraping.
+    #   share_link — 100 views/hour PER LINK (checked in the endpoint,
+    #                keyed by share id), the CLR-041 spec limit.
+    "share_view": (30, 30),
+    "share_link": (100, 100),
 }
 
 _SENTRY_ALERT_THRESHOLD = 50

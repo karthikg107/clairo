@@ -15,8 +15,9 @@
 
 import { useEffect, useRef, useState, useCallback } from 'react'
 import { useTranslations } from 'next-intl'
-import { Share2 } from 'lucide-react'
+import { Share2, Loader2 } from 'lucide-react'
 import { LegalDisclaimer } from '@/components/ui/LegalDisclaimer'
+import { useShareLink } from '@/hooks/useShareLink'
 import { ClauseCard } from './ClauseCard'
 import { ShareSheet } from './ShareSheet'
 import { FindProfessionalCard } from './FindProfessionalCard'
@@ -32,7 +33,12 @@ interface AnalysisResultsScreenProps {
   result: AnalysisResult
   docLanguageName: string
   outputLanguageName: string
-  shareUrl: string
+  /**
+   * CLR-041 — id of the persisted analysis (AnalyseResponse.analysis_id).
+   * Null for anonymous users: nothing is persisted for them, so there is
+   * nothing to link to and the share button is hidden.
+   */
+  analysisId: string | null
   /** ISO 3166-1 alpha-2 country code selected during language selection (CLR-014) — used to resolve the CLR-037 professional referral */
   country: string
   isFreeTier: boolean
@@ -43,7 +49,7 @@ export function AnalysisResultsScreen({
   result,
   docLanguageName,
   outputLanguageName,
-  shareUrl,
+  analysisId,
   country,
   isFreeTier,
   onUpgrade,
@@ -54,6 +60,12 @@ export function AnalysisResultsScreen({
     result.clauses[0]?.id ?? null
   )
   const [shareOpen, setShareOpen] = useState(false)
+  const {
+    shareLink,
+    creating: creatingShareLink,
+    error: shareLinkError,
+    createShareLink,
+  } = useShareLink()
   const [activeNumber, setActiveNumber] = useState<{
     number: ClauseNumber
     clauseTitle: string
@@ -105,6 +117,22 @@ export function AnalysisResultsScreen({
     setActiveNumber({ number, clauseTitle })
   }, [])
 
+  // CLR-041 — the link is generated on first tap (the backend reuses an
+  // existing active link on subsequent taps), then the sheet opens.
+  const handleShare = useCallback(async () => {
+    if (!analysisId || creatingShareLink) return
+    if (shareLink) {
+      setShareOpen(true)
+      return
+    }
+    try {
+      await createShareLink(analysisId)
+      setShareOpen(true)
+    } catch {
+      // shareLinkError is surfaced by the hook and rendered below the header
+    }
+  }, [analysisId, creatingShareLink, shareLink, createShareLink])
+
   const protectiveCount = result.protective_clause_count
   const reviewCount = result.review_clause_count
 
@@ -123,19 +151,32 @@ export function AnalysisResultsScreen({
               {t('language_pair', { from: docLanguageName, to: outputLanguageName })}
             </p>
           </div>
-          <button
-            type="button"
-            onClick={() => setShareOpen(true)}
-            aria-label={t('share_aria')}
-            className="
-              shrink-0 w-11 h-11 rounded-full flex items-center justify-center
-              text-brand-700 hover:bg-brand-50 transition-colors
-              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500
-            "
-          >
-            <Share2 className="w-5 h-5" aria-hidden />
-          </button>
+          {analysisId && (
+            <button
+              type="button"
+              onClick={handleShare}
+              disabled={creatingShareLink}
+              aria-label={t('share_aria')}
+              className="
+                shrink-0 w-11 h-11 rounded-full flex items-center justify-center
+                text-brand-700 hover:bg-brand-50 transition-colors
+                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500
+                disabled:opacity-50
+              "
+            >
+              {creatingShareLink ? (
+                <Loader2 className="w-5 h-5 animate-spin" aria-hidden />
+              ) : (
+                <Share2 className="w-5 h-5" aria-hidden />
+              )}
+            </button>
+          )}
         </div>
+        {shareLinkError && (
+          <p className="max-w-2xl mx-auto text-xs text-danger-600 mt-1" role="alert">
+            {t('share.link_error')}
+          </p>
+        )}
       </header>
 
       {/* Permanent, non-dismissable legal disclaimer */}
@@ -195,9 +236,9 @@ export function AnalysisResultsScreen({
         />
       )}
 
-      {shareOpen && (
+      {shareOpen && shareLink && (
         <ShareSheet
-          shareUrl={shareUrl}
+          shareUrl={shareLink.shareUrl}
           documentType={result.document_type}
           onClose={() => setShareOpen(false)}
         />

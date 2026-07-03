@@ -253,7 +253,8 @@
       "whatsapp": "Share via WhatsApp",
       "more_options": "More options",
       "copy_link": "Copy link",
-      "copied": "Link copied"
+      "copied": "Link copied",
+      "link_error": "Couldn't create a share link. Please try again."
     },
     "professional": {
       "heading": "Want a second opinion?",

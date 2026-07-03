@@ -69,7 +69,7 @@ async def _persist_analysis(
     doc_language: str,
     output_language: str,
     result: AnalysisResult,
-) -> None:
+) -> str | None:
     """
     CLR-023 — best-effort save for the dashboard history list. Never blocks
     or fails the caller's response.
@@ -79,26 +79,32 @@ async def _persist_analysis(
     result_json stores the same validated Claude JSON already returned to
     the caller (document_type, summary, clauses, counts) — never
     verified_text or any other raw document content.
+
+    CLR-041 — returns the new row's id (None for anonymous users or on
+    failure) so the share button can generate a link for this analysis.
     """
     if not clerk_id:
-        return
+        return None
     try:
         factory = get_session_factory()
         async with factory() as session:
             user_result = await session.execute(select(User).where(User.clerk_id == clerk_id))
             user = user_result.scalar_one_or_none()
             if user is None:
-                return
-            session.add(Analysis(
+                return None
+            analysis = Analysis(
                 user_id=user.id,
                 document_type=DocumentType(document_type),
                 doc_language=doc_language,
                 output_language=output_language,
                 result_json=result.raw,
-            ))
+            )
+            session.add(analysis)
             await session.commit()
+            return str(analysis.id)
     except Exception as exc:
         logger.warning("analyse.persist_failed", error=str(exc))
+        return None
 
 
 class AnalyseRequest(BaseModel):
@@ -126,6 +132,9 @@ class AnalyseResponse(BaseModel):
     protective_clause_count: int
     review_clause_count: int
     quota: QuotaResponse
+    # CLR-041 — id of the persisted analysis, used by the share button to
+    # generate a share link. None for anonymous users (nothing persisted).
+    analysis_id: str | None = None
 
 
 @router.post(
@@ -212,7 +221,7 @@ async def analyse_endpoint(body: AnalyseRequest, request: Request) -> AnalyseRes
         await consume_quota(clerk_id=clerk_id, anonymous_id=anonymous_id, ip=ip)
         quota = await check_quota(clerk_id=clerk_id, anonymous_id=anonymous_id, ip=ip)
 
-    await _persist_analysis(
+    analysis_id = await _persist_analysis(
         clerk_id=clerk_id,
         document_type=body.document_type,
         doc_language=body.doc_language,
@@ -226,6 +235,7 @@ async def analyse_endpoint(body: AnalyseRequest, request: Request) -> AnalyseRes
         clauses=result.clauses,
         protective_clause_count=result.protective_clause_count,
         review_clause_count=result.review_clause_count,
+        analysis_id=analysis_id,
         quota=QuotaResponse(
             allowed=quota.allowed,
             is_free_tier=quota.is_free_tier,

@@ -253,7 +253,8 @@
       "whatsapp": "Über WhatsApp teilen",
       "more_options": "Weitere Optionen",
       "copy_link": "Link kopieren",
-      "copied": "Link kopiert"
+      "copied": "Link kopiert",
+      "link_error": "Freigabelink konnte nicht erstellt werden. Bitte erneut versuchen."
     },
     "professional": {
       "heading": "Zweite Meinung gewünscht?",

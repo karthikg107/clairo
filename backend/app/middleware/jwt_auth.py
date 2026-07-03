@@ -42,6 +42,9 @@ _PUBLIC_PREFIXES = (
     # Authenticity is verified separately via the Stripe webhook signature
     # (CLR-026, app/services/billing.py:verify_webhook_signature).
     "/api/v1/billing/webhook",
+    # Public shared-analysis reads (CLR-041) — recipients have no account.
+    # ONLY the read path: /api/v1/share-links (create/revoke) stays auth'd.
+    "/api/v1/shared/",
 )
 
 _JWKS_TTL_SECONDS = 3600  # refresh JWKS every hour
