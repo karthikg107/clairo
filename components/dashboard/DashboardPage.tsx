@@ -13,6 +13,7 @@ import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 import { useTranslations, useFormatter } from 'next-intl'
 import { Search, Upload, Sparkles, CheckCircle2, X } from 'lucide-react'
 import { useAnalysisHistory, type AnalysisHistoryItem } from '@/hooks/useAnalysisHistory'
+import { track } from '@/lib/analytics'
 import { useQuota } from '@/hooks/useQuota'
 import { DOCUMENT_LANGUAGES } from '@/components/forms/LanguageSelection'
 import {
@@ -44,6 +45,8 @@ export function DashboardPage() {
   useEffect(() => {
     if (searchParams.get('upgraded') === 'true') {
       setShowUpgradedBanner(true)
+      // CLR-045 — checkout and in-place tier changes both land here.
+      track('upgrade_completed')
       router.replace(pathname)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

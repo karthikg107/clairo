@@ -443,5 +443,11 @@
       "body": "Shared analyses expire after 30 days, or the person who shared this may have removed it. You can analyse your own contract in minutes.",
       "cta": "Analyse your contract"
     }
+  },
+  "consentBanner": {
+    "aria_label": "Cookie consent",
+    "body": "We use privacy-friendly analytics to understand how Clairo is used — anonymous only, never your documents. Analytics runs only if you accept.",
+    "accept": "Accept",
+    "decline": "Decline"
   }
 }

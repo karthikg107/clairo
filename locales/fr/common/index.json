@@ -455,5 +455,11 @@
       "body": "Les analyses partagées expirent après 30 jours, ou la personne qui l'a partagée l'a peut-être supprimée. Vous pouvez analyser votre propre contrat en quelques minutes.",
       "cta": "Analyser votre contrat"
     }
+  },
+  "consentBanner": {
+    "aria_label": "Consentement aux cookies",
+    "body": "Nous utilisons des analyses respectueuses de la vie privée pour comprendre l'utilisation de Clairo — anonymes uniquement, jamais vos documents. Les analyses ne démarrent que si vous acceptez.",
+    "accept": "Accepter",
+    "decline": "Refuser"
   }
 }

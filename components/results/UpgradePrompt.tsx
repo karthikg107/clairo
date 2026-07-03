@@ -8,8 +8,10 @@
  * IntersectionObserver-based `seenClauseCount` tracking.
  */
 
+import { useEffect } from 'react'
 import { useTranslations } from 'next-intl'
 import { X, Sparkles } from 'lucide-react'
+import { track } from '@/lib/analytics'
 
 interface UpgradePromptProps {
   onUpgrade: () => void
@@ -18,6 +20,11 @@ interface UpgradePromptProps {
 
 export function UpgradePrompt({ onUpgrade, onDismiss }: UpgradePromptProps) {
   const t = useTranslations('results.upgrade')
+
+  // CLR-045 — the upgrade prompt became visible to an engaged reader.
+  useEffect(() => {
+    track('upgrade_prompted')
+  }, [])
 
   return (
     <div

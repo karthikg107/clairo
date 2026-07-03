@@ -447,5 +447,11 @@
       "body": "Geteilte Analysen laufen nach 30 Tagen ab, oder die Person, die dies geteilt hat, hat es entfernt. Sie können Ihren eigenen Vertrag in wenigen Minuten analysieren.",
       "cta": "Vertrag analysieren"
     }
+  },
+  "consentBanner": {
+    "aria_label": "Cookie-Einwilligung",
+    "body": "Wir verwenden datenschutzfreundliche Analysen, um zu verstehen, wie Clairo genutzt wird — nur anonym, niemals Ihre Dokumente. Analysen laufen nur, wenn Sie zustimmen.",
+    "accept": "Akzeptieren",
+    "decline": "Ablehnen"
   }
 }

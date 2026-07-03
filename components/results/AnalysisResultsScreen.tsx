@@ -18,6 +18,7 @@ import { useTranslations } from 'next-intl'
 import { Share2, Loader2 } from 'lucide-react'
 import { LegalDisclaimer } from '@/components/ui/LegalDisclaimer'
 import { useShareLink } from '@/hooks/useShareLink'
+import { track } from '@/lib/analytics'
 import { ClauseCard } from './ClauseCard'
 import { ShareSheet } from './ShareSheet'
 import { FindProfessionalCard } from './FindProfessionalCard'
@@ -75,6 +76,15 @@ export function AnalysisResultsScreen({
 
   const clauseRefs = useRef<Map<string, HTMLDivElement>>(new Map())
 
+  // CLR-045 — results delivered. Metadata only: type + clause count.
+  useEffect(() => {
+    track('analysis_completed', {
+      document_type: result.document_type,
+      clause_count: result.clauses.length,
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   // Track which clause cards have scrolled into view, to gate the upgrade prompt.
   useEffect(() => {
     if (!isFreeTier) return
@@ -127,11 +137,13 @@ export function AnalysisResultsScreen({
     }
     try {
       await createShareLink(analysisId)
+      // CLR-045 — a share link was generated (no ids or content tracked).
+      track('analysis_shared', { document_type: result.document_type })
       setShareOpen(true)
     } catch {
       // shareLinkError is surfaced by the hook and rendered below the header
     }
-  }, [analysisId, creatingShareLink, shareLink, createShareLink])
+  }, [analysisId, creatingShareLink, shareLink, createShareLink, result.document_type])
 
   const protectiveCount = result.protective_clause_count
   const reviewCount = result.review_clause_count

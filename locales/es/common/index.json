@@ -451,5 +451,11 @@
       "body": "Los análisis compartidos caducan a los 30 días, o quien lo compartió puede haberlo eliminado. Puedes analizar tu propio contrato en minutos.",
       "cta": "Analiza tu contrato"
     }
+  },
+  "consentBanner": {
+    "aria_label": "Consentimiento de cookies",
+    "body": "Usamos analíticas respetuosas con la privacidad para entender cómo se usa Clairo — solo de forma anónima, nunca tus documentos. Las analíticas se activan solo si aceptas.",
+    "accept": "Aceptar",
+    "decline": "Rechazar"
   }
 }

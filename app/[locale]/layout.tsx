@@ -7,6 +7,7 @@ import { notFound } from 'next/navigation'
 import { locales, rtlLocales, type Locale } from '@/middleware'
 import { cn } from '@/lib/utils'
 import { ReferralClaimer } from '@/components/referrals/ReferralClaimer'
+import { AnalyticsProvider } from '@/components/analytics/AnalyticsProvider'
 import '../globals.css'
 
 const inter = Inter({
@@ -66,6 +67,8 @@ export default async function LocaleLayout({
           <NextIntlClientProvider messages={messages}>
             {/* CLR-044 — claims a stored referral once signed in; renders nothing */}
             <ReferralClaimer />
+            {/* CLR-045 — consent-gated analytics + cookie banner */}
+            <AnalyticsProvider />
             {children}
           </NextIntlClientProvider>
         </body>
