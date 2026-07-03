@@ -370,6 +370,37 @@
     "email_label": "E-mail",
     "plan_label": "Forfait",
     "member_since_label": "Membre depuis",
+    "subscription": {
+      "heading": "Abonnement",
+      "plan_label": "Forfait actuel",
+      "renews_label": "Se renouvelle le",
+      "pending_cancellation_with_date": "Votre abonnement prendra fin le {date}. Vous conservez un accès complet jusque-là.",
+      "pending_cancellation": "Votre abonnement prendra fin à l'issue de la période de facturation en cours. Vous conservez un accès complet jusque-là.",
+      "reactivate_cta": "Réactiver l'abonnement",
+      "cancel_cta": "Résilier l'abonnement",
+      "view_plans_cta": "Voir les forfaits",
+      "cancel_dialog": {
+        "heading": "Résilier l'abonnement ?",
+        "body_with_date": "Votre forfait reste actif jusqu'au {date} — vous avez déjà payé cette période, vous conservez donc un accès complet jusque-là. Ensuite, vous passerez au forfait gratuit. Vous pouvez réactiver à tout moment avant cette date.",
+        "body": "Votre forfait reste actif jusqu'à la fin de la période de facturation en cours — vous conservez un accès complet jusque-là. Ensuite, vous passerez au forfait gratuit. Vous pouvez réactiver à tout moment avant cette date.",
+        "keep": "Conserver l'abonnement",
+        "confirm_cta": "Résilier l'abonnement",
+        "cancelling": "Résiliation…",
+        "close": "Fermer"
+      },
+      "billing_history": {
+        "heading": "Historique de facturation",
+        "download_aria": "Télécharger la facture du {date} (PDF)",
+        "view_aria": "Voir la facture du {date}",
+        "status": {
+          "paid": "Payée",
+          "open": "En attente",
+          "void": "Annulée",
+          "uncollectible": "Irrécouvrable",
+          "draft": "Brouillon"
+        }
+      }
+    },
     "language_preferences": {
       "heading": "Préférences linguistiques",
       "doc_language_label": "Langue du document",

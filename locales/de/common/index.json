@@ -362,6 +362,37 @@
     "email_label": "E-Mail",
     "plan_label": "Plan",
     "member_since_label": "Mitglied seit",
+    "subscription": {
+      "heading": "Abonnement",
+      "plan_label": "Aktueller Tarif",
+      "renews_label": "Verlängert sich am",
+      "pending_cancellation_with_date": "Ihr Abo endet am {date}. Bis dahin behalten Sie vollen Zugriff.",
+      "pending_cancellation": "Ihr Abo endet zum Ende des aktuellen Abrechnungszeitraums. Bis dahin behalten Sie vollen Zugriff.",
+      "reactivate_cta": "Abo reaktivieren",
+      "cancel_cta": "Abo kündigen",
+      "view_plans_cta": "Tarife ansehen",
+      "cancel_dialog": {
+        "heading": "Abo kündigen?",
+        "body_with_date": "Ihr Tarif bleibt bis zum {date} aktiv — Sie haben diesen Zeitraum bereits bezahlt und behalten bis dahin vollen Zugriff. Danach wechseln Sie in den kostenlosen Tarif. Sie können bis zu diesem Datum jederzeit reaktivieren.",
+        "body": "Ihr Tarif bleibt bis zum Ende des aktuellen Abrechnungszeitraums aktiv — bis dahin behalten Sie vollen Zugriff. Danach wechseln Sie in den kostenlosen Tarif. Sie können bis dahin jederzeit reaktivieren.",
+        "keep": "Abo behalten",
+        "confirm_cta": "Abo kündigen",
+        "cancelling": "Wird gekündigt…",
+        "close": "Schließen"
+      },
+      "billing_history": {
+        "heading": "Rechnungsverlauf",
+        "download_aria": "Rechnung vom {date} herunterladen (PDF)",
+        "view_aria": "Rechnung vom {date} ansehen",
+        "status": {
+          "paid": "Bezahlt",
+          "open": "Offen",
+          "void": "Storniert",
+          "uncollectible": "Uneinbringlich",
+          "draft": "Entwurf"
+        }
+      }
+    },
     "language_preferences": {
       "heading": "Spracheinstellungen",
       "doc_language_label": "Dokumentsprache",

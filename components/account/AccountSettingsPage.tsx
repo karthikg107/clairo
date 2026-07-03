@@ -22,6 +22,7 @@ import {
   EXPLANATION_LANGUAGES,
 } from '@/components/forms/LanguageSelection'
 import { DeleteAccountDialog } from './DeleteAccountDialog'
+import { SubscriptionSection } from './SubscriptionSection'
 
 export function AccountSettingsPage() {
   const t = useTranslations('account')
@@ -128,6 +129,9 @@ export function AccountSettingsPage() {
             </div>
           </dl>
         </section>
+
+        {/* Subscription management (CLR-029) */}
+        <SubscriptionSection />
 
         {/* Language preferences */}
         <section className="rounded-2xl border border-neutral-200 bg-white p-5">

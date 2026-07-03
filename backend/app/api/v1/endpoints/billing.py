@@ -30,9 +30,12 @@ from app.models.subscription import BillingInterval, Subscription, SubscriptionS
 from app.services.billing import (
     TIER_PRICING,
     BillingError,
+    cancel_subscription,
     change_subscription_tier,
     create_checkout_session,
     dispatch_webhook_event,
+    list_invoices,
+    reactivate_subscription,
     verify_webhook_signature,
 )
 
@@ -133,6 +136,28 @@ class SubscriptionResponse(BaseModel):
     tier: str
     status: str
     billing_interval: str | None
+    current_period_end: str | None = None
+    cancel_at_period_end: bool = False
+
+
+def _subscription_response(subscription: Subscription | None) -> SubscriptionResponse:
+    if subscription is None:
+        return SubscriptionResponse(tier="free", status="active", billing_interval=None)
+
+    interval = subscription.billing_interval
+    return SubscriptionResponse(
+        tier=subscription.tier.value,
+        status=subscription.status.value,
+        billing_interval=interval.value if interval else None,
+        current_period_end=(
+            subscription.current_period_end.isoformat()
+            if subscription.current_period_end
+            else None
+        ),
+        # bool() because the column default is applied at flush time — an
+        # unflushed/detached instance can still carry None here.
+        cancel_at_period_end=bool(subscription.cancel_at_period_end),
+    )
 
 
 @router.get("/subscription", response_model=SubscriptionResponse)
@@ -142,16 +167,88 @@ async def subscription_endpoint(
     user = await require_user(request, db)
     result = await db.execute(select(Subscription).where(Subscription.user_id == user.id))
     subscription = result.scalar_one_or_none()
+    return _subscription_response(subscription)
 
-    if subscription is None:
-        return SubscriptionResponse(tier="free", status="active", billing_interval=None)
 
-    interval = subscription.billing_interval
-    return SubscriptionResponse(
-        tier=subscription.tier.value,
-        status=subscription.status.value,
-        billing_interval=interval.value if interval else None,
-    )
+@router.post("/cancel", response_model=SubscriptionResponse)
+async def cancel_subscription_endpoint(
+    request: Request, db: AsyncSession = Depends(get_db)
+) -> SubscriptionResponse:
+    """CLR-029 — Schedules cancellation at period end; access continues until then."""
+    user = await require_user(request, db)
+    result = await db.execute(select(Subscription).where(Subscription.user_id == user.id))
+    existing = result.scalar_one_or_none()
+
+    try:
+        subscription = await cancel_subscription(db, user=user, existing_subscription=existing)
+    except BillingError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail={"error": "cancel_failed", "message": str(exc)},
+        )
+    return _subscription_response(subscription)
+
+
+@router.post("/reactivate", response_model=SubscriptionResponse)
+async def reactivate_subscription_endpoint(
+    request: Request, db: AsyncSession = Depends(get_db)
+) -> SubscriptionResponse:
+    """CLR-029 — Undoes a pending cancellation before the current period ends."""
+    user = await require_user(request, db)
+    result = await db.execute(select(Subscription).where(Subscription.user_id == user.id))
+    existing = result.scalar_one_or_none()
+
+    try:
+        subscription = await reactivate_subscription(
+            db, user=user, existing_subscription=existing
+        )
+    except BillingError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail={"error": "reactivate_failed", "message": str(exc)},
+        )
+    return _subscription_response(subscription)
+
+
+class InvoiceResponse(BaseModel):
+    id: str
+    status: str
+    amount_paid: str
+    currency: str
+    created_at: str
+    hosted_invoice_url: str | None
+    invoice_pdf: str | None
+
+
+@router.get("/invoices", response_model=list[InvoiceResponse])
+async def invoices_endpoint(
+    request: Request, db: AsyncSession = Depends(get_db)
+) -> list[InvoiceResponse]:
+    """CLR-029 — Billing history with links to Stripe-hosted downloadable invoices."""
+    user = await require_user(request, db)
+    result = await db.execute(select(Subscription).where(Subscription.user_id == user.id))
+    existing = result.scalar_one_or_none()
+
+    try:
+        invoices = await list_invoices(db, user=user, existing_subscription=existing)
+    except BillingError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_502_BAD_GATEWAY,
+            detail={"error": "invoices_failed", "message": str(exc)},
+        )
+
+    return [
+        InvoiceResponse(
+            id=invoice.id,
+            status=invoice.status,
+            amount_paid=str(invoice.amount_paid),
+            currency=invoice.currency,
+            created_at=invoice.created_at.isoformat(),
+            hosted_invoice_url=invoice.hosted_invoice_url,
+            invoice_pdf=invoice.invoice_pdf,
+        )
+        for invoice in invoices
+    ]
 
 
 @router.post("/webhook", status_code=status.HTTP_204_NO_CONTENT)

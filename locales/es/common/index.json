@@ -366,6 +366,37 @@
     "email_label": "Correo electrónico",
     "plan_label": "Plan",
     "member_since_label": "Miembro desde",
+    "subscription": {
+      "heading": "Suscripción",
+      "plan_label": "Plan actual",
+      "renews_label": "Se renueva el",
+      "pending_cancellation_with_date": "Tu suscripción se cancelará el {date}. Mantienes acceso completo hasta entonces.",
+      "pending_cancellation": "Tu suscripción se cancelará al final del período de facturación actual. Mantienes acceso completo hasta entonces.",
+      "reactivate_cta": "Reactivar suscripción",
+      "cancel_cta": "Cancelar suscripción",
+      "view_plans_cta": "Ver planes",
+      "cancel_dialog": {
+        "heading": "¿Cancelar suscripción?",
+        "body_with_date": "Tu plan sigue activo hasta el {date} — ya pagaste este período, así que mantienes acceso completo hasta entonces. Después pasarás al plan gratuito. Puedes reactivar en cualquier momento antes de esa fecha.",
+        "body": "Tu plan sigue activo hasta el final del período de facturación actual — mantienes acceso completo hasta entonces. Después pasarás al plan gratuito. Puedes reactivar en cualquier momento antes de esa fecha.",
+        "keep": "Mantener suscripción",
+        "confirm_cta": "Cancelar suscripción",
+        "cancelling": "Cancelando…",
+        "close": "Cerrar"
+      },
+      "billing_history": {
+        "heading": "Historial de facturación",
+        "download_aria": "Descargar factura del {date} (PDF)",
+        "view_aria": "Ver factura del {date}",
+        "status": {
+          "paid": "Pagada",
+          "open": "Pendiente",
+          "void": "Anulada",
+          "uncollectible": "Incobrable",
+          "draft": "Borrador"
+        }
+      }
+    },
     "language_preferences": {
       "heading": "Preferencias de idioma",
       "doc_language_label": "Idioma del documento",

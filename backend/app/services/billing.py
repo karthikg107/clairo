@@ -284,6 +284,149 @@ async def change_subscription_tier(
     logger.info("billing.tier_changed", tier=tier.value, interval=interval.value)
 
 
+async def cancel_subscription(
+    db: AsyncSession,
+    *,
+    user: User,
+    existing_subscription: Subscription | None = None,
+) -> Subscription:
+    """
+    CLR-029 — Schedules cancellation at the end of the current billing
+    period (Stripe's cancel_at_period_end=True) rather than cancelling
+    immediately, so the user keeps access through what they already paid
+    for. The actual tier/status revert to free happens later, when Stripe
+    sends customer.subscription.deleted at period end (see
+    handle_subscription_deleted).
+    """
+    if existing_subscription is not None:
+        subscription = existing_subscription
+    else:
+        result = await db.execute(select(Subscription).where(Subscription.user_id == user.id))
+        subscription = result.scalar_one_or_none()
+
+    if subscription is None or not subscription.stripe_subscription_id:
+        raise BillingError("No active subscription to cancel")
+
+    secrets = _stripe_secrets()
+    api_key = secrets.get("secret_key", "")
+    if not api_key:
+        raise BillingError("Stripe secret key not configured")
+
+    try:
+        stripe.Subscription.modify(
+            subscription.stripe_subscription_id,
+            cancel_at_period_end=True,
+            api_key=api_key,
+        )
+    except stripe.StripeError as exc:
+        logger.error("billing.cancel_failed", error=str(exc))
+        raise BillingError("Could not cancel subscription") from exc
+
+    subscription.cancel_at_period_end = True
+    await db.commit()
+    logger.info("billing.subscription_cancel_scheduled", user_id=str(user.id))
+    return subscription
+
+
+async def reactivate_subscription(
+    db: AsyncSession,
+    *,
+    user: User,
+    existing_subscription: Subscription | None = None,
+) -> Subscription:
+    """
+    CLR-029 — Undoes a pending cancel_at_period_end before the current
+    period ends. Only meaningful while the subscription is still active
+    (Stripe rejects this once the subscription has actually been deleted).
+    """
+    if existing_subscription is not None:
+        subscription = existing_subscription
+    else:
+        result = await db.execute(select(Subscription).where(Subscription.user_id == user.id))
+        subscription = result.scalar_one_or_none()
+
+    if subscription is None or not subscription.stripe_subscription_id:
+        raise BillingError("No subscription to reactivate")
+
+    if not subscription.cancel_at_period_end:
+        raise BillingError("Subscription is not scheduled for cancellation")
+
+    secrets = _stripe_secrets()
+    api_key = secrets.get("secret_key", "")
+    if not api_key:
+        raise BillingError("Stripe secret key not configured")
+
+    try:
+        stripe.Subscription.modify(
+            subscription.stripe_subscription_id,
+            cancel_at_period_end=False,
+            api_key=api_key,
+        )
+    except stripe.StripeError as exc:
+        logger.error("billing.reactivate_failed", error=str(exc))
+        raise BillingError("Could not reactivate subscription") from exc
+
+    subscription.cancel_at_period_end = False
+    await db.commit()
+    logger.info("billing.subscription_reactivated", user_id=str(user.id))
+    return subscription
+
+
+@dataclass(frozen=True)
+class InvoiceSummary:
+    id: str
+    status: str
+    amount_paid: Decimal
+    currency: str
+    created_at: datetime
+    hosted_invoice_url: str | None
+    invoice_pdf: str | None
+
+
+async def list_invoices(
+    db: AsyncSession,
+    *,
+    user: User,
+    existing_subscription: Subscription | None = None,
+    limit: int = 24,
+) -> list[InvoiceSummary]:
+    """CLR-029 — Billing history for the account settings / billing page."""
+    if existing_subscription is not None:
+        subscription = existing_subscription
+    else:
+        result = await db.execute(select(Subscription).where(Subscription.user_id == user.id))
+        subscription = result.scalar_one_or_none()
+
+    if subscription is None or not subscription.stripe_customer_id:
+        return []
+
+    secrets = _stripe_secrets()
+    api_key = secrets.get("secret_key", "")
+    if not api_key:
+        raise BillingError("Stripe secret key not configured")
+
+    try:
+        invoices = stripe.Invoice.list(
+            customer=subscription.stripe_customer_id, limit=limit, api_key=api_key
+        )
+    except stripe.StripeError as exc:
+        logger.error("billing.list_invoices_failed", error=str(exc))
+        raise BillingError("Could not fetch billing history") from exc
+
+    return [
+        InvoiceSummary(
+            id=invoice["id"],
+            status=invoice.get("status") or "unknown",
+            amount_paid=Decimal(invoice.get("amount_paid", 0)) / 100,
+            currency=(invoice.get("currency") or "usd").upper(),
+            created_at=datetime.fromtimestamp(invoice["created"], tz=UTC),
+            hosted_invoice_url=invoice.get("hosted_invoice_url"),
+            invoice_pdf=invoice.get("invoice_pdf"),
+        )
+        for invoice in invoices.get("data", [])
+    ]
+
+
 # ── Webhook event handling ─────────────────────────────────────────────────────
 
 def verify_webhook_signature(payload: bytes, sig_header: str) -> dict[str, Any]:
@@ -450,6 +593,8 @@ async def handle_subscription_updated(db: AsyncSession, event_data: dict[str, An
     if period_end is not None:
         subscription.current_period_end = period_end
 
+    subscription.cancel_at_period_end = bool(stripe_sub.get("cancel_at_period_end", False))
+
     await db.commit()
     logger.info("billing.subscription_updated", subscription_id=stripe_subscription_id)
 
@@ -469,6 +614,7 @@ async def handle_subscription_deleted(db: AsyncSession, event_data: dict[str, An
     subscription.status = SubscriptionStatus.canceled
     subscription.tier = SubscriptionTier.free
     subscription.billing_interval = None
+    subscription.cancel_at_period_end = False
     await db.commit()
     logger.info("billing.subscription_deleted", subscription_id=stripe_subscription_id)
 

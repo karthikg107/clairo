@@ -358,6 +358,37 @@
     "email_label": "Email",
     "plan_label": "Plan",
     "member_since_label": "Member since",
+    "subscription": {
+      "heading": "Subscription",
+      "plan_label": "Current plan",
+      "renews_label": "Renews on",
+      "pending_cancellation_with_date": "Your subscription is set to cancel on {date}. You keep full access until then.",
+      "pending_cancellation": "Your subscription is set to cancel at the end of the current billing period. You keep full access until then.",
+      "reactivate_cta": "Reactivate subscription",
+      "cancel_cta": "Cancel subscription",
+      "view_plans_cta": "View plans",
+      "cancel_dialog": {
+        "heading": "Cancel subscription?",
+        "body_with_date": "Your plan stays active until {date} — you've already paid for this period, so you keep full access until then. After that you'll move to the free plan. You can reactivate any time before that date.",
+        "body": "Your plan stays active until the end of the current billing period — you keep full access until then. After that you'll move to the free plan. You can reactivate any time before then.",
+        "keep": "Keep subscription",
+        "confirm_cta": "Cancel subscription",
+        "cancelling": "Cancelling…",
+        "close": "Close"
+      },
+      "billing_history": {
+        "heading": "Billing history",
+        "download_aria": "Download invoice from {date} (PDF)",
+        "view_aria": "View invoice from {date}",
+        "status": {
+          "paid": "Paid",
+          "open": "Open",
+          "void": "Void",
+          "uncollectible": "Uncollectible",
+          "draft": "Draft"
+        }
+      }
+    },
     "language_preferences": {
       "heading": "Language preferences",
       "doc_language_label": "Document language",

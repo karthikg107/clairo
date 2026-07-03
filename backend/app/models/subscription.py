@@ -3,7 +3,7 @@ import enum
 import uuid
 from datetime import datetime
 
-from sqlalchemy import DateTime, Enum, ForeignKey, String
+from sqlalchemy import Boolean, DateTime, Enum, ForeignKey, String
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -55,6 +55,12 @@ class Subscription(Base, UUIDPrimaryKeyMixin, TimestampMixin):
     stripe_subscription_id: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)
     current_period_end: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True), nullable=True
+    )
+    # CLR-029 — set via Stripe's cancel_at_period_end; the subscription stays
+    # active (and the user keeps access) until current_period_end, at which
+    # point the customer.subscription.deleted webhook finalizes the cancellation.
+    cancel_at_period_end: Mapped[bool] = mapped_column(
+        Boolean, nullable=False, default=False
     )
 
     # Relationships
