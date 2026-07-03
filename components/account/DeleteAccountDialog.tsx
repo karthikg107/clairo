@@ -115,7 +115,7 @@ export function DeleteAccountDialog({ onConfirm, onClose }: DeleteAccountDialogP
               disabled={deleting}
               className="
                 w-full h-11 px-3 rounded-xl border border-neutral-200
-                text-sm text-neutral-900 placeholder:text-neutral-300
+                text-sm text-neutral-900 placeholder:text-neutral-500
                 focus:outline-none focus-visible:ring-2 focus-visible:ring-danger-500
                 disabled:opacity-50
               "

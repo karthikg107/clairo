@@ -133,15 +133,16 @@ export function ShareSheet({ shareUrl, summary, onClose }: ShareSheetProps) {
         </div>
 
         <div className="px-5 pb-5 flex flex-col gap-2">
-          {/* 1. WhatsApp — first and largest */}
+          {/* 1. WhatsApp — first and largest. Dark text: white on WhatsApp
+              green is 1.98:1; success-900 on it is >8:1 (WCAG AA, CLR-051). */}
           <button
             type="button"
             onClick={handleWhatsApp}
             className="
               flex items-center justify-center gap-3 w-full h-14 px-4 rounded-2xl
-              bg-[#25D366] text-white font-semibold text-base
+              bg-[#25D366] text-success-900 font-semibold text-base
               hover:brightness-95 transition
-              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#25D366]
+              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-success-700
             "
           >
             <WhatsAppIcon className="w-6 h-6 shrink-0" />

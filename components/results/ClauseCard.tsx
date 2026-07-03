@@ -81,7 +81,11 @@ function renderExplanation(
     typeof part === 'string' ? (
       <Fragment key={i}>{part}</Fragment>
     ) : (
-      <TappableNumber key={i} number={part} onTap={() => onTapNumber(part, clauseTitle)} />
+      <TappableNumber
+        key={i}
+        number={part}
+        onTap={() => onTapNumber(part, clauseTitle)}
+      />
     )
   )
 }
@@ -111,10 +115,12 @@ export function ClauseCard({
         "
       >
         <div className="flex-1 min-w-0">
-          <span className="text-xs text-neutral-400 font-medium">
+          <span className="text-xs text-neutral-500 font-medium">
             {t('clause_number', { n: index + 1 })}
           </span>
-          <h3 className="text-sm font-semibold text-neutral-900 mt-0.5">{clause.title}</h3>
+          <h3 className="text-sm font-semibold text-neutral-900 mt-0.5">
+            {clause.title}
+          </h3>
           <div className="mt-2 flex flex-wrap items-center gap-2">
             <FlagBadge clause={clause} />
             {clause.frequency_pct !== null && (
@@ -126,7 +132,7 @@ export function ClauseCard({
         </div>
         <ChevronDown
           className={cn(
-            'w-5 h-5 text-neutral-400 shrink-0 mt-1 transition-transform rtl:rotate-180',
+            'w-5 h-5 text-neutral-500 shrink-0 mt-1 transition-transform rtl:rotate-180',
             isExpanded && 'rotate-180 rtl:rotate-0'
           )}
           aria-hidden
@@ -136,7 +142,12 @@ export function ClauseCard({
       {isExpanded && (
         <div id={panelId} className="px-4 pb-4">
           <p className="font-serif text-[15px] leading-relaxed text-neutral-800">
-            {renderExplanation(clause.explanation, clause.numbers, clause.title, onTapNumber)}
+            {renderExplanation(
+              clause.explanation,
+              clause.numbers,
+              clause.title,
+              onTapNumber
+            )}
           </p>
 
           <button

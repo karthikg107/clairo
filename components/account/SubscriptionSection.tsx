@@ -163,7 +163,7 @@ export function SubscriptionSection() {
                 <span className="text-neutral-900 font-medium">
                   {invoice.amountPaid} {invoice.currency}
                 </span>
-                <span className="flex-1 text-neutral-400 truncate">
+                <span className="flex-1 text-neutral-500 truncate">
                   {t(`billing_history.status.${invoice.status}`, {
                     fallback: invoice.status,
                   })}

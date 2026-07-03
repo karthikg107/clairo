@@ -77,7 +77,7 @@ export function SharedClauseCard({
         "
       >
         <div className="flex-1 min-w-0">
-          <span className="text-xs text-neutral-400 font-medium">
+          <span className="text-xs text-neutral-500 font-medium">
             {t('clause_number', { n: index + 1 })}
           </span>
           <h3 className="text-sm font-semibold text-neutral-900 mt-0.5">
@@ -94,7 +94,7 @@ export function SharedClauseCard({
         </div>
         <ChevronDown
           className={cn(
-            'w-5 h-5 text-neutral-400 shrink-0 mt-1 transition-transform rtl:rotate-180',
+            'w-5 h-5 text-neutral-500 shrink-0 mt-1 transition-transform rtl:rotate-180',
             isExpanded && 'rotate-180 rtl:rotate-0'
           )}
           aria-hidden

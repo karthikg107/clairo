@@ -92,7 +92,7 @@ export function PricingPage() {
   )
 
   return (
-    <div className="min-h-screen bg-background px-4 py-10">
+    <main className="min-h-screen bg-background px-4 py-10">
       <div className="max-w-5xl mx-auto">
         {/* Heading */}
         <div className="text-center max-w-2xl mx-auto mb-8">
@@ -240,9 +240,9 @@ export function PricingPage() {
 
         <div className="text-center mt-8 space-y-1">
           <p className="text-xs text-neutral-500">{t('disclaimer')}</p>
-          <p className="text-xs text-neutral-400">{t('not_legal_advice')}</p>
+          <p className="text-xs text-neutral-500">{t('not_legal_advice')}</p>
         </div>
       </div>
-    </div>
+    </main>
   )
 }

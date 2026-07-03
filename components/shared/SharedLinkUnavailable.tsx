@@ -16,7 +16,7 @@ export function SharedLinkUnavailable() {
   const t = useTranslations('sharedPage.unavailable')
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center px-4">
+    <main className="min-h-screen bg-background flex items-center justify-center px-4">
       <div className="flex flex-col items-center text-center max-w-sm">
         <div className="w-14 h-14 rounded-full bg-brand-50 flex items-center justify-center mb-4">
           <FileQuestion className="w-6 h-6 text-brand-700" aria-hidden />
@@ -35,6 +35,6 @@ export function SharedLinkUnavailable() {
           {t('cta')}
         </Link>
       </div>
-    </div>
+    </main>
   )
 }

@@ -45,7 +45,7 @@ export function InstallPrompt({ onInstall, onDismiss }: InstallPromptProps) {
           type="button"
           onClick={onDismiss}
           aria-label={t('dismiss')}
-          className="shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-neutral-400 hover:bg-neutral-100 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+          className="shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-neutral-500 hover:bg-neutral-100 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
         >
           <X className="w-4 h-4" aria-hidden />
         </button>

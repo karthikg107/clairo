@@ -83,7 +83,7 @@ export function ProhibitedDocumentScreen({
       )}
 
       {/* No-partial-analysis notice */}
-      <p className="text-xs text-neutral-400 mb-8 leading-relaxed">
+      <p className="text-xs text-neutral-500 mb-8 leading-relaxed">
         {t('no_partial_analysis')}
       </p>
 

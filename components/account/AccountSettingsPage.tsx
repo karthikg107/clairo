@@ -104,7 +104,7 @@ export function AccountSettingsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background px-4 py-6">
+    <main className="min-h-screen bg-background px-4 py-6">
       <div className="max-w-xl mx-auto flex flex-col gap-6">
         <h1 className="text-xl font-bold text-neutral-900">{t('heading')}</h1>
 
@@ -305,6 +305,6 @@ export function AccountSettingsPage() {
           onClose={() => setDeleteOpen(false)}
         />
       )}
-    </div>
+    </main>
   )
 }

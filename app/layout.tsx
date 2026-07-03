@@ -10,19 +10,17 @@ export const metadata: Metadata = {
     'Clairo explains what your contract says in plain language. Not legal advice — clear understanding.',
   metadataBase: new URL('https://clairo.app'),
   robots: { index: true, follow: true },
-  manifest: '/manifest.json',
+  // CLR-048/051 — the actual manifest file (was /manifest.json, which
+  // doesn't exist)
+  manifest: '/manifest.webmanifest',
 }
 
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#1B4F8A',
+  themeColor: '#103065', // brand-700, matches the manifest
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return children
 }

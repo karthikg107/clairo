@@ -74,7 +74,7 @@ export function DashboardPage() {
   const showUpgradeBanner = !quota.loading && quota.isFreeTier && !quota.allowed
 
   return (
-    <div className="min-h-screen bg-background px-4 py-6">
+    <main className="min-h-screen bg-background px-4 py-6">
       <div className="max-w-2xl mx-auto flex flex-col gap-5">
         {/* CLR-048 — offline: cached copy with its saved-at date */}
         {(fromCache || !online) && (
@@ -186,7 +186,7 @@ export function DashboardPage() {
 
         <div className="relative">
           <Search
-            className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400"
+            className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500"
             aria-hidden
           />
           <input
@@ -197,7 +197,7 @@ export function DashboardPage() {
             aria-label={t('search_aria')}
             className="
               w-full h-11 ps-9 pe-3 rounded-2xl border border-neutral-200 bg-white
-              text-sm text-neutral-900 placeholder:text-neutral-400
+              text-sm text-neutral-900 placeholder:text-neutral-500
               focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500
             "
           />
@@ -264,7 +264,7 @@ export function DashboardPage() {
           </ul>
         )}
       </div>
-    </div>
+    </main>
   )
 }
 
@@ -334,7 +334,7 @@ function HistoryListItem({
             {languageName(item.docLanguage)} → {languageName(item.outputLanguage)}
           </p>
         </div>
-        <span className="shrink-0 text-xs text-neutral-400">{dateLabel}</span>
+        <span className="shrink-0 text-xs text-neutral-500">{dateLabel}</span>
       </button>
     </li>
   )

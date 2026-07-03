@@ -133,7 +133,7 @@ export function NumberVerificationPanel({
         {/* Source text section */}
         <div className="px-5 py-4">
           <div className="flex items-center gap-2 mb-2">
-            <FileText className="w-4 h-4 text-neutral-400" aria-hidden />
+            <FileText className="w-4 h-4 text-neutral-500" aria-hidden />
             <span className="text-xs font-medium text-neutral-500 uppercase tracking-wide">
               {t('source_label')}
             </span>

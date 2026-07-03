@@ -42,7 +42,9 @@ export function TrustScreen({ onAccepted, _tokenOverride }: TrustScreenProps) {
   // Trap focus inside this overlay
   useEffect(() => {
     const prev = document.activeElement as HTMLElement | null
-    return () => { prev?.focus() }
+    return () => {
+      prev?.focus()
+    }
   }, [])
 
   const handleAccept = useCallback(async () => {
@@ -195,7 +197,7 @@ export function TrustScreen({ onAccepted, _tokenOverride }: TrustScreenProps) {
         </button>
 
         {/* Legal disclaimer — non-dismissable */}
-        <p className="mt-4 text-xs text-neutral-400 text-center leading-relaxed">
+        <p className="mt-4 text-xs text-neutral-500 text-center leading-relaxed">
           {t('legal_note')}
         </p>
       </div>
