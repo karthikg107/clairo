@@ -420,5 +420,17 @@
       "deleting": "Deleting…",
       "close": "Close"
     }
+  },
+  "sharedPage": {
+    "header_label": "Shared analysis",
+    "analysed_on": "Analysed {date}",
+    "og_title": "{type}, explained simply",
+    "cta_text": "Understand your own contract",
+    "cta_button": "Try Clairo free",
+    "unavailable": {
+      "heading": "This link is no longer available",
+      "body": "Shared analyses expire after 30 days, or the person who shared this may have removed it. You can analyse your own contract in minutes.",
+      "cta": "Analyse your contract"
+    }
   }
 }

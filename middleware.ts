@@ -30,6 +30,9 @@ const isPublicRoute = createRouteMatcher([
   // pricing (CLR-027) — must be visible before sign-up
   '/pricing(.*)',
   '/:locale/pricing(.*)',
+  // shared analyses (CLR-042) — recipients have no account
+  '/s/(.*)',
+  '/:locale/s/(.*)',
   // health check
   '/api/health',
 ])

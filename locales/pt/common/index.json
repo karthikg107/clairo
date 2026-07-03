@@ -428,5 +428,17 @@
       "deleting": "Excluindo…",
       "close": "Fechar"
     }
+  },
+  "sharedPage": {
+    "header_label": "Análise compartilhada",
+    "analysed_on": "Analisado em {date}",
+    "og_title": "{type}, explicado de forma simples",
+    "cta_text": "Entenda o seu próprio contrato",
+    "cta_button": "Experimente o Clairo grátis",
+    "unavailable": {
+      "heading": "Este link não está mais disponível",
+      "body": "Análises compartilhadas expiram após 30 dias, ou quem compartilhou pode tê-la removido. Você pode analisar seu próprio contrato em minutos.",
+      "cta": "Analise seu contrato"
+    }
   }
 }

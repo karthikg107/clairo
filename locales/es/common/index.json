@@ -428,5 +428,17 @@
       "deleting": "Eliminando…",
       "close": "Cerrar"
     }
+  },
+  "sharedPage": {
+    "header_label": "Análisis compartido",
+    "analysed_on": "Analizado el {date}",
+    "og_title": "{type}, explicado de forma sencilla",
+    "cta_text": "Entiende tu propio contrato",
+    "cta_button": "Prueba Clairo gratis",
+    "unavailable": {
+      "heading": "Este enlace ya no está disponible",
+      "body": "Los análisis compartidos caducan a los 30 días, o quien lo compartió puede haberlo eliminado. Puedes analizar tu propio contrato en minutos.",
+      "cta": "Analiza tu contrato"
+    }
   }
 }

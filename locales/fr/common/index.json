@@ -432,5 +432,17 @@
       "deleting": "Suppression…",
       "close": "Fermer"
     }
+  },
+  "sharedPage": {
+    "header_label": "Analyse partagée",
+    "analysed_on": "Analysé le {date}",
+    "og_title": "{type}, expliqué simplement",
+    "cta_text": "Comprenez votre propre contrat",
+    "cta_button": "Essayer Clairo gratuitement",
+    "unavailable": {
+      "heading": "Ce lien n'est plus disponible",
+      "body": "Les analyses partagées expirent après 30 jours, ou la personne qui l'a partagée l'a peut-être supprimée. Vous pouvez analyser votre propre contrat en quelques minutes.",
+      "cta": "Analyser votre contrat"
+    }
   }
 }

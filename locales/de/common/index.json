@@ -424,5 +424,17 @@
       "deleting": "Wird gelöscht…",
       "close": "Schließen"
     }
+  },
+  "sharedPage": {
+    "header_label": "Geteilte Analyse",
+    "analysed_on": "Analysiert am {date}",
+    "og_title": "{type}, einfach erklärt",
+    "cta_text": "Verstehen Sie Ihren eigenen Vertrag",
+    "cta_button": "Clairo kostenlos testen",
+    "unavailable": {
+      "heading": "Dieser Link ist nicht mehr verfügbar",
+      "body": "Geteilte Analysen laufen nach 30 Tagen ab, oder die Person, die dies geteilt hat, hat es entfernt. Sie können Ihren eigenen Vertrag in wenigen Minuten analysieren.",
+      "cta": "Vertrag analysieren"
+    }
   }
 }
