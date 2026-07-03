@@ -449,5 +449,72 @@
     "body": "We use privacy-friendly analytics to understand how Clairo is used — anonymous only, never your documents. Analytics runs only if you accept.",
     "accept": "Accept",
     "decline": "Decline"
+  },
+  "landing": {
+    "hero": {
+      "headline": "Understand any contract. In any language.",
+      "subheadline": "Clairo explains rental, job, and freelance contracts in plain words — in the language you actually think in.",
+      "cta": "Analyse your contract",
+      "cta_hint": "Free — no card needed. 2 free analyses."
+    },
+    "trust": {
+      "aria_label": "Privacy commitments",
+      "deleted": "Documents deleted after analysis",
+      "never_stored": "Your text is never stored",
+      "languages": "8 languages, including RTL"
+    },
+    "demo": {
+      "protective": "This clause protects you",
+      "review": "Read this one carefully",
+      "plain": "3-month deposit — common in Germany"
+    },
+    "how": {
+      "heading": "How it works",
+      "step_label": "Step {n}",
+      "upload": {
+        "title": "Upload",
+        "body": "Photo, PDF, or DOCX — snap your contract with your phone."
+      },
+      "review": {
+        "title": "Review",
+        "body": "Check the extracted text; fix anything the scan misread."
+      },
+      "understand": {
+        "title": "Understand",
+        "body": "Every clause explained in plain language, flags on the risky ones."
+      }
+    },
+    "use_cases": {
+      "heading": "Made for moments like these",
+      "renter": {
+        "title": "Signing a lease",
+        "body": "Deposits, notice periods, renovation clauses — know what you're agreeing to before you sign."
+      },
+      "job_switcher": {
+        "title": "Changing jobs",
+        "body": "Non-competes, probation, overtime rules — understand your offer, not just the salary."
+      },
+      "expat": {
+        "title": "New country, new language",
+        "body": "Contracts in a language you're still learning? Read them in the one you know best."
+      }
+    },
+    "languages": {
+      "aria_label": "Supported language pairs",
+      "heading": "From the contract's language to yours",
+      "subtext": "German, English, French, Spanish, Portuguese, Hindi, Urdu, Arabic"
+    },
+    "pricing_teaser": {
+      "heading": "Simple pricing",
+      "per_month": "/month",
+      "all_plans": "See all plans →"
+    },
+    "footer": {
+      "disclaimer": "Clairo explains contracts in plain language. It is not legal advice.",
+      "nav_aria": "Footer",
+      "privacy": "Privacy",
+      "terms": "Terms",
+      "pricing": "Pricing"
+    }
   }
 }

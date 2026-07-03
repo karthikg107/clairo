@@ -457,5 +457,72 @@
     "body": "Usamos análises que respeitam a privacidade para entender como o Clairo é usado — apenas de forma anônima, nunca seus documentos. As análises só funcionam se você aceitar.",
     "accept": "Aceitar",
     "decline": "Recusar"
+  },
+  "landing": {
+    "hero": {
+      "headline": "Entenda qualquer contrato. Em qualquer idioma.",
+      "subheadline": "O Clairo explica contratos de aluguel, trabalho e freelance em palavras simples — no idioma em que você realmente pensa.",
+      "cta": "Analise seu contrato",
+      "cta_hint": "Grátis — sem cartão. 2 análises gratuitas."
+    },
+    "trust": {
+      "aria_label": "Compromissos de privacidade",
+      "deleted": "Documentos apagados após a análise",
+      "never_stored": "Seu texto nunca é armazenado",
+      "languages": "8 idiomas, incluindo RTL"
+    },
+    "demo": {
+      "protective": "Esta cláusula protege você",
+      "review": "Leia esta com atenção",
+      "plain": "Caução de 3 meses — comum na Alemanha"
+    },
+    "how": {
+      "heading": "Como funciona",
+      "step_label": "Passo {n}",
+      "upload": {
+        "title": "Envie",
+        "body": "Foto, PDF ou DOCX — fotografe seu contrato com o celular."
+      },
+      "review": {
+        "title": "Revise",
+        "body": "Confira o texto extraído e corrija o que a digitalização leu errado."
+      },
+      "understand": {
+        "title": "Entenda",
+        "body": "Cada cláusula explicada em linguagem clara, com alertas nas arriscadas."
+      }
+    },
+    "use_cases": {
+      "heading": "Feito para momentos assim",
+      "renter": {
+        "title": "Assinar um aluguel",
+        "body": "Cauções, prazos de aviso, cláusulas de reforma — saiba com o que está concordando antes de assinar."
+      },
+      "job_switcher": {
+        "title": "Mudar de emprego",
+        "body": "Não concorrência, período de experiência, horas extras — entenda sua oferta, não só o salário."
+      },
+      "expat": {
+        "title": "Novo país, novo idioma",
+        "body": "Contratos em um idioma que você ainda está aprendendo? Leia no que você domina."
+      }
+    },
+    "languages": {
+      "aria_label": "Pares de idiomas suportados",
+      "heading": "Do idioma do contrato para o seu",
+      "subtext": "Alemão, inglês, francês, espanhol, português, hindi, urdu, árabe"
+    },
+    "pricing_teaser": {
+      "heading": "Preços simples",
+      "per_month": "/mês",
+      "all_plans": "Ver todos os planos →"
+    },
+    "footer": {
+      "disclaimer": "O Clairo explica contratos em linguagem simples. Não é aconselhamento jurídico.",
+      "nav_aria": "Rodapé",
+      "privacy": "Privacidade",
+      "terms": "Termos",
+      "pricing": "Preços"
+    }
   }
 }

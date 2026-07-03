@@ -453,5 +453,72 @@
     "body": "Wir verwenden datenschutzfreundliche Analysen, um zu verstehen, wie Clairo genutzt wird — nur anonym, niemals Ihre Dokumente. Analysen laufen nur, wenn Sie zustimmen.",
     "accept": "Akzeptieren",
     "decline": "Ablehnen"
+  },
+  "landing": {
+    "hero": {
+      "headline": "Verstehen Sie jeden Vertrag. In jeder Sprache.",
+      "subheadline": "Clairo erklärt Miet-, Arbeits- und Freelance-Verträge in einfachen Worten — in der Sprache, in der Sie wirklich denken.",
+      "cta": "Vertrag analysieren",
+      "cta_hint": "Kostenlos — keine Karte nötig. 2 Gratis-Analysen."
+    },
+    "trust": {
+      "aria_label": "Datenschutz-Zusagen",
+      "deleted": "Dokumente nach Analyse gelöscht",
+      "never_stored": "Ihr Text wird nie gespeichert",
+      "languages": "8 Sprachen, inkl. RTL"
+    },
+    "demo": {
+      "protective": "Diese Klausel schützt Sie",
+      "review": "Diese genau lesen",
+      "plain": "3 Monatsmieten Kaution — in Deutschland üblich"
+    },
+    "how": {
+      "heading": "So funktioniert's",
+      "step_label": "Schritt {n}",
+      "upload": {
+        "title": "Hochladen",
+        "body": "Foto, PDF oder DOCX — fotografieren Sie Ihren Vertrag einfach mit dem Handy."
+      },
+      "review": {
+        "title": "Prüfen",
+        "body": "Kontrollieren Sie den erkannten Text und korrigieren Sie Scan-Fehler."
+      },
+      "understand": {
+        "title": "Verstehen",
+        "body": "Jede Klausel einfach erklärt, riskante Stellen markiert."
+      }
+    },
+    "use_cases": {
+      "heading": "Für Momente wie diese",
+      "renter": {
+        "title": "Mietvertrag unterschreiben",
+        "body": "Kaution, Kündigungsfristen, Renovierungsklauseln — wissen Sie vor der Unterschrift, worauf Sie sich einlassen."
+      },
+      "job_switcher": {
+        "title": "Jobwechsel",
+        "body": "Wettbewerbsverbote, Probezeit, Überstunden — verstehen Sie Ihr Angebot, nicht nur das Gehalt."
+      },
+      "expat": {
+        "title": "Neues Land, neue Sprache",
+        "body": "Verträge in einer Sprache, die Sie noch lernen? Lesen Sie sie in der, die Sie am besten können."
+      }
+    },
+    "languages": {
+      "aria_label": "Unterstützte Sprachpaare",
+      "heading": "Von der Vertragssprache in Ihre",
+      "subtext": "Deutsch, Englisch, Französisch, Spanisch, Portugiesisch, Hindi, Urdu, Arabisch"
+    },
+    "pricing_teaser": {
+      "heading": "Einfache Preise",
+      "per_month": "/Monat",
+      "all_plans": "Alle Tarife ansehen →"
+    },
+    "footer": {
+      "disclaimer": "Clairo erklärt Verträge in einfacher Sprache. Dies ist keine Rechtsberatung.",
+      "nav_aria": "Fußzeile",
+      "privacy": "Datenschutz",
+      "terms": "AGB",
+      "pricing": "Preise"
+    }
   }
 }

@@ -461,5 +461,72 @@
     "body": "Nous utilisons des analyses respectueuses de la vie privée pour comprendre l'utilisation de Clairo — anonymes uniquement, jamais vos documents. Les analyses ne démarrent que si vous acceptez.",
     "accept": "Accepter",
     "decline": "Refuser"
+  },
+  "landing": {
+    "hero": {
+      "headline": "Comprenez n'importe quel contrat. Dans n'importe quelle langue.",
+      "subheadline": "Clairo explique les contrats de location, de travail et de freelance en mots simples — dans la langue dans laquelle vous pensez vraiment.",
+      "cta": "Analyser votre contrat",
+      "cta_hint": "Gratuit — sans carte. 2 analyses gratuites."
+    },
+    "trust": {
+      "aria_label": "Engagements de confidentialité",
+      "deleted": "Documents supprimés après analyse",
+      "never_stored": "Votre texte n'est jamais conservé",
+      "languages": "8 langues, dont RTL"
+    },
+    "demo": {
+      "protective": "Cette clause vous protège",
+      "review": "Lisez celle-ci attentivement",
+      "plain": "Caution de 3 mois — courant en Allemagne"
+    },
+    "how": {
+      "heading": "Comment ça marche",
+      "step_label": "Étape {n}",
+      "upload": {
+        "title": "Téléversez",
+        "body": "Photo, PDF ou DOCX — photographiez votre contrat avec votre téléphone."
+      },
+      "review": {
+        "title": "Vérifiez",
+        "body": "Contrôlez le texte extrait et corrigez ce que le scan a mal lu."
+      },
+      "understand": {
+        "title": "Comprenez",
+        "body": "Chaque clause expliquée simplement, avec des alertes sur les clauses à risque."
+      }
+    },
+    "use_cases": {
+      "heading": "Conçu pour ces moments-là",
+      "renter": {
+        "title": "Signer un bail",
+        "body": "Cautions, préavis, clauses de rénovation — sachez à quoi vous vous engagez avant de signer."
+      },
+      "job_switcher": {
+        "title": "Changer d'emploi",
+        "body": "Non-concurrence, période d'essai, heures supplémentaires — comprenez votre offre, pas seulement le salaire."
+      },
+      "expat": {
+        "title": "Nouveau pays, nouvelle langue",
+        "body": "Des contrats dans une langue que vous apprenez encore ? Lisez-les dans celle que vous maîtrisez."
+      }
+    },
+    "languages": {
+      "aria_label": "Paires de langues prises en charge",
+      "heading": "De la langue du contrat à la vôtre",
+      "subtext": "Allemand, anglais, français, espagnol, portugais, hindi, ourdou, arabe"
+    },
+    "pricing_teaser": {
+      "heading": "Des prix simples",
+      "per_month": "/mois",
+      "all_plans": "Voir tous les forfaits →"
+    },
+    "footer": {
+      "disclaimer": "Clairo explique les contrats en langage simple. Ce n'est pas un conseil juridique.",
+      "nav_aria": "Pied de page",
+      "privacy": "Confidentialité",
+      "terms": "Conditions",
+      "pricing": "Tarifs"
+    }
   }
 }

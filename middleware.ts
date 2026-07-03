@@ -16,6 +16,10 @@ const intlMiddleware = createIntlMiddleware({
 
 // Routes that Clerk should NOT protect
 const isPublicRoute = createRouteMatcher([
+  // landing page (CLR-046) — root and locale-prefixed root only (the
+  // explicit locale alternation avoids '/:locale' swallowing '/dashboard')
+  '/',
+  `/(${locales.join('|')})`,
   // i18n-prefixed sign-in / sign-up
   '/:locale/sign-in(.*)',
   '/:locale/sign-up(.*)',

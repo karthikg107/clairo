@@ -1,15 +1,13 @@
-import { useTranslations } from 'next-intl'
+/**
+ * CLR-046 — landing page route (/).
+ *
+ * Public — exempted from Clerk auth in middleware.ts. Localised by the
+ * visitor's detected language/country: next-intl's middleware
+ * (localeDetection) picks the locale from Accept-Language and this page
+ * renders fully translated server-side.
+ */
+import { LandingPage } from '@/components/landing/LandingPage'
 
-export default function HomePage() {
-  const t = useTranslations('home')
-  return (
-    <main className="min-h-screen bg-background flex items-center justify-center p-4">
-      <div className="text-center max-w-md">
-        <h1 className="text-3xl font-bold text-brand-500 mb-2">
-          {t('headline')}
-        </h1>
-        <p className="text-dark-text/70">{t('subheadline')}</p>
-      </div>
-    </main>
-  )
+export default function HomePage({ params: { locale } }: { params: { locale: string } }) {
+  return <LandingPage locale={locale} />
 }

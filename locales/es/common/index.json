@@ -457,5 +457,72 @@
     "body": "Usamos analíticas respetuosas con la privacidad para entender cómo se usa Clairo — solo de forma anónima, nunca tus documentos. Las analíticas se activan solo si aceptas.",
     "accept": "Aceptar",
     "decline": "Rechazar"
+  },
+  "landing": {
+    "hero": {
+      "headline": "Entiende cualquier contrato. En cualquier idioma.",
+      "subheadline": "Clairo explica contratos de alquiler, trabajo y freelance en palabras sencillas — en el idioma en el que realmente piensas.",
+      "cta": "Analiza tu contrato",
+      "cta_hint": "Gratis — sin tarjeta. 2 análisis gratuitos."
+    },
+    "trust": {
+      "aria_label": "Compromisos de privacidad",
+      "deleted": "Documentos eliminados tras el análisis",
+      "never_stored": "Tu texto nunca se guarda",
+      "languages": "8 idiomas, incluido RTL"
+    },
+    "demo": {
+      "protective": "Esta cláusula te protege",
+      "review": "Lee esta con atención",
+      "plain": "Depósito de 3 meses — común en Alemania"
+    },
+    "how": {
+      "heading": "Cómo funciona",
+      "step_label": "Paso {n}",
+      "upload": {
+        "title": "Sube",
+        "body": "Foto, PDF o DOCX — fotografía tu contrato con el móvil."
+      },
+      "review": {
+        "title": "Revisa",
+        "body": "Comprueba el texto extraído y corrige lo que el escaneo haya leído mal."
+      },
+      "understand": {
+        "title": "Entiende",
+        "body": "Cada cláusula explicada en lenguaje claro, con avisos en las arriesgadas."
+      }
+    },
+    "use_cases": {
+      "heading": "Para momentos como estos",
+      "renter": {
+        "title": "Firmar un alquiler",
+        "body": "Depósitos, plazos de preaviso, cláusulas de renovación — sabe a qué te comprometes antes de firmar."
+      },
+      "job_switcher": {
+        "title": "Cambiar de trabajo",
+        "body": "No competencia, período de prueba, horas extra — entiende tu oferta, no solo el salario."
+      },
+      "expat": {
+        "title": "Nuevo país, nuevo idioma",
+        "body": "¿Contratos en un idioma que aún estás aprendiendo? Léelos en el que mejor conoces."
+      }
+    },
+    "languages": {
+      "aria_label": "Pares de idiomas compatibles",
+      "heading": "Del idioma del contrato al tuyo",
+      "subtext": "Alemán, inglés, francés, español, portugués, hindi, urdu, árabe"
+    },
+    "pricing_teaser": {
+      "heading": "Precios sencillos",
+      "per_month": "/mes",
+      "all_plans": "Ver todos los planes →"
+    },
+    "footer": {
+      "disclaimer": "Clairo explica contratos en lenguaje sencillo. No es asesoramiento legal.",
+      "nav_aria": "Pie de página",
+      "privacy": "Privacidad",
+      "terms": "Términos",
+      "pricing": "Precios"
+    }
   }
 }
