@@ -1,7 +1,6 @@
 'use client'
 
 import { UserButton, useUser } from '@clerk/nextjs'
-import { useTranslations } from 'next-intl'
 
 /**
  * Compact user menu — drops into any header/nav.
@@ -9,7 +8,6 @@ import { useTranslations } from 'next-intl'
  */
 export function UserMenu() {
   const { isLoaded, isSignedIn } = useUser()
-  const t = useTranslations('auth')
 
   if (!isLoaded || !isSignedIn) return null
 
@@ -20,10 +18,8 @@ export function UserMenu() {
         appearance={{
           elements: {
             avatarBox: 'w-8 h-8',
-            userButtonPopoverCard:
-              'shadow-lg border border-neutral-200 rounded-2xl',
-            userButtonPopoverActionButton:
-              'text-sm text-neutral-700 hover:bg-neutral-50',
+            userButtonPopoverCard: 'shadow-lg border border-neutral-200 rounded-2xl',
+            userButtonPopoverActionButton: 'text-sm text-neutral-700 hover:bg-neutral-50',
             userButtonPopoverActionButtonText: 'text-sm',
             userButtonPopoverFooter: 'hidden',
           },

@@ -19,8 +19,8 @@ import { X, AlertTriangle, FileText } from 'lucide-react'
 import { useEffect, useRef, useCallback } from 'react'
 
 export interface VerifiableNumber {
-  value: string      // e.g. "$1,000" or "12 months"
-  context: string    // sentence containing the number from original_text
+  value: string // e.g. "$1,000" or "12 months"
+  context: string // sentence containing the number from original_text
 }
 
 interface NumberVerificationPanelProps {
@@ -43,9 +43,11 @@ export function NumberVerificationPanel({
     closeBtnRef.current?.focus()
   }, [])
 
-  // Trap focus within the panel
+  // Escape-to-close + focus trap at document level — avoids key listeners
+  // on non-interactive elements (jsx-a11y), same pattern as
+  // DeleteAccountDialog / ShareSheet.
   const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent<HTMLDivElement>) => {
+    (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         onClose()
         return
@@ -56,7 +58,9 @@ export function NumberVerificationPanel({
       )
       const first = focusable[0]
       const last = focusable[focusable.length - 1]
-      if (e.shiftKey ? document.activeElement === first : document.activeElement === last) {
+      if (
+        e.shiftKey ? document.activeElement === first : document.activeElement === last
+      ) {
         e.preventDefault()
         ;(e.shiftKey ? last : first).focus()
       }
@@ -64,27 +68,32 @@ export function NumberVerificationPanel({
     [onClose]
   )
 
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [handleKeyDown])
+
   // Highlight the number value within the context string
   const highlightedContext = highlightNumber(number.context, number.value)
 
   return (
-    // Backdrop
-    <div
-      className="fixed inset-0 z-50 bg-black/40 flex items-end sm:items-center justify-center px-0 sm:px-4"
-      onClick={(e) => {
-        if (e.target === e.currentTarget) onClose()
-      }}
-      aria-hidden="false"
-    >
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center px-0 sm:px-4">
+      {/* Backdrop — a real button so closing works via keyboard too */}
+      <button
+        type="button"
+        tabIndex={-1}
+        aria-hidden="true"
+        onClick={onClose}
+        className="absolute inset-0 bg-black/40 cursor-default"
+      />
       {/* Panel */}
       <div
         ref={panelRef}
         role="dialog"
         aria-modal="true"
         aria-labelledby="nvp-heading"
-        onKeyDown={handleKeyDown}
         className="
-          w-full sm:max-w-sm bg-white rounded-t-3xl sm:rounded-2xl
+          relative w-full sm:max-w-sm bg-white rounded-t-3xl sm:rounded-2xl
           shadow-xl flex flex-col
           max-h-[85vh] overflow-y-auto
         "
@@ -114,7 +123,9 @@ export function NumberVerificationPanel({
           <div className="inline-flex items-center gap-2 bg-brand-50 rounded-xl px-3 py-1.5">
             <span className="text-lg font-bold text-brand-800">{number.value}</span>
           </div>
-          <p className="text-xs text-neutral-500 mt-1">{t('in_clause', { clause: clauseTitle })}</p>
+          <p className="text-xs text-neutral-500 mt-1">
+            {t('in_clause', { clause: clauseTitle })}
+          </p>
         </div>
 
         <hr className="border-neutral-100 mx-5" />
@@ -181,7 +192,6 @@ function escapeHtml(str: string): string {
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#039;')
 }
-
 
 /**
  * Inline tappable number chip — renders inside clause explanation text.

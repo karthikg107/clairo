@@ -2,10 +2,12 @@ import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
 import createIntlMiddleware from 'next-intl/middleware'
 import { NextRequest } from 'next/server'
 
-export const locales = ['en', 'hi', 'de', 'es', 'ar', 'fr', 'pt', 'ur'] as const
-export type Locale = (typeof locales)[number]
+// Locale constants live in lib/locales.ts (CLR-050) so client/server code
+// can import them without pulling middleware dependencies into its graph.
+// Re-exported here for backwards compatibility.
+import { locales } from '@/lib/locales'
 
-export const rtlLocales: Locale[] = ['ar', 'ur']
+export { locales, rtlLocales, type Locale } from '@/lib/locales'
 
 const intlMiddleware = createIntlMiddleware({
   locales,

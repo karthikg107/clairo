@@ -1,10 +1,10 @@
 import type { Metadata } from 'next'
 import { ClerkProvider } from '@clerk/nextjs'
 import { NextIntlClientProvider } from 'next-intl'
-import { getMessages, getTranslations } from 'next-intl/server'
+import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server'
 import { Inter, Source_Serif_4, JetBrains_Mono } from 'next/font/google'
 import { notFound } from 'next/navigation'
-import { locales, rtlLocales, type Locale } from '@/middleware'
+import { locales, rtlLocales, type Locale } from '@/lib/locales'
 import { cn } from '@/lib/utils'
 import { ReferralClaimer } from '@/components/referrals/ReferralClaimer'
 import { AnalyticsProvider } from '@/components/analytics/AnalyticsProvider'
@@ -59,6 +59,10 @@ export default async function LocaleLayout({
   params: { locale: string }
 }) {
   if (!locales.includes(locale as Locale)) notFound()
+
+  // CLR-050 — enables static rendering of locale pages (next-intl
+  // otherwise opts into dynamic rendering by reading request headers).
+  setRequestLocale(locale)
 
   const messages = await getMessages()
   const isRtl = rtlLocales.includes(locale as Locale)

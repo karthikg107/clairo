@@ -9,13 +9,8 @@
  * Do NOT remove the DRAFT banner until legal approval is confirmed.
  */
 import type { Metadata } from 'next'
-import { getTranslations } from 'next-intl/server'
 
-export async function generateMetadata({
-  params: { locale },
-}: {
-  params: { locale: string }
-}): Promise<Metadata> {
+export async function generateMetadata(): Promise<Metadata> {
   return {
     title: 'Privacy Policy — Clairo',
     description: 'How Clairo handles your data and protects your privacy.',
@@ -57,12 +52,12 @@ export default function PrivacyPage() {
           </p>
           <p>
             <strong>Document data:</strong> Your uploaded document is processed in memory
-            only. It is never stored on disk, in our database, or in any cache.
-            It is deleted from memory immediately after analysis is complete.
+            only. It is never stored on disk, in our database, or in any cache. It is
+            deleted from memory immediately after analysis is complete.
           </p>
           <p>
-            <strong>Usage data:</strong> [LEGAL REVIEW REQUIRED — specify analytics,
-            usage logs, rate-limit counters retained and for how long.]
+            <strong>Usage data:</strong> [LEGAL REVIEW REQUIRED — specify analytics, usage
+            logs, rate-limit counters retained and for how long.]
           </p>
         </section>
 
@@ -70,24 +65,40 @@ export default function PrivacyPage() {
           <h2 className="text-lg font-semibold text-neutral-900 mb-2">
             3. How we use your data
           </h2>
-          <p>[LEGAL REVIEW REQUIRED — legal basis under GDPR Art. 6 for each
-          processing activity. Likely: contract performance for analysis; legitimate
-          interest for security logging; consent for analytics.]</p>
+          <p>
+            [LEGAL REVIEW REQUIRED — legal basis under GDPR Art. 6 for each processing
+            activity. Likely: contract performance for analysis; legitimate interest for
+            security logging; consent for analytics.]
+          </p>
         </section>
 
         <section>
           <h2 className="text-lg font-semibold text-neutral-900 mb-2">
             4. Third-party processors
           </h2>
-          <p>
-            We share data with the following sub-processors:
-          </p>
+          <p>We share data with the following sub-processors:</p>
           <ul className="list-disc pl-5 space-y-1">
-            <li><strong>Anthropic</strong> — AI analysis. Zero data retention enabled on our account. Document content is deleted from Anthropic's systems immediately after processing.</li>
-            <li><strong>Google Cloud Vision</strong> — OCR text extraction. [LEGAL REVIEW REQUIRED — confirm data retention policy and DPA status.]</li>
-            <li><strong>AWS</strong> — Hosting, database, secrets management. [LEGAL REVIEW REQUIRED — confirm regions and DPA.]</li>
-            <li><strong>Clerk</strong> — Authentication. [LEGAL REVIEW REQUIRED — data residency and DPA.]</li>
-            <li><strong>Stripe</strong> — Payment processing. [LEGAL REVIEW REQUIRED — PCI DSS scope.]</li>
+            <li>
+              <strong>Anthropic</strong> — AI analysis. Zero data retention enabled on our
+              account. Document content is deleted from Anthropic&apos;s systems
+              immediately after processing.
+            </li>
+            <li>
+              <strong>Google Cloud Vision</strong> — OCR text extraction. [LEGAL REVIEW
+              REQUIRED — confirm data retention policy and DPA status.]
+            </li>
+            <li>
+              <strong>AWS</strong> — Hosting, database, secrets management. [LEGAL REVIEW
+              REQUIRED — confirm regions and DPA.]
+            </li>
+            <li>
+              <strong>Clerk</strong> — Authentication. [LEGAL REVIEW REQUIRED — data
+              residency and DPA.]
+            </li>
+            <li>
+              <strong>Stripe</strong> — Payment processing. [LEGAL REVIEW REQUIRED — PCI
+              DSS scope.]
+            </li>
           </ul>
         </section>
 
@@ -95,24 +106,24 @@ export default function PrivacyPage() {
           <h2 className="text-lg font-semibold text-neutral-900 mb-2">
             5. International transfers
           </h2>
-          <p>[LEGAL REVIEW REQUIRED — SCCs or adequacy decisions for each transfer
-          to third countries. Particularly important for EU/UK users.]</p>
+          <p>
+            [LEGAL REVIEW REQUIRED — SCCs or adequacy decisions for each transfer to third
+            countries. Particularly important for EU/UK users.]
+          </p>
         </section>
 
         <section>
-          <h2 className="text-lg font-semibold text-neutral-900 mb-2">
-            6. Your rights
-          </h2>
+          <h2 className="text-lg font-semibold text-neutral-900 mb-2">6. Your rights</h2>
           <p>
-            You have the right to access, correct, and delete your personal data.
-            To request deletion, [LEGAL REVIEW REQUIRED — specify process, e.g. email
-            address or in-app delete button]. We will complete deletion within
-            [LEGAL REVIEW REQUIRED — specify timeframe, e.g. 30 days].
+            You have the right to access, correct, and delete your personal data. To
+            request deletion, [LEGAL REVIEW REQUIRED — specify process, e.g. email address
+            or in-app delete button]. We will complete deletion within [LEGAL REVIEW
+            REQUIRED — specify timeframe, e.g. 30 days].
           </p>
           <p>
             GDPR rights (EU/UK users): access, rectification, erasure, restriction,
-            portability, objection. [LEGAL REVIEW REQUIRED — right to lodge complaint
-            with supervisory authority.]
+            portability, objection. [LEGAL REVIEW REQUIRED — right to lodge complaint with
+            supervisory authority.]
           </p>
         </section>
 
@@ -129,21 +140,25 @@ export default function PrivacyPage() {
             Deletion is complete and immediate upon request (GDPR Art. 17).
           </p>
           <p>
-            <strong>Audit logs:</strong> [LEGAL REVIEW REQUIRED — specify retention
-            period for security audit logs.]
+            <strong>Audit logs:</strong> [LEGAL REVIEW REQUIRED — specify retention period
+            for security audit logs.]
           </p>
         </section>
 
         <section>
           <h2 className="text-lg font-semibold text-neutral-900 mb-2">8. Cookies</h2>
-          <p>[LEGAL REVIEW REQUIRED — specify cookies used, their purpose, and
-          consent mechanism. ePrivacy Directive compliance required.]</p>
+          <p>
+            [LEGAL REVIEW REQUIRED — specify cookies used, their purpose, and consent
+            mechanism. ePrivacy Directive compliance required.]
+          </p>
         </section>
 
         <section>
           <h2 className="text-lg font-semibold text-neutral-900 mb-2">9. Contact</h2>
-          <p>[LEGAL REVIEW REQUIRED — data controller contact details and DPO
-          contact if required under GDPR Art. 37.]</p>
+          <p>
+            [LEGAL REVIEW REQUIRED — data controller contact details and DPO contact if
+            required under GDPR Art. 37.]
+          </p>
         </section>
       </div>
     </main>

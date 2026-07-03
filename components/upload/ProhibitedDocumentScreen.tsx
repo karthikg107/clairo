@@ -31,7 +31,7 @@ interface ProhibitedDocumentScreenProps {
 }
 
 export function ProhibitedDocumentScreen({
-  documentType,
+  documentType: _documentType,
   referral,
   onReset,
 }: ProhibitedDocumentScreenProps) {
@@ -51,9 +51,7 @@ export function ProhibitedDocumentScreen({
       </div>
 
       {/* Heading */}
-      <h1 className="text-xl font-semibold text-neutral-900 mb-3">
-        {t('heading')}
-      </h1>
+      <h1 className="text-xl font-semibold text-neutral-900 mb-3">{t('heading')}</h1>
 
       {/* Reason */}
       <p className="text-sm text-neutral-600 leading-relaxed mb-6">
@@ -66,9 +64,7 @@ export function ProhibitedDocumentScreen({
           <p className="text-xs text-neutral-500 uppercase tracking-wide mb-1 font-medium">
             {t('referral_label')}
           </p>
-          <p className="text-sm font-semibold text-neutral-900 mb-2">
-            {referral.org}
-          </p>
+          <p className="text-sm font-semibold text-neutral-900 mb-2">{referral.org}</p>
           <a
             href={referral.url}
             target="_blank"

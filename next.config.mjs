@@ -43,7 +43,9 @@ const nextConfig = {
   },
 
   experimental: {
-    optimizePackageImports: ['clsx', 'tailwind-merge'],
+    // lucide-react is also in Next's built-in list; kept explicit so the
+    // per-icon import transform (CLR-050 bundle splitting) is documented.
+    optimizePackageImports: ['clsx', 'tailwind-merge', 'lucide-react'],
   },
 }
 

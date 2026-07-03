@@ -11,9 +11,13 @@
  *   randomly generated anonymous distinct_id is the only user identifier.
  * - autocapture and session recording are OFF — only the explicit,
  *   whitelisted events below are ever captured.
+ *
+ * PERFORMANCE (CLR-050): posthog-js is loaded via dynamic import ONLY
+ * after consent is granted — visitors who decline (or never answer)
+ * never download the analytics bundle at all.
  */
 
-import posthog from 'posthog-js'
+import type { PostHog } from 'posthog-js'
 
 const CONSENT_KEY = 'clairo_analytics_consent'
 
@@ -30,7 +34,11 @@ export type AnalyticsEvent =
   | 'upgrade_prompted'
   | 'upgrade_completed'
 
-let initialized = false
+let client: PostHog | null = null
+let initializing = false
+// Events fired between grantConsent() and the async init finishing are
+// queued so nothing racing the dynamic import is lost.
+let pending: Array<{ event: AnalyticsEvent; properties?: Record<string, unknown> }> = []
 
 export function getConsent(): ConsentState {
   if (typeof window === 'undefined') return 'undecided'
@@ -50,25 +58,44 @@ function setConsent(state: 'granted' | 'denied'): void {
   }
 }
 
-/** Initializes PostHog. No-op without consent or without a configured key. */
+/**
+ * Initializes PostHog by dynamically importing it (CLR-050 — the bundle
+ * is only ever downloaded after consent). No-op without consent or
+ * without a configured key.
+ */
 export function initAnalytics(): void {
-  if (initialized || typeof window === 'undefined') return
+  if (client || initializing || typeof window === 'undefined') return
   if (getConsent() !== 'granted') return
 
   const key = process.env.NEXT_PUBLIC_POSTHOG_KEY
   if (!key) return
 
-  posthog.init(key, {
-    api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST ?? 'https://eu.i.posthog.com',
-    // Explicit events only — never DOM-scraped autocapture.
-    autocapture: false,
-    capture_pageview: false,
-    capture_pageleave: false,
-    disable_session_recording: true,
-    // localStorage-only: no analytics cookies beyond the consent decision.
-    persistence: 'localStorage',
-  })
-  initialized = true
+  initializing = true
+  import('posthog-js')
+    .then(({ default: posthog }) => {
+      posthog.init(key, {
+        api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST ?? 'https://eu.i.posthog.com',
+        // Explicit events only — never DOM-scraped autocapture.
+        autocapture: false,
+        capture_pageview: false,
+        capture_pageleave: false,
+        disable_session_recording: true,
+        // localStorage-only: no analytics cookies beyond the consent decision.
+        persistence: 'localStorage',
+      })
+      client = posthog
+      // Flush events that fired while the import was in flight.
+      for (const item of pending) {
+        client.capture(item.event, item.properties)
+      }
+      pending = []
+    })
+    .catch(() => {
+      // Analytics failing to load must never affect the app.
+    })
+    .finally(() => {
+      initializing = false
+    })
 }
 
 export function grantConsent(): void {
@@ -88,6 +115,12 @@ export function track(
   event: AnalyticsEvent,
   properties?: Record<string, string | number | boolean | null>
 ): void {
-  if (!initialized) return
-  posthog.capture(event, properties)
+  if (client) {
+    client.capture(event, properties)
+    return
+  }
+  // Consent granted but the dynamic import is still in flight — queue.
+  if (initializing) {
+    pending.push({ event, properties })
+  }
 }

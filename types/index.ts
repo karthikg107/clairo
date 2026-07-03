@@ -1,15 +1,10 @@
 // ─── Locale ──────────────────────────────────────────────────────────────────
-export type { Locale } from '@/middleware'
-export { locales, rtlLocales } from '@/middleware'
+export type { Locale } from '@/lib/locales'
+export { locales, rtlLocales } from '@/lib/locales'
 
 // ─── Document ────────────────────────────────────────────────────────────────
 export type DocumentType =
-  | 'rental'
-  | 'employment'
-  | 'freelance'
-  | 'tos'
-  | 'other_permitted'
-  | 'prohibited'
+  'rental' | 'employment' | 'freelance' | 'tos' | 'other_permitted' | 'prohibited'
 
 export type ProhibitedDocumentType =
   | 'court_order'
