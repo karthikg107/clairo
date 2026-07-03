@@ -46,7 +46,8 @@
       "type": "Tipo de archivo no admitido. Usa PDF, DOCX, JPG, PNG o HEIC.",
       "size": "Archivo demasiado grande. Tamaño máximo: 25 MB.",
       "generic": "Error al subir. Por favor, inténtalo de nuevo."
-    }
+    },
+    "offline_message": "Estás sin conexión. Analizar un documento nuevo requiere conexión — tus análisis guardados siguen disponibles en el panel."
   },
   "disclaimer": {
     "aria_label": "Aviso legal",
@@ -360,7 +361,11 @@
       "heading": "Sin resultados",
       "body": "Pruebe con otro término de búsqueda o filtro."
     },
-    "item_aria": "Ver análisis: {type}, {date}"
+    "item_aria": "Ver análisis: {type}, {date}",
+    "offline": {
+      "cached_banner": "Estás sin conexión — mostrando tus análisis guardados del {date}.",
+      "offline_banner": "Estás sin conexión. Parte del contenido puede no estar disponible."
+    }
   },
   "account": {
     "heading": "Configuración de la cuenta",
@@ -438,6 +443,12 @@
       "confirm_cta": "Eliminar permanentemente",
       "deleting": "Eliminando…",
       "close": "Cerrar"
+    },
+    "offline": {
+      "heading": "Copias sin conexión",
+      "body": "Tus 10 análisis más recientes se guardan en este dispositivo para releerlos sin conexión. Borrarlas solo las elimina de este dispositivo.",
+      "clear_cta": "Borrar copias sin conexión",
+      "cleared": "Borradas"
     }
   },
   "sharedPage": {
@@ -538,6 +549,15 @@
       "not_stored": "Tu documento no se guardó — Clairo nunca conserva el contenido de los documentos, tampoco cuando hay errores.",
       "retry_cta": "Reintentar",
       "home_cta": "Ir al inicio"
+    }
+  },
+  "pwa": {
+    "install": {
+      "aria_label": "Instalar aplicación",
+      "heading": "Añade Clairo a tu pantalla de inicio",
+      "body": "Acceso más rápido y tus análisis legibles sin conexión.",
+      "cta": "Instalar",
+      "dismiss": "Cerrar"
     }
   }
 }

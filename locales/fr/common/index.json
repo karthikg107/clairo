@@ -46,7 +46,8 @@
       "type": "Type de fichier non pris en charge. Utilisez PDF, DOCX, JPG, PNG ou HEIC.",
       "size": "Fichier trop volumineux. Taille maximale : 25 Mo.",
       "generic": "Échec du téléchargement. Veuillez réessayer."
-    }
+    },
+    "offline_message": "Vous êtes hors ligne. Analyser un nouveau document nécessite une connexion — vos analyses enregistrées restent disponibles sur le tableau de bord."
   },
   "disclaimer": {
     "aria_label": "Avertissement juridique",
@@ -364,7 +365,11 @@
       "heading": "Aucun résultat",
       "body": "Essayez un autre terme de recherche ou filtre."
     },
-    "item_aria": "Voir l'analyse : {type}, {date}"
+    "item_aria": "Voir l'analyse : {type}, {date}",
+    "offline": {
+      "cached_banner": "Vous êtes hors ligne — analyses enregistrées du {date}.",
+      "offline_banner": "Vous êtes hors ligne. Certains contenus peuvent être indisponibles."
+    }
   },
   "account": {
     "heading": "Paramètres du compte",
@@ -442,6 +447,12 @@
       "confirm_cta": "Supprimer définitivement",
       "deleting": "Suppression…",
       "close": "Fermer"
+    },
+    "offline": {
+      "heading": "Copies hors ligne",
+      "body": "Vos 10 analyses les plus récentes sont conservées sur cet appareil pour les relire sans connexion. Les effacer ne les supprime que de cet appareil.",
+      "clear_cta": "Effacer les copies hors ligne",
+      "cleared": "Effacées"
     }
   },
   "sharedPage": {
@@ -542,6 +553,15 @@
       "not_stored": "Votre document n'a pas été conservé — Clairo ne garde jamais le contenu des documents, même en cas d'erreur.",
       "retry_cta": "Réessayer",
       "home_cta": "Retour à l'accueil"
+    }
+  },
+  "pwa": {
+    "install": {
+      "aria_label": "Installer l'application",
+      "heading": "Ajoutez Clairo à votre écran d'accueil",
+      "body": "Accès plus rapide, analyses lisibles hors ligne.",
+      "cta": "Installer",
+      "dismiss": "Fermer"
     }
   }
 }

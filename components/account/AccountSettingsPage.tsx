@@ -22,6 +22,7 @@ import {
   EXPLANATION_LANGUAGES,
 } from '@/components/forms/LanguageSelection'
 import { DeleteAccountDialog } from './DeleteAccountDialog'
+import { OfflineSection } from './OfflineSection'
 import { ReferralSection } from './ReferralSection'
 import { SubscriptionSection } from './SubscriptionSection'
 
@@ -136,6 +137,9 @@ export function AccountSettingsPage() {
 
         {/* Referral programme (CLR-044) */}
         <ReferralSection />
+
+        {/* Offline cache controls (CLR-048) */}
+        <OfflineSection />
 
         {/* Language preferences */}
         <section className="rounded-2xl border border-neutral-200 bg-white p-5">

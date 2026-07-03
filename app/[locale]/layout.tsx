@@ -8,6 +8,7 @@ import { locales, rtlLocales, type Locale } from '@/middleware'
 import { cn } from '@/lib/utils'
 import { ReferralClaimer } from '@/components/referrals/ReferralClaimer'
 import { AnalyticsProvider } from '@/components/analytics/AnalyticsProvider'
+import { ServiceWorkerRegistration } from '@/components/pwa/ServiceWorkerRegistration'
 import '../globals.css'
 
 const inter = Inter({
@@ -41,7 +42,13 @@ export async function generateMetadata({
   return {
     title: t('title'),
     description: t('description'),
+    manifest: '/manifest.webmanifest',
+    icons: { icon: '/icons/icon.svg' },
   }
+}
+
+export const viewport = {
+  themeColor: '#104A30',
 }
 
 export default async function LocaleLayout({
@@ -69,6 +76,8 @@ export default async function LocaleLayout({
             <ReferralClaimer />
             {/* CLR-045 — consent-gated analytics + cookie banner */}
             <AnalyticsProvider />
+            {/* CLR-048 — offline cache SW + install prompt after 3 visits */}
+            <ServiceWorkerRegistration />
             {children}
           </NextIntlClientProvider>
         </body>

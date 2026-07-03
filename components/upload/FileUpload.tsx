@@ -4,6 +4,7 @@ import { useCallback, useRef, useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { cn } from '@/lib/utils/cn'
 import { track } from '@/lib/analytics'
+import { useOnline } from '@/hooks/useOnline'
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -69,6 +70,11 @@ export function FileUpload({
   const fileInputRef = useRef<HTMLInputElement>(null)
   const galleryInputRef = useRef<HTMLInputElement>(null)
 
+  // CLR-048 — new uploads are not permitted offline: analysis needs the
+  // API, so the whole upload surface disables with a clear message.
+  const online = useOnline()
+  const effectiveDisabled = disabled || !online
+
   const handleFile = useCallback(
     (file: File) => {
       // CLR-045 — metadata only: mime type, never filename or content.
@@ -124,18 +130,29 @@ export function FileUpload({
         {t('disclaimer.upload')}
       </div>
 
+      {/* CLR-048 — offline: uploads need a connection */}
+      {!online && (
+        <p
+          role="status"
+          className="rounded-card border border-neutral-200 bg-neutral-100 px-4 py-3 text-xs text-neutral-600 leading-relaxed"
+        >
+          {t('upload.offline_message')}
+        </p>
+      )}
+
       {/* ── Drop zone ────────────────────────────────────────────────────── */}
       <div
         role="button"
-        tabIndex={disabled ? -1 : 0}
+        tabIndex={effectiveDisabled ? -1 : 0}
         aria-label={t('upload.dropzone_label')}
         aria-describedby="upload-hint"
+        aria-disabled={effectiveDisabled}
         onDragOver={onDragOver}
         onDragLeave={onDragLeave}
         onDrop={onDrop}
-        onClick={() => !disabled && fileInputRef.current?.click()}
+        onClick={() => !effectiveDisabled && fileInputRef.current?.click()}
         onKeyDown={(e) => {
-          if ((e.key === 'Enter' || e.key === ' ') && !disabled) {
+          if ((e.key === 'Enter' || e.key === ' ') && !effectiveDisabled) {
             fileInputRef.current?.click()
           }
         }}
@@ -151,7 +168,7 @@ export function FileUpload({
             !isError &&
             !isSelected &&
             'border-gray-300 bg-white hover:border-brand-400 hover:bg-brand-50/50',
-          disabled && 'opacity-50 cursor-not-allowed'
+          effectiveDisabled && 'opacity-50 cursor-not-allowed'
         )}
       >
         {/* Icon */}
@@ -237,7 +254,7 @@ export function FileUpload({
           className="sr-only"
           aria-hidden="true"
           onChange={onInputChange}
-          disabled={disabled}
+          disabled={effectiveDisabled}
         />
       </div>
 
@@ -251,7 +268,7 @@ export function FileUpload({
         <button
           type="button"
           onClick={onCameraOpen}
-          disabled={disabled}
+          disabled={effectiveDisabled}
           className={cn(
             'flex items-center gap-3 w-full rounded-card border border-gray-200',
             'bg-white px-4 py-3 text-left text-sm font-medium text-dark-text',
@@ -288,8 +305,8 @@ export function FileUpload({
         {/* Upload from gallery */}
         <button
           type="button"
-          onClick={() => !disabled && galleryInputRef.current?.click()}
-          disabled={disabled}
+          onClick={() => !effectiveDisabled && galleryInputRef.current?.click()}
+          disabled={effectiveDisabled}
           className={cn(
             'flex items-center gap-3 w-full rounded-card border border-gray-200',
             'bg-white px-4 py-3 text-left text-sm font-medium text-dark-text',
@@ -324,7 +341,7 @@ export function FileUpload({
             className="sr-only"
             aria-hidden="true"
             onChange={onInputChange}
-            disabled={disabled}
+            disabled={effectiveDisabled}
           />
         </button>
       </div>

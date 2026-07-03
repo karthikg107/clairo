@@ -46,7 +46,8 @@
       "type": "Tipo de ficheiro não suportado. Use PDF, DOCX, JPG, PNG ou HEIC.",
       "size": "Ficheiro demasiado grande. Tamanho máximo: 25 MB.",
       "generic": "Falha no carregamento. Por favor, tente novamente."
-    }
+    },
+    "offline_message": "Você está offline. Analisar um novo documento requer conexão — suas análises salvas continuam disponíveis no painel."
   },
   "disclaimer": {
     "aria_label": "Aviso legal",
@@ -360,7 +361,11 @@
       "heading": "Nenhum resultado",
       "body": "Tente outro termo de pesquisa ou filtro."
     },
-    "item_aria": "Ver análise: {type}, {date}"
+    "item_aria": "Ver análise: {type}, {date}",
+    "offline": {
+      "cached_banner": "Você está offline — mostrando suas análises salvas de {date}.",
+      "offline_banner": "Você está offline. Parte do conteúdo pode estar indisponível."
+    }
   },
   "account": {
     "heading": "Configurações da conta",
@@ -438,6 +443,12 @@
       "confirm_cta": "Excluir permanentemente",
       "deleting": "Excluindo…",
       "close": "Fechar"
+    },
+    "offline": {
+      "heading": "Cópias offline",
+      "body": "Suas 10 análises mais recentes ficam neste dispositivo para releitura sem conexão. Limpar remove apenas deste dispositivo.",
+      "clear_cta": "Limpar cópias offline",
+      "cleared": "Limpo"
     }
   },
   "sharedPage": {
@@ -538,6 +549,15 @@
       "not_stored": "Seu documento não foi armazenado — o Clairo nunca guarda o conteúdo de documentos, inclusive quando há erros.",
       "retry_cta": "Tentar novamente",
       "home_cta": "Ir para o início"
+    }
+  },
+  "pwa": {
+    "install": {
+      "aria_label": "Instalar aplicativo",
+      "heading": "Adicione o Clairo à sua tela inicial",
+      "body": "Acesso mais rápido e análises legíveis offline.",
+      "cta": "Instalar",
+      "dismiss": "Fechar"
     }
   }
 }

@@ -11,8 +11,9 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 import { useTranslations, useFormatter } from 'next-intl'
-import { Search, Upload, Sparkles, CheckCircle2, X } from 'lucide-react'
+import { Search, Upload, Sparkles, CheckCircle2, X, WifiOff } from 'lucide-react'
 import { useAnalysisHistory, type AnalysisHistoryItem } from '@/hooks/useAnalysisHistory'
+import { useOnline } from '@/hooks/useOnline'
 import { track } from '@/lib/analytics'
 import { useQuota } from '@/hooks/useQuota'
 import { DOCUMENT_LANGUAGES } from '@/components/forms/LanguageSelection'
@@ -35,7 +36,8 @@ export function DashboardPage() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
-  const { loading, items } = useAnalysisHistory()
+  const { loading, items, fromCache, cachedAt } = useAnalysisHistory()
+  const online = useOnline()
   const quota = useQuota()
 
   const [search, setSearch] = useState('')
@@ -74,6 +76,26 @@ export function DashboardPage() {
   return (
     <div className="min-h-screen bg-background px-4 py-6">
       <div className="max-w-2xl mx-auto flex flex-col gap-5">
+        {/* CLR-048 — offline: cached copy with its saved-at date */}
+        {(fromCache || !online) && (
+          <div
+            role="status"
+            className="rounded-2xl bg-neutral-100 border border-neutral-200 p-3 flex items-center gap-2.5"
+          >
+            <WifiOff className="w-4 h-4 shrink-0 text-neutral-500" aria-hidden />
+            <p className="text-xs text-neutral-600 leading-relaxed">
+              {fromCache && cachedAt
+                ? t('offline.cached_banner', {
+                    date: format.dateTime(new Date(cachedAt), {
+                      dateStyle: 'medium',
+                      timeStyle: 'short',
+                    }),
+                  })
+                : t('offline.offline_banner')}
+            </p>
+          </div>
+        )}
+
         {showUpgradedBanner && (
           <div className="rounded-2xl bg-success-50 border border-success-200 p-4 flex items-start gap-3">
             <CheckCircle2

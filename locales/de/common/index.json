@@ -46,7 +46,8 @@
       "type": "Dateityp nicht unterstützt. Bitte PDF, DOCX, JPG, PNG oder HEIC verwenden.",
       "size": "Datei zu groß. Maximale Größe ist 25 MB.",
       "generic": "Upload fehlgeschlagen. Bitte erneut versuchen."
-    }
+    },
+    "offline_message": "Sie sind offline. Für die Analyse eines neuen Dokuments ist eine Verbindung nötig — Ihre gespeicherten Analysen finden Sie weiterhin im Dashboard."
   },
   "disclaimer": {
     "aria_label": "Rechtlicher Hinweis",
@@ -356,7 +357,11 @@
       "heading": "Keine Treffer",
       "body": "Versuchen Sie einen anderen Suchbegriff oder Filter."
     },
-    "item_aria": "Analyse ansehen: {type}, {date}"
+    "item_aria": "Analyse ansehen: {type}, {date}",
+    "offline": {
+      "cached_banner": "Sie sind offline — gespeicherte Analysen vom {date}.",
+      "offline_banner": "Sie sind offline. Einige Inhalte sind eventuell nicht verfügbar."
+    }
   },
   "account": {
     "heading": "Kontoeinstellungen",
@@ -434,6 +439,12 @@
       "confirm_cta": "Endgültig löschen",
       "deleting": "Wird gelöscht…",
       "close": "Schließen"
+    },
+    "offline": {
+      "heading": "Offline-Kopien",
+      "body": "Ihre 10 neuesten Analysen bleiben auf diesem Gerät, damit Sie sie ohne Verbindung lesen können. Löschen entfernt sie nur von diesem Gerät.",
+      "clear_cta": "Offline-Kopien löschen",
+      "cleared": "Gelöscht"
     }
   },
   "sharedPage": {
@@ -534,6 +545,15 @@
       "not_stored": "Ihr Dokument wurde nicht gespeichert — Clairo speichert niemals Dokumentinhalte, auch nicht bei Fehlern.",
       "retry_cta": "Erneut versuchen",
       "home_cta": "Zur Startseite"
+    }
+  },
+  "pwa": {
+    "install": {
+      "aria_label": "App installieren",
+      "heading": "Clairo zum Startbildschirm hinzufügen",
+      "body": "Schnellerer Zugriff, Analysen auch offline lesbar.",
+      "cta": "Installieren",
+      "dismiss": "Schließen"
     }
   }
 }
