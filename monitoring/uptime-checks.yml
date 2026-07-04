@@ -1,0 +1,46 @@
+# CLR-056 — uptime checks (provider-agnostic definitions).
+# Apply at Checkly / BetterStack / UptimeRobot; keep this file the
+# source of truth for what is monitored and how alerts route.
+
+defaults:
+  alert_after_consecutive_failures: 2
+  channels:
+    - type: slack        # PRIMARY
+      target: "#clairo-alerts"
+    - type: email        # BACKUP
+      target: oncall@clairo.app
+  locations: [eu-west, us-east, ap-south]
+
+checks:
+  - name: landing-page
+    url: https://clairo.app/
+    method: GET
+    interval_seconds: 60
+    assertions:
+      - status_code == 200
+      - body contains "Understand any contract"
+      - tls_certificate_valid
+      - response_time_ms < 2000
+
+  - name: api-health
+    url: https://api.clairo.app/api/v1/health
+    method: GET
+    interval_seconds: 60
+    assertions:
+      - status_code == 200
+      - json.status == "ok"
+      - response_time_ms < 1000
+
+  - name: api-ready            # deep check: DB + Redis reachability
+    url: https://api.clairo.app/api/v1/ready
+    method: GET
+    interval_seconds: 300
+    assertions:
+      - status_code == 200
+
+  - name: shared-page-route    # public share infrastructure serving 404s correctly
+    url: https://clairo.app/s/00000000-0000-4000-8000-000000000000
+    method: GET
+    interval_seconds: 300
+    assertions:
+      - status_code == 200     # unavailable view renders as a friendly page

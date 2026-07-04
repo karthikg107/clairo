@@ -294,7 +294,11 @@ async def test_no_alert_below_min_sample_size(fake_redis_store):
         for _ in range(5):
             await cb_module.record_outcome_for_error_rate(is_error=True)
 
-    mock_capture.assert_not_called()
+    # No ERROR-RATE alert below the minimum sample size. (The separate
+    # CLR-056 consecutive-errors alert legitimately fires here — 5 errors
+    # in a row — so filter to rate alerts only.)
+    rate_alerts = [c for c in mock_capture.call_args_list if "error rate" in c.args[0]]
+    assert rate_alerts == []
 
 
 @pytest.mark.asyncio

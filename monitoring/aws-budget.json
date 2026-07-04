@@ -1,0 +1,9 @@
+{
+  "BudgetName": "clairo-daily-infra",
+  "BudgetLimit": {
+    "Amount": "REPLACE_ME_EXPECTED_DAILY_USD",
+    "Unit": "USD"
+  },
+  "TimeUnit": "DAILY",
+  "BudgetType": "COST"
+}

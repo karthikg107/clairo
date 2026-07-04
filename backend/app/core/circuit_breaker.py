@@ -26,6 +26,14 @@ ERROR_RATE_WINDOW_SECONDS = 60 * 5
 ERROR_RATE_THRESHOLD = 0.01
 ERROR_RATE_MIN_SAMPLES = 20
 
+# CLR-056 — consecutive-failure alert, distinct from the windowed breaker:
+# 3 Claude errors in a row (no success in between) fires a Sentry alert
+# exactly once per streak. Complements the breaker (which needs 5/min).
+CONSECUTIVE_ERROR_ALERT_THRESHOLD = 3
+KEY_CONSECUTIVE = f"{PREFIX_ERROR_RATE}consecutive"
+# TTL so an abandoned counter can't fire a stale alert days later.
+CONSECUTIVE_TTL_SECONDS = 60 * 30
+
 
 def _sentry_capture(msg: str, level: str, extra: dict) -> None:
     try:
@@ -87,9 +95,22 @@ async def record_outcome_for_error_rate(*, is_error: bool) -> None:
             errors = await client.incr(error_key)
             if errors == 1:
                 await client.expire(error_key, ERROR_RATE_WINDOW_SECONDS)
+
+            # CLR-056 — consecutive-error alert (3 in a row, once per streak)
+            consecutive = await client.incr(KEY_CONSECUTIVE)
+            await client.expire(KEY_CONSECUTIVE, CONSECUTIVE_TTL_SECONDS)
+            if consecutive == CONSECUTIVE_ERROR_ALERT_THRESHOLD:
+                logger.error("analysis.consecutive_errors_alert", consecutive=consecutive)
+                _sentry_capture(
+                    f"Claude API: {consecutive} consecutive errors",
+                    level="error",
+                    extra={"consecutive_errors": consecutive},
+                )
         else:
             errors_raw = await client.get(error_key)
             errors = int(errors_raw) if errors_raw else 0
+            # A success ends the streak.
+            await client.delete(KEY_CONSECUTIVE)
 
         if total >= ERROR_RATE_MIN_SAMPLES:
             rate = errors / total

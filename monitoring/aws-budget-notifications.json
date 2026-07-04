@@ -1,0 +1,23 @@
+[
+  {
+    "Notification": {
+      "NotificationType": "ACTUAL",
+      "ComparisonOperator": "GREATER_THAN",
+      "Threshold": 120,
+      "ThresholdType": "PERCENTAGE"
+    },
+    "Subscribers": [
+      { "SubscriptionType": "EMAIL", "Address": "oncall@clairo.app" },
+      { "SubscriptionType": "SNS", "Address": "REPLACE_ME_SNS_TOPIC_ARN_FOR_SLACK" }
+    ]
+  },
+  {
+    "Notification": {
+      "NotificationType": "FORECASTED",
+      "ComparisonOperator": "GREATER_THAN",
+      "Threshold": 120,
+      "ThresholdType": "PERCENTAGE"
+    },
+    "Subscribers": [{ "SubscriptionType": "EMAIL", "Address": "oncall@clairo.app" }]
+  }
+]
