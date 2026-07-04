@@ -461,7 +461,19 @@
     "aria_label": "Cookie consent",
     "body": "We use privacy-friendly analytics to understand how Clairo is used — anonymous only, never your documents. Analytics runs only if you accept.",
     "accept": "Accept",
-    "decline": "Decline"
+    "decline": "Decline",
+    "customize": "Customize",
+    "save": "Save choices",
+    "categories": {
+      "essential": {
+        "name": "Essential",
+        "description": "Sign-in session and security. Required for the site to work — always on."
+      },
+      "analytics": {
+        "name": "Analytics",
+        "description": "Anonymous usage statistics (PostHog). Never your documents, never personal data."
+      }
+    }
   },
   "landing": {
     "hero": {

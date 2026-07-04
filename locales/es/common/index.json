@@ -469,7 +469,19 @@
     "aria_label": "Consentimiento de cookies",
     "body": "Usamos analíticas respetuosas con la privacidad para entender cómo se usa Clairo — solo de forma anónima, nunca tus documentos. Las analíticas se activan solo si aceptas.",
     "accept": "Aceptar",
-    "decline": "Rechazar"
+    "decline": "Rechazar",
+    "customize": "Personalizar",
+    "save": "Guardar preferencias",
+    "categories": {
+      "essential": {
+        "name": "Esenciales",
+        "description": "Sesión de inicio y seguridad. Necesarias para que el sitio funcione — siempre activas."
+      },
+      "analytics": {
+        "name": "Analíticas",
+        "description": "Estadísticas de uso anónimas (PostHog). Nunca tus documentos ni datos personales."
+      }
+    }
   },
   "landing": {
     "hero": {

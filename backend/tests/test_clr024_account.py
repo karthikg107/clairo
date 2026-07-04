@@ -202,7 +202,8 @@ async def test_export_requires_auth(client):
 @pytest.mark.asyncio
 async def test_export_shape_with_no_subscription_or_analyses(client):
     user = _make_user()
-    _override_db(user, None, [], [])
+    # queue: require_user, subscription, analyses, audit, share_links, referrals
+    _override_db(user, None, [], [], [], [])
 
     r = await client.get("/api/v1/account/export", headers={"X-Clerk-User-Id": "user_abc"})
     assert r.status_code == 200
@@ -210,7 +211,12 @@ async def test_export_shape_with_no_subscription_or_analyses(client):
     assert body["user"]["email"] == "a@b.com"
     assert body["subscription"] is None
     assert body["analyses"] == []
+    assert body["share_links"] == []
+    assert body["referrals"] == []
     assert body["audit_log"] == []
+    # CLR-055 — quota fields belong to the account record
+    assert "free_analyses_used" in body["user"]
+    assert "bonus_analyses" in body["user"]
 
 
 @pytest.mark.asyncio
@@ -238,7 +244,7 @@ async def test_export_includes_subscription_analyses_and_audit_log(client):
         metadata_json={"tos_version": "1.0"},
         created_at=datetime(2026, 1, 16, tzinfo=UTC),
     )
-    _override_db(user, subscription, [analysis], [audit_row])
+    _override_db(user, subscription, [analysis], [audit_row], [], [])
 
     r = await client.get("/api/v1/account/export", headers={"X-Clerk-User-Id": "user_abc"})
     assert r.status_code == 200
@@ -283,7 +289,7 @@ async def test_export_never_contains_document_content_markers():
     async def _mock_rate(*args, **kwargs):
         return RateLimitResult(allowed=True, limit=100, remaining=99, reset_in_seconds=3600)
 
-    _override_db(user, None, [analysis], [])
+    _override_db(user, None, [analysis], [], [], [])
 
     with patch.object(rl_module, "check_rate_limit", side_effect=_mock_rate):
         with patch.object(rl_module, "check_endpoint_rate_limit", side_effect=_mock_rate):

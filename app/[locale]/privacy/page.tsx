@@ -113,18 +113,46 @@ export default function PrivacyPage() {
         </section>
 
         <section>
-          <h2 className="text-lg font-semibold text-neutral-900 mb-2">6. Your rights</h2>
+          <h2 className="text-lg font-semibold text-neutral-900 mb-2">
+            6. Your rights (GDPR)
+          </h2>
           <p>
-            You have the right to access, correct, and delete your personal data. To
-            request deletion, [LEGAL REVIEW REQUIRED — specify process, e.g. email address
-            or in-app delete button]. We will complete deletion within [LEGAL REVIEW
-            REQUIRED — specify timeframe, e.g. 30 days].
+            If you are in the EU/UK, the GDPR gives you the following rights. Most of them
+            are built directly into Clairo:
           </p>
-          <p>
-            GDPR rights (EU/UK users): access, rectification, erasure, restriction,
-            portability, objection. [LEGAL REVIEW REQUIRED — right to lodge complaint with
-            supervisory authority.]
-          </p>
+          <ul className="list-disc pl-5 space-y-1">
+            <li>
+              <strong>Access &amp; portability</strong> — download everything Clairo
+              stores about you as JSON from Account settings → &quot;Download my
+              data&quot; (account details, subscription status, analyses, share links,
+              referrals, and your audit log entries).
+            </li>
+            <li>
+              <strong>Erasure</strong> — delete your account from Account settings. The
+              deletion is a hard delete that completes immediately (within seconds, not
+              days): your account, analyses, share links, referrals, and subscription
+              records are removed in one transaction.
+            </li>
+            <li>
+              <strong>Rectification</strong> — update your language preferences in Account
+              settings and your email via your sign-in provider.
+            </li>
+            <li>
+              <strong>Withdraw consent</strong> — analytics runs only after you opt in via
+              the cookie banner, and you can decline at any time. Declining means the
+              analytics code is never even loaded.
+            </li>
+            <li>
+              <strong>Restriction &amp; objection</strong> — contact us using the details
+              in section 9 and we will action your request. [LEGAL REVIEW REQUIRED —
+              confirm process and response window.]
+            </li>
+            <li>
+              <strong>Complaint</strong> — you have the right to lodge a complaint with
+              your local data protection supervisory authority. [LEGAL REVIEW REQUIRED —
+              name lead supervisory authority once establishment is determined.]
+            </li>
+          </ul>
         </section>
 
         <section>

@@ -45,6 +45,8 @@ from app.core.http import require_user
 from app.db.session import get_db
 from app.models.analysis import Analysis
 from app.models.audit_log import AuditLog
+from app.models.referral import Referral
+from app.models.share_link import ShareLink
 from app.models.subscription import Subscription
 from app.models.user import User
 
@@ -116,6 +118,10 @@ class DataExportResponse(BaseModel):
     user: dict
     subscription: dict | None
     analyses: list[dict]
+    # CLR-055 — features added after CLR-024, kept in the export so
+    # "all stored data" stays true as the product grows
+    share_links: list[dict]
+    referrals: list[dict]
     audit_log: list[dict]
 
 
@@ -138,6 +144,26 @@ async def export_account_data(
     )
     audit_rows = audit_result.scalars().all()
 
+    # CLR-055 — share links for this user's analyses
+    share_links_result = await db.execute(
+        select(ShareLink)
+        .join(Analysis, ShareLink.analysis_id == Analysis.id)
+        .where(Analysis.user_id == user.id)
+        .order_by(ShareLink.created_at.desc())
+    )
+    share_links = share_links_result.scalars().all()
+
+    # CLR-055 — referrals where this user is either side. The OTHER user's
+    # id is not exported (it's someone else's personal data) — only the
+    # role, state, and dates.
+    referrals_result = await db.execute(
+        select(Referral).where(
+            (Referral.referrer_user_id == user.id)
+            | (Referral.referred_user_id == user.id)
+        )
+    )
+    referral_rows = referrals_result.scalars().all()
+
     return DataExportResponse(
         user={
             "id": str(user.id),
@@ -148,6 +174,8 @@ async def export_account_data(
             "doc_language": user.doc_language,
             "output_language": user.output_language,
             "country": user.country,
+            "free_analyses_used": user.free_analyses_used,
+            "bonus_analyses": user.bonus_analyses,
             "created_at": user.created_at.isoformat(),
         },
         subscription=(
@@ -177,6 +205,25 @@ async def export_account_data(
                 "created_at": a.created_at.isoformat(),
             }
             for a in analyses
+        ],
+        share_links=[
+            {
+                "id": str(link.id),
+                "analysis_id": str(link.analysis_id),
+                "expires_at": link.expires_at.isoformat(),
+                "is_revoked": link.is_revoked,
+                "created_at": link.created_at.isoformat(),
+            }
+            for link in share_links
+        ],
+        referrals=[
+            {
+                "role": "referrer" if r.referrer_user_id == user.id else "referred",
+                "completed_at": r.completed_at.isoformat() if r.completed_at else None,
+                "bonus_granted_to_referrer": r.bonus_granted,
+                "created_at": r.created_at.isoformat(),
+            }
+            for r in referral_rows
         ],
         audit_log=[
             {
