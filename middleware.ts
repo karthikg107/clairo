@@ -1,13 +1,39 @@
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
 import createIntlMiddleware from 'next-intl/middleware'
-import { NextRequest } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 
 // Locale constants live in lib/locales.ts (CLR-050) so client/server code
 // can import them without pulling middleware dependencies into its graph.
 // Re-exported here for backwards compatibility.
 import { locales } from '@/lib/locales'
+import { GEO_COUNTRY_TO_PATH } from '@/lib/countryLanding'
 
 export { locales, rtlLocales, type Locale } from '@/lib/locales'
+
+// CLR-049 — first visit to the root: send the visitor to their country
+// landing page based on the platform's IP-geolocation header. Cookie-
+// guarded so navigating back to / afterwards never re-redirects.
+const GEO_COOKIE = 'clairo_geo'
+
+function geoRedirect(req: NextRequest): NextResponse | null {
+  if (req.nextUrl.pathname !== '/') return null
+  if (req.cookies.get(GEO_COOKIE)) return null
+
+  const country = (
+    req.headers.get('x-vercel-ip-country') ??
+    req.headers.get('cf-ipcountry') ??
+    ''
+  ).toUpperCase()
+
+  const path = GEO_COUNTRY_TO_PATH[country]
+  const response = path ? NextResponse.redirect(new URL(path, req.url)) : null
+  if (response) {
+    response.cookies.set(GEO_COOKIE, country, { maxAge: 60 * 60 * 24 * 365 })
+    return response
+  }
+  // No mapping — mark as seen so we don't re-check every root visit.
+  return null
+}
 
 const intlMiddleware = createIntlMiddleware({
   locales,
@@ -60,12 +86,12 @@ const clerkHandler = clerkMiddleware(async (auth, req: NextRequest) => {
   if (!isPublicRoute(req)) {
     await auth().protect()
   }
-  return intlMiddleware(req)
+  return geoRedirect(req) ?? intlMiddleware(req)
 })
 
 export default isE2EMode
   ? function e2eMiddleware(req: NextRequest) {
-      return intlMiddleware(req)
+      return geoRedirect(req) ?? intlMiddleware(req)
     }
   : clerkHandler
 

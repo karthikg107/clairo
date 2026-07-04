@@ -544,6 +544,38 @@
       "privacy": "गोपनीयता",
       "terms": "शर्तें",
       "pricing": "मूल्य"
+    },
+    "countrySection": {
+      "example_label": "एक सामान्य अनुबंध से",
+      "org_line": "स्वतंत्र सहायता उपलब्ध है:",
+      "price_line": "Pro प्लान लगभग {price}/माह से।",
+      "price_note": "(बिलिंग USD में — स्थानीय मूल्य अनुमानित)"
+    },
+    "countries": {
+      "de": {
+        "label": "Germany",
+        "heading": "Built for German rental contracts",
+        "example_clause": "„Der Mieter verpflichtet sich, die Schönheitsreparaturen während der Mietzeit auf eigene Kosten durchzuführen.“",
+        "example_explanation": "This clause says you must pay for cosmetic repairs (painting walls, etc.) yourself during the tenancy. Clauses like this are common in German leases — but rigid schedules for them are often invalid."
+      },
+      "uk": {
+        "label": "United Kingdom",
+        "heading": "Built for UK tenancy agreements",
+        "example_clause": "“The Tenant shall be responsible for the cost of professional cleaning of the Property at the end of the tenancy.”",
+        "example_explanation": "This clause makes you pay for professional end-of-tenancy cleaning. Since the Tenant Fees Act 2019, landlords in England generally cannot require professional cleaning — only that the property is returned as clean as you received it."
+      },
+      "in": {
+        "label": "India",
+        "heading": "Built for Indian employment contracts",
+        "example_clause": "“The Employee shall serve a notice period of 90 days, failing which the Employee shall pay the Company an amount equal to three months' gross salary.”",
+        "example_explanation": "This clause sets a 90-day notice period and makes you pay three months' gross salary if you leave earlier. Long notice periods with salary-recovery clauses are common in Indian employment contracts — understand the buyout maths before you sign."
+      },
+      "ae": {
+        "label": "United Arab Emirates",
+        "heading": "Built for UAE employment contracts",
+        "example_clause": "“The Employee shall not join any competing business within the UAE for a period of two years after the termination of this contract.”",
+        "example_explanation": "This is a non-compete clause: no similar job in the UAE for two years after leaving. UAE labour law caps non-competes at two years and they must be limited to what's genuinely necessary — worth understanding exactly what it covers before signing."
+      }
     }
   },
   "errorPages": {

@@ -544,6 +544,38 @@
       "privacy": "Datenschutz",
       "terms": "AGB",
       "pricing": "Preise"
+    },
+    "countrySection": {
+      "example_label": "Aus einem typischen Vertrag",
+      "org_line": "Unabhängige Hilfe bietet",
+      "price_line": "Pro-Tarif ab etwa {price}/Monat.",
+      "price_note": "(Abrechnung in USD — lokaler Preis ungefähr)"
+    },
+    "countries": {
+      "de": {
+        "label": "Deutschland",
+        "heading": "Gemacht für deutsche Mietverträge",
+        "example_clause": "„Der Mieter verpflichtet sich, die Schönheitsreparaturen während der Mietzeit auf eigene Kosten durchzuführen.“",
+        "example_explanation": "Diese Klausel bedeutet, dass Sie Schönheitsreparaturen (Wände streichen usw.) während der Mietzeit selbst bezahlen müssen. Solche Klauseln sind in deutschen Mietverträgen üblich — starre Fristenpläne dafür sind aber oft unwirksam."
+      },
+      "uk": {
+        "label": "Vereinigtes Königreich",
+        "heading": "Gemacht für britische Mietverträge",
+        "example_clause": "“The Tenant shall be responsible for the cost of professional cleaning of the Property at the end of the tenancy.”",
+        "example_explanation": "Diese Klausel verlangt eine professionelle Endreinigung auf Ihre Kosten. Seit dem Tenant Fees Act 2019 dürfen Vermieter in England das in der Regel nicht mehr verlangen — nur eine Rückgabe im übernommenen Sauberkeitszustand."
+      },
+      "in": {
+        "label": "Indien",
+        "heading": "Gemacht für indische Arbeitsverträge",
+        "example_clause": "“The Employee shall serve a notice period of 90 days, failing which the Employee shall pay the Company an amount equal to three months' gross salary.”",
+        "example_explanation": "Diese Klausel legt eine Kündigungsfrist von 90 Tagen fest und verlangt drei Brutto-Monatsgehälter, wenn Sie früher gehen. Solche Klauseln sind in indischen Arbeitsverträgen üblich — rechnen Sie die Ablösesumme vor der Unterschrift durch."
+      },
+      "ae": {
+        "label": "Vereinigte Arabische Emirate",
+        "heading": "Gemacht für VAE-Arbeitsverträge",
+        "example_clause": "“The Employee shall not join any competing business within the UAE for a period of two years after the termination of this contract.”",
+        "example_explanation": "Das ist ein Wettbewerbsverbot: zwei Jahre lang keine ähnliche Tätigkeit in den VAE nach dem Ausscheiden. Das VAE-Arbeitsrecht begrenzt solche Verbote auf zwei Jahre und auf das wirklich Notwendige — verstehen Sie die genaue Reichweite vor der Unterschrift."
+      }
     }
   },
   "errorPages": {

@@ -22,7 +22,9 @@ import {
   Check,
 } from 'lucide-react'
 import { PRICING_PLANS, formatUsd } from '@/lib/pricing'
+import type { LandingCountry } from '@/lib/countryLanding'
 import { AnimatedDemo } from './AnimatedDemo'
+import { CountrySection } from './CountrySection'
 
 const LANGUAGE_PAIRS: Array<{ from: string; to: string; dir?: 'rtl' }> = [
   { from: 'Deutsch', to: 'हिन्दी' },
@@ -32,7 +34,14 @@ const LANGUAGE_PAIRS: Array<{ from: string; to: string; dir?: 'rtl' }> = [
 
 const TEASER_TIERS = ['starter', 'pro', 'team'] as const
 
-export async function LandingPage({ locale }: { locale: string }) {
+export async function LandingPage({
+  locale,
+  country,
+}: {
+  locale: string
+  /** CLR-049 — renders the country-specific section when set */
+  country?: LandingCountry
+}) {
   const t = await getTranslations({ locale, namespace: 'landing' })
   const tTiers = await getTranslations({ locale, namespace: 'pricingPage.tiers' })
 
@@ -104,6 +113,9 @@ export async function LandingPage({ locale }: { locale: string }) {
           plainLabel={t('demo.plain')}
         />
       </section>
+
+      {/* ── Country-specific example (CLR-049) ───────────────────────────── */}
+      {country && <CountrySection locale={locale} country={country} />}
 
       {/* ── How it works — 3 steps ───────────────────────────────────────── */}
       <section aria-labelledby="how-heading" className="bg-white px-4 py-12">
