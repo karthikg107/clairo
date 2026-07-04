@@ -52,7 +52,9 @@
   "disclaimer": {
     "aria_label": "Aviso legal",
     "heading": "Não é aconselhamento jurídico.",
-    "body": "O Clairo explica em linguagem simples o que diz o seu contrato. Não fornece aconselhamento jurídico e não pode dizer se você deve assinar. Para decisões legais, consulte um advogado qualificado."
+    "body": "O Clairo explica em linguagem simples o que diz o seu contrato. Não fornece aconselhamento jurídico e não pode dizer se você deve assinar. Para decisões legais, consulte um advogado qualificado.",
+    "label": "Aviso legal",
+    "upload": "O Clairo explica contratos em linguagem simples. Não é aconselhamento jurídico. Seu documento é processado em memória e nunca armazenado."
   },
   "errors": {
     "404Title": "Página não encontrada",
@@ -558,6 +560,21 @@
       "body": "Acesso mais rápido e análises legíveis offline.",
       "cta": "Instalar",
       "dismiss": "Fechar"
+    }
+  },
+  "uploadFlow": {
+    "title": "Analisar um contrato",
+    "processing": "Lendo seu documento…",
+    "analysing": "Analisando seu contrato…",
+    "quota": {
+      "heading": "Você usou suas análises gratuitas",
+      "body": "Faça upgrade para continuar analisando contratos sem limites — ou ganhe análises bônus convidando amigos.",
+      "cta": "Ver planos"
+    },
+    "error": {
+      "heading": "Algo deu errado",
+      "body": "Não conseguimos processar seu documento. Seu documento não foi armazenado. Tente novamente.",
+      "retry": "Tentar novamente"
     }
   }
 }

@@ -52,7 +52,9 @@
   "disclaimer": {
     "aria_label": "Avertissement juridique",
     "heading": "Pas de conseil juridique.",
-    "body": "Clairo explique en langage simple ce que dit votre contrat. Il ne fournit pas de conseils juridiques et ne peut pas vous dire si vous devez signer. Pour les décisions juridiques, consultez un avocat qualifié."
+    "body": "Clairo explique en langage simple ce que dit votre contrat. Il ne fournit pas de conseils juridiques et ne peut pas vous dire si vous devez signer. Pour les décisions juridiques, consultez un avocat qualifié.",
+    "label": "Avertissement juridique",
+    "upload": "Clairo explique les contrats en langage simple. Ce n'est pas un conseil juridique. Votre document est traité en mémoire et jamais conservé."
   },
   "errors": {
     "404Title": "Page introuvable",
@@ -562,6 +564,21 @@
       "body": "Accès plus rapide, analyses lisibles hors ligne.",
       "cta": "Installer",
       "dismiss": "Fermer"
+    }
+  },
+  "uploadFlow": {
+    "title": "Analyser un contrat",
+    "processing": "Lecture de votre document…",
+    "analysing": "Analyse de votre contrat…",
+    "quota": {
+      "heading": "Vous avez utilisé vos analyses gratuites",
+      "body": "Passez à un forfait supérieur pour analyser sans limite — ou gagnez des analyses bonus en invitant des amis.",
+      "cta": "Voir les forfaits"
+    },
+    "error": {
+      "heading": "Une erreur est survenue",
+      "body": "Nous n'avons pas pu traiter votre document. Votre document n'a pas été conservé. Veuillez réessayer.",
+      "retry": "Réessayer"
     }
   }
 }

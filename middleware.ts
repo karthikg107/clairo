@@ -42,16 +42,32 @@ const isPublicRoute = createRouteMatcher([
   // referral landing (CLR-044) — visitors have no account yet
   '/ref/(.*)',
   '/:locale/ref/(.*)',
+  // upload flow (CLR-054) — anonymous users get 2 free analyses (CLR-025)
+  '/upload(.*)',
+  '/:locale/upload(.*)',
   // health check
   '/api/health',
 ])
 
-export default clerkMiddleware(async (auth, req: NextRequest) => {
+// CLR-054 — E2E mode: the Playwright suite runs without a Clerk instance
+// (clerkMiddleware rejects browser requests outright on a placeholder
+// key). Set ONLY by playwright.config.ts's webServer env — never in any
+// deployment environment. Auth-dependent behavior is still covered: the
+// signed-in E2E project requires real Clerk test keys (E2E_CLERK_KEYS).
+const isE2EMode = process.env.NEXT_PUBLIC_E2E_MODE === '1'
+
+const clerkHandler = clerkMiddleware(async (auth, req: NextRequest) => {
   if (!isPublicRoute(req)) {
     await auth().protect()
   }
   return intlMiddleware(req)
 })
+
+export default isE2EMode
+  ? function e2eMiddleware(req: NextRequest) {
+      return intlMiddleware(req)
+    }
+  : clerkHandler
 
 export const config = {
   matcher: [

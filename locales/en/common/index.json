@@ -52,7 +52,9 @@
   "disclaimer": {
     "aria_label": "Legal disclaimer",
     "heading": "Not legal advice.",
-    "body": "Clairo explains what your contract says in plain language. It does not give legal advice and cannot tell you whether to sign. For legal decisions, consult a qualified lawyer."
+    "body": "Clairo explains what your contract says in plain language. It does not give legal advice and cannot tell you whether to sign. For legal decisions, consult a qualified lawyer.",
+    "label": "Legal disclaimer",
+    "upload": "Clairo explains contracts in plain language. It is not legal advice. Your document is processed in memory and never stored."
   },
   "errors": {
     "404Title": "Page not found",
@@ -550,6 +552,21 @@
       "body": "Faster access, and your analyses readable offline.",
       "cta": "Install",
       "dismiss": "Dismiss"
+    }
+  },
+  "uploadFlow": {
+    "title": "Analyse a contract",
+    "processing": "Reading your document…",
+    "analysing": "Analysing your contract…",
+    "quota": {
+      "heading": "You've used your free analyses",
+      "body": "Upgrade to keep analysing contracts without limits — or earn bonus analyses by inviting friends.",
+      "cta": "View plans"
+    },
+    "error": {
+      "heading": "Something went wrong",
+      "body": "We couldn't process your document. Your document was not stored. Please try again.",
+      "retry": "Try again"
     }
   }
 }

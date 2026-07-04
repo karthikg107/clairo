@@ -44,3 +44,7 @@ coverage/
 *.key
 *.p12
 *.pfx
+
+# Playwright (CLR-054)
+test-results/
+playwright-report/

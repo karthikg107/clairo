@@ -52,7 +52,9 @@
   "disclaimer": {
     "aria_label": "Aviso legal",
     "heading": "No es asesoramiento legal.",
-    "body": "Clairo explica en lenguaje sencillo lo que dice su contrato. No da asesoramiento legal ni puede decirle si debe firmar. Para decisiones legales, consulte a un abogado calificado."
+    "body": "Clairo explica en lenguaje sencillo lo que dice su contrato. No da asesoramiento legal ni puede decirle si debe firmar. Para decisiones legales, consulte a un abogado calificado.",
+    "label": "Aviso legal",
+    "upload": "Clairo explica contratos en lenguaje sencillo. No es asesoramiento legal. Tu documento se procesa en memoria y nunca se guarda."
   },
   "errors": {
     "404Title": "Página no encontrada",
@@ -558,6 +560,21 @@
       "body": "Acceso más rápido y tus análisis legibles sin conexión.",
       "cta": "Instalar",
       "dismiss": "Cerrar"
+    }
+  },
+  "uploadFlow": {
+    "title": "Analizar un contrato",
+    "processing": "Leyendo tu documento…",
+    "analysing": "Analizando tu contrato…",
+    "quota": {
+      "heading": "Has usado tus análisis gratuitos",
+      "body": "Mejora tu plan para seguir analizando contratos sin límites — o gana análisis extra invitando a amigos.",
+      "cta": "Ver planes"
+    },
+    "error": {
+      "heading": "Algo salió mal",
+      "body": "No pudimos procesar tu documento. Tu documento no se guardó. Inténtalo de nuevo.",
+      "retry": "Reintentar"
     }
   }
 }

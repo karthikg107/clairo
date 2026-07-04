@@ -52,7 +52,9 @@
   "disclaimer": {
     "aria_label": "Rechtlicher Hinweis",
     "heading": "Kein Rechtsrat.",
-    "body": "Clairo erklärt, was Ihr Vertrag in einfacher Sprache besagt. Es gibt keinen Rechtsrat und kann nicht sagen, ob Sie unterschreiben sollten. Für rechtliche Entscheidungen wenden Sie sich an einen qualifizierten Anwalt."
+    "body": "Clairo erklärt, was Ihr Vertrag in einfacher Sprache besagt. Es gibt keinen Rechtsrat und kann nicht sagen, ob Sie unterschreiben sollten. Für rechtliche Entscheidungen wenden Sie sich an einen qualifizierten Anwalt.",
+    "label": "Rechtlicher Hinweis",
+    "upload": "Clairo erklärt Verträge in einfacher Sprache. Dies ist keine Rechtsberatung. Ihr Dokument wird im Arbeitsspeicher verarbeitet und nie gespeichert."
   },
   "errors": {
     "404Title": "Seite nicht gefunden",
@@ -554,6 +556,21 @@
       "body": "Schnellerer Zugriff, Analysen auch offline lesbar.",
       "cta": "Installieren",
       "dismiss": "Schließen"
+    }
+  },
+  "uploadFlow": {
+    "title": "Vertrag analysieren",
+    "processing": "Ihr Dokument wird gelesen…",
+    "analysing": "Ihr Vertrag wird analysiert…",
+    "quota": {
+      "heading": "Sie haben Ihre Gratis-Analysen aufgebraucht",
+      "body": "Upgraden Sie, um Verträge ohne Limit zu analysieren — oder verdienen Sie Bonus-Analysen, indem Sie Freunde einladen.",
+      "cta": "Tarife ansehen"
+    },
+    "error": {
+      "heading": "Etwas ist schiefgelaufen",
+      "body": "Wir konnten Ihr Dokument nicht verarbeiten. Ihr Dokument wurde nicht gespeichert. Bitte versuchen Sie es erneut.",
+      "retry": "Erneut versuchen"
     }
   }
 }
