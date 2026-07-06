@@ -71,6 +71,17 @@ _ENDPOINT_HOURLY_LIMITS: dict[str, tuple[int, int]] = {
 
 _SENTRY_ALERT_THRESHOLD = 50
 
+# Per-user upload limits (uploads per hour) — security hardening item 9.
+# Layered ON TOP of the per-endpoint hourly limit; keyed by user identity
+# (or IP for anonymous) so a single account can't burst uploads.
+_UPLOAD_HOURLY_LIMITS = {"free": 10, "paid": 50}
+
+# Auth-failure monitoring — security hardening items 1/7. Not a login
+# limiter (auth is Clerk); this tracks INVALID-TOKEN 401s at our API surface
+# per IP, to alert on credential-stuffing / token-guessing spikes.
+_AUTH_FAILURE_WINDOW_SECONDS = 300  # 5 minutes
+_AUTH_FAILURE_ALERT_THRESHOLD = 10
+
 
 @dataclass
 class RateLimitResult:
@@ -159,3 +170,41 @@ async def check_endpoint_rate_limit(
     except Exception as exc:
         logger.error("rate_limit.endpoint_redis_error", identifier=identifier, error=str(exc))
         return RateLimitResult(allowed=True, limit=limit, remaining=limit, reset_in_seconds=_SECONDS_PER_HOUR)
+
+
+async def check_upload_rate_limit(identifier: str, *, paid: bool) -> RateLimitResult:
+    """
+    Per-user hourly upload cap (security hardening item 9):
+    free = 10/hr, paid = 50/hr. Fail-open on Redis errors.
+    """
+    limit = _UPLOAD_HOURLY_LIMITS["paid" if paid else "free"]
+    key = f"{PREFIX_RATE}upload_user:{identifier}"
+    try:
+        count, ttl = await _redis_incr_window(key, _SECONDS_PER_HOUR)
+        return RateLimitResult(
+            allowed=count <= limit,
+            limit=limit,
+            remaining=max(0, limit - count),
+            reset_in_seconds=ttl,
+        )
+    except Exception as exc:
+        logger.error("rate_limit.upload_redis_error", identifier=identifier, error=str(exc))
+        return RateLimitResult(allowed=True, limit=limit, remaining=limit, reset_in_seconds=_SECONDS_PER_HOUR)
+
+
+async def record_auth_failure(identifier: str) -> int:
+    """
+    Increment the 5-minute auth-failure counter for an IP and return the
+    running count (security hardening items 1/7). Fail-open (returns 0 so
+    callers never alert on a Redis outage).
+    """
+    key = f"{PREFIX_RATE}authfail:{identifier}"
+    try:
+        count, _ttl = await _redis_incr_window(key, _AUTH_FAILURE_WINDOW_SECONDS)
+        return count
+    except Exception:
+        return 0
+
+
+def auth_failure_alert_threshold() -> int:
+    return _AUTH_FAILURE_ALERT_THRESHOLD

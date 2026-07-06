@@ -32,6 +32,11 @@ def get_engine():
             pool_size=10,
             max_overflow=20,
             pool_pre_ping=True,  # reconnect on stale connections
+            # Security hardening item 10: cap every query at 10s server-side
+            # (Postgres statement_timeout, in ms) so a slow/pathological query
+            # can't tie up a connection indefinitely. asyncpg applies
+            # server_settings as connection GUCs.
+            connect_args={"server_settings": {"statement_timeout": "10000"}},
         )
     return _engine
 

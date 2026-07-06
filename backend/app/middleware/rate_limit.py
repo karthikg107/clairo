@@ -21,6 +21,7 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from app.core.http import get_client_ip
 from app.core.logging import get_logger
 from app.core.rate_limit import RateLimitTier, check_endpoint_rate_limit, check_rate_limit
+from app.core.security_events import EVENT_RATE_LIMIT_HIT, log_security_event
 
 logger = get_logger(__name__)
 
@@ -70,6 +71,11 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         )
 
         if not result.allowed:
+            await log_security_event(
+                action=EVENT_RATE_LIMIT_HIT,
+                request=request,
+                metadata={"scope": "endpoint", "endpoint": endpoint, "limit": result.limit},
+            )
             return JSONResponse(
                 status_code=429,
                 content={

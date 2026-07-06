@@ -13,11 +13,25 @@ from __future__ import annotations
 from fastapi import APIRouter, File, HTTPException, Request, UploadFile, status
 from pydantic import BaseModel
 
+from app.core.http import get_clerk_id, get_client_ip
 from app.core.logging import get_logger
+from app.core.rate_limit import check_upload_rate_limit
+from app.core.security_events import (
+    EVENT_RATE_LIMIT_HIT,
+    EVENT_UPLOAD_REJECTED,
+    log_security_event,
+)
 from app.services.file_validation import MAX_FILE_BYTES, validate_file
 
 router = APIRouter()
 logger = get_logger(__name__)
+
+
+def _is_paid_tier(request: Request) -> bool:
+    # Populated by JWTAuthMiddleware from Clerk public metadata (CLR-031);
+    # defaults to free when auth middleware is not active (local dev).
+    tier = getattr(request.state, "subscription_tier", "free")
+    return tier not in ("free", None, "")
 
 
 class ValidationResponse(BaseModel):
@@ -47,6 +61,25 @@ async def validate_upload(
     Returns 200 with valid=True/False. Callers should check `valid` before proceeding.
     Returns 413 if file exceeds 25 MB before any reads (enforced by nginx/Vercel as well).
     """
+    # Per-user upload rate limit (item 9): free 10/hr, paid 50/hr. Keyed by
+    # Clerk id when signed in, else client IP. Fail-open on Redis errors.
+    identifier = get_clerk_id(request) or get_client_ip(request)
+    upload_rl = await check_upload_rate_limit(identifier, paid=_is_paid_tier(request))
+    if not upload_rl.allowed:
+        await log_security_event(
+            action=EVENT_RATE_LIMIT_HIT,
+            request=request,
+            metadata={"scope": "upload", "limit": upload_rl.limit},
+        )
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail={
+                "error_code": "UPLOAD_RATE_LIMIT",
+                "message": "Upload limit reached. Please try again later.",
+            },
+            headers={"Retry-After": str(upload_rl.reset_in_seconds)},
+        )
+
     # Check Content-Length early to avoid reading a huge payload
     content_length = request.headers.get("content-length")
     if content_length and int(content_length) > MAX_FILE_BYTES:
@@ -73,6 +106,13 @@ async def validate_upload(
     del data
 
     if not result.valid:
+        # Security log — records the rejection reason (error code) only,
+        # never the file content or bytes.
+        await log_security_event(
+            action=EVENT_UPLOAD_REJECTED,
+            request=request,
+            metadata={"error_code": result.error_code},
+        )
         return ValidationResponse(
             valid=False,
             error_code=result.error_code,

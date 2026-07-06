@@ -27,7 +27,14 @@ from fastapi import Request, Response
 from fastapi.responses import JSONResponse
 from starlette.middleware.base import BaseHTTPMiddleware
 
+from app.core.http import get_client_ip
 from app.core.logging import get_logger
+from app.core.rate_limit import auth_failure_alert_threshold, record_auth_failure
+from app.core.security_events import (
+    EVENT_AUTH_FAILED,
+    EVENT_AUTH_FAILURE_SPIKE,
+    log_security_event,
+)
 
 logger = get_logger(__name__)
 
@@ -107,18 +114,49 @@ class JWTAuthMiddleware(BaseHTTPMiddleware):
         _jwks_cache.configure(clerk_jwks_url)
         self._issuer = clerk_issuer
 
+    async def _note_auth_failure(self, request: Request, reason: str) -> None:
+        """
+        Record an invalid-token 401 (security hardening items 1/7). This is
+        NOT a login limiter — logins happen in Clerk — but it gives us an
+        audit trail and a Sentry spike alert for token-guessing / credential-
+        stuffing against our API. Never affects the response (fail-open).
+        """
+        try:
+            ip = get_client_ip(request)
+            count = await record_auth_failure(ip)
+            await log_security_event(
+                action=EVENT_AUTH_FAILED,
+                request=request,
+                metadata={"reason": reason, "path": request.url.path},
+            )
+            if count == auth_failure_alert_threshold() + 1:
+                await log_security_event(
+                    action=EVENT_AUTH_FAILURE_SPIKE,
+                    request=request,
+                    metadata={"count": count, "window_seconds": 300},
+                    alert=True,
+                    alert_message=(
+                        f"Auth-failure spike: {count} invalid-token 401s "
+                        f"from {ip} in 5 minutes"
+                    ),
+                )
+        except Exception:
+            pass
+
     async def dispatch(self, request: Request, call_next: Callable) -> Response:
         if _is_public(request.url.path):
             return await call_next(request)
 
         token = _extract_bearer(request)
         if not token:
+            await self._note_auth_failure(request, "missing_token")
             return _UNAUTHORIZED
 
         try:
             payload = await self._verify_token(token)
         except Exception:
             # Never leak the reason — just 401
+            await self._note_auth_failure(request, "invalid_token")
             return _UNAUTHORIZED
 
         # Populate request state for downstream middleware + endpoints

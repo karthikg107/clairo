@@ -49,6 +49,7 @@ from app.models.referral import Referral
 from app.models.share_link import ShareLink
 from app.models.subscription import Subscription
 from app.models.user import User
+from app.services.clerk import delete_clerk_user
 
 logger = structlog.get_logger(__name__)
 
@@ -254,8 +255,13 @@ async def delete_account(
 
     user = await require_user(request, db)
     user_id = str(user.id)
+    clerk_id = user.clerk_id  # capture before the row is deleted
 
     await db.execute(text("SELECT gdpr_delete_user(:uid)"), {"uid": user_id})
     await db.commit()
+
+    # Security hardening item 6: revoke ALL of the user's sessions by
+    # deleting the Clerk user (best-effort — never blocks the deletion).
+    await delete_clerk_user(clerk_id)
 
     logger.info("account.deleted", user_id=user_id)
