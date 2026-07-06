@@ -1,16 +1,26 @@
 """
-AWS Secrets Manager client.
+Secrets resolution — pluggable backend.
 
-SECURITY: API keys are NEVER read from environment variables in production.
-They are fetched from AWS Secrets Manager at startup.
+SECURITY: on the "aws" backend (the default outside local dev), API keys
+are NEVER read from environment variables — they are fetched from AWS
+Secrets Manager at startup.
+
+Backend selection (env var SECRETS_BACKEND):
+  - "aws" (default when APP_ENV != development): AWS Secrets Manager only.
+  - "env": resolve every secret from plain environment variables instead,
+    via the same mapping used for local dev. This exists for deploying to
+    a host with no AWS access (e.g. Render, Railway, Fly.io) — set
+    SECRETS_BACKEND=env explicitly there. It is NEVER the default for a
+    non-development APP_ENV, so a misconfigured production deployment
+    fails loudly (missing AWS creds) rather than silently reading env
+    vars it wasn't meant to.
+  - APP_ENV=development always uses the env-var mapping regardless of
+    SECRETS_BACKEND (unchanged local-dev behavior).
 """
 import json
 import os
 from functools import lru_cache
 from typing import Any
-
-import boto3
-from botocore.exceptions import ClientError
 
 from app.core.logging import get_logger
 
@@ -20,19 +30,21 @@ logger = get_logger(__name__)
 @lru_cache(maxsize=64)
 def get_secret(secret_name: str, region: str = "us-east-1") -> dict[str, Any]:
     """
-    Fetch a secret from AWS Secrets Manager. Cached per process.
-    
-    In local dev (APP_ENV=development), falls back to environment variables
-    if AWS is not configured. This fallback is DISABLED in production.
+    Fetch a secret. Cached per process. See module docstring for backend
+    selection (AWS Secrets Manager vs. plain env vars).
     """
     app_env = os.getenv("APP_ENV", "development")
+    backend = os.getenv("SECRETS_BACKEND", "aws")
 
-    if app_env == "development":
-        # Local dev: allow env-var fallback for DX
-        logger.info("secrets.dev_fallback", secret_name=secret_name)
+    if app_env == "development" or backend == "env":
+        logger.info("secrets.env_fallback", secret_name=secret_name, app_env=app_env)
         return _dev_fallback(secret_name)
 
-    # Production: Secrets Manager only
+    # AWS Secrets Manager — imported lazily so the "env" backend (e.g. a
+    # Render deployment) never needs AWS credentials configured at all.
+    import boto3
+    from botocore.exceptions import ClientError
+
     client = boto3.client("secretsmanager", region_name=region)
     try:
         response = client.get_secret_value(SecretId=secret_name)
@@ -48,6 +60,8 @@ def _dev_fallback(secret_name: str) -> dict[str, Any]:
     """Map secret names to local env var names for development only."""
     mapping: dict[str, dict[str, str]] = {
         "clairo/anthropic": {"api_key": os.getenv("ANTHROPIC_API_KEY", "")},
+        # Local-dev only: used when LLM_PROVIDER=openai (see analysis.py).
+        "clairo/openai": {"api_key": os.getenv("OPENAI_API_KEY", "")},
         "clairo/database": {"url": os.getenv("DATABASE_URL", "")},
         "clairo/redis": {"url": os.getenv("REDIS_URL", "")},
         "clairo/stripe": {

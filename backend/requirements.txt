@@ -8,11 +8,21 @@ alembic>=1.13.2
 redis[hiredis]>=5.0.7
 boto3>=1.34.144
 anthropic>=0.30.0
+openai>=1.30.0
 google-cloud-vision>=3.7.2
 python-multipart>=0.0.9
-python-jose[cryptography]>=3.3.0
+# app/middleware/jwt_auth.py uses PyJWT's API directly (`import jwt`, RS256 via
+# the cryptography backend) — NOT python-jose, which was listed here but never
+# imported anywhere in the app. [crypto] pulls in `cryptography` for RS256.
+PyJWT[crypto]>=2.8.0
 structlog>=24.2.0
 sentry-sdk[fastapi]>=2.7.1
 httpx>=0.27.0
 tenacity>=8.4.2
 stripe>=10.1.0
+python-dotenv>=1.0.0
+# Used by app/services/file_validation.py (ClamAV scan) and
+# app/services/language_detection.py — both were missing here despite being
+# imported by production code (only ever installed as ad hoc test-env extras).
+clamd>=1.0.2
+langdetect>=1.0.9

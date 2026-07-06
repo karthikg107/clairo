@@ -18,6 +18,7 @@ from enum import Enum
 
 import clamd  # type: ignore[import]
 
+from app.core.config import get_settings
 from app.core.logging import get_logger, log_safe_file_meta
 
 logger = get_logger(__name__)
@@ -177,11 +178,15 @@ async def validate_file(
         logger.warning("file_validation.rejected", reason="magic_mismatch", **meta)
         return result
 
-    # 4. ClamAV
-    result = await _check_clamav(data)
-    if not result.valid:
-        logger.warning("file_validation.rejected", reason=result.error_code, **meta)
-        return result
+    # 4. ClamAV — skippable via VIRUS_SCAN_ENABLED=false where no clamd
+    # daemon is reachable (see config.py). Every other check still applies.
+    if get_settings().virus_scan_enabled:
+        result = await _check_clamav(data)
+        if not result.valid:
+            logger.warning("file_validation.rejected", reason=result.error_code, **meta)
+            return result
+    else:
+        logger.warning("file_validation.virus_scan_skipped", **meta)
 
     logger.info("file_validation.passed", **meta)
     return ValidationResult(valid=True)
