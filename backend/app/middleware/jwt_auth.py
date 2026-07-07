@@ -52,6 +52,8 @@ _PUBLIC_PREFIXES = (
     # Public shared-analysis reads (CLR-041) — recipients have no account.
     # ONLY the read path: /api/v1/share-links (create/revoke) stays auth'd.
     "/api/v1/shared/",
+    # RFC 9116 security.txt — public by definition.
+    "/.well-known/",
 )
 
 _JWKS_TTL_SECONDS = 3600  # refresh JWKS every hour
