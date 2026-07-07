@@ -18,6 +18,7 @@ price variants a paid subscriber is on.
 """
 from alembic import op
 import sqlalchemy as sa
+from sqlalchemy.dialects import postgresql
 
 revision = "20240704_0001"
 down_revision = "20240703_0001"
@@ -49,7 +50,8 @@ def upgrade() -> None:
         "subscriptions",
         sa.Column(
             "billing_interval",
-            sa.Enum("monthly", "annual", name="billing_interval_enum", create_type=False),
+            postgresql.ENUM("monthly", "annual", name="billing_interval_enum",
+                            create_type=False),
             nullable=True,
         ),
     )

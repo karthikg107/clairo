@@ -20,6 +20,20 @@ depends_on = None
 
 
 def upgrade() -> None:
+    # ── Self-healing bootstrap ────────────────────────────────────────────────
+    # This is the initial migration (down_revision=None): Alembic only runs it
+    # when NO revision is recorded yet, i.e. against an empty database or one
+    # left half-built by an interrupted earlier run (which carries no real
+    # data, since the migration never completed). Drop any leftover objects
+    # first so a redeploy self-heals without a manual database reset.
+    op.execute("DROP TABLE IF EXISTS audit_log CASCADE")
+    op.execute("DROP TABLE IF EXISTS analyses CASCADE")
+    op.execute("DROP TABLE IF EXISTS subscriptions CASCADE")
+    op.execute("DROP TABLE IF EXISTS users CASCADE")
+    op.execute("DROP TYPE IF EXISTS document_type_enum")
+    op.execute("DROP TYPE IF EXISTS subscription_status_enum")
+    op.execute("DROP TYPE IF EXISTS subscription_tier_enum")
+
     # ── Enums ─────────────────────────────────────────────────────────────────
     op.execute("""
         CREATE TYPE subscription_tier_enum AS ENUM
@@ -65,14 +79,14 @@ def upgrade() -> None:
         ),
         sa.Column(
             "tier",
-            sa.Enum("free", "pro", "enterprise", name="subscription_tier_enum",
-                    create_type=False),
+            postgresql.ENUM("free", "pro", "enterprise", name="subscription_tier_enum",
+                            create_type=False),
             nullable=False,
         ),
         sa.Column(
             "status",
-            sa.Enum("active", "canceled", "past_due", "trialing", "unpaid",
-                    name="subscription_status_enum", create_type=False),
+            postgresql.ENUM("active", "canceled", "past_due", "trialing", "unpaid",
+                            name="subscription_status_enum", create_type=False),
             nullable=False,
         ),
         sa.Column("stripe_customer_id", sa.String(64), nullable=True),
@@ -102,8 +116,8 @@ def upgrade() -> None:
         ),
         sa.Column(
             "document_type",
-            sa.Enum("rental", "employment", "freelance", "tos", "other_permitted",
-                    name="document_type_enum", create_type=False),
+            postgresql.ENUM("rental", "employment", "freelance", "tos", "other_permitted",
+                            name="document_type_enum", create_type=False),
             nullable=False,
         ),
         sa.Column("locale", sa.String(10), nullable=False),
