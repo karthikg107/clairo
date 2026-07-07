@@ -39,6 +39,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import re
 from dataclasses import dataclass
 from typing import Any
@@ -53,6 +54,20 @@ from app.core.secrets import get_secret
 logger = get_logger(__name__)
 
 CLAUDE_TIMEOUT_SECONDS = 30.0
+
+# ── LLM provider switch (local-dev convenience) ───────────────────────────────
+# Default and production path is Anthropic Claude. Setting LLM_PROVIDER=openai
+# routes the analysis call through OpenAI instead, using the SAME system prompt,
+# user-message format, strict-JSON validation, cache, and circuit breaker — only
+# the model call itself differs (see _openai_get_valid_json). This exists so a
+# developer with only an OpenAI key can run the app locally; the Anthropic path
+# below is untouched.
+def _llm_provider() -> str:
+    return os.getenv("LLM_PROVIDER", "anthropic").strip().lower()
+
+
+def _openai_model() -> str:
+    return os.getenv("OPENAI_MODEL", "gpt-4o-mini").strip()
 
 # Transport-level failures eligible for a single retry (CLR-020)
 _RETRYABLE_ERRORS = (
@@ -295,6 +310,68 @@ async def _get_valid_json(
     raise AssertionError("unreachable")  # pragma: no cover
 
 
+# ── OpenAI adapter (LLM_PROVIDER=openai) ──────────────────────────────────────
+# Mirrors _call_claude_with_retry / _get_valid_json using the OpenAI Chat
+# Completions API. Uses response_format=json_object so the model returns strict
+# JSON (the same schema the system prompt describes), then the shared
+# _validate_schema in analyse_document enforces the exact shape.
+
+async def _openai_get_valid_json(user_message: str, log: Any) -> dict[str, Any]:
+    """Call OpenAI and parse JSON, with one correction retry on malformed output."""
+    from openai import (
+        APIConnectionError,
+        APITimeoutError,
+        AsyncOpenAI,
+        InternalServerError,
+        RateLimitError,
+    )
+
+    retryable = (APITimeoutError, APIConnectionError, InternalServerError, RateLimitError)
+    api_key = get_secret("clairo/openai").get("api_key", "")
+    client = AsyncOpenAI(api_key=api_key)
+    model = _openai_model()
+
+    async def _call(msg: str) -> str:
+        last_exc: Exception | None = None
+        for attempt in range(2):
+            try:
+                resp = await client.chat.completions.create(
+                    model=model,
+                    max_tokens=4096,
+                    messages=[
+                        {"role": "system", "content": _SYSTEM_PROMPT},
+                        {"role": "user", "content": msg},
+                    ],
+                    response_format={"type": "json_object"},
+                    timeout=CLAUDE_TIMEOUT_SECONDS,
+                )
+                return (resp.choices[0].message.content or "").strip()
+            except retryable as exc:
+                last_exc = exc
+                log.warning(
+                    "analysis.openai_call_failed",
+                    attempt=attempt + 1,
+                    error_type=type(exc).__name__,
+                )
+        raise AnalysisServiceError("Analysis service is temporarily unavailable.") from last_exc
+
+    for attempt in range(2):
+        raw_text = await _call(user_message)
+        if raw_text.startswith("```"):
+            raw_text = re.sub(r"^```[a-z]*\n?", "", raw_text)
+            raw_text = re.sub(r"\n?```$", "", raw_text)
+        log.info("analysis.response_received", chars=len(raw_text))
+        try:
+            return json.loads(raw_text)
+        except json.JSONDecodeError as exc:
+            log.warning("analysis.json_parse_error", attempt=attempt + 1)
+            if attempt == 0:
+                user_message = user_message + _JSON_CORRECTION_NOTE
+                continue
+            raise ValueError("Model returned non-JSON response after correction retry") from exc
+    raise AssertionError("unreachable")  # pragma: no cover
+
+
 # ── Analysis function ─────────────────────────────────────────────────────────
 
 async def analyse_document(
@@ -356,12 +433,8 @@ async def analyse_document(
             "Analysis is temporarily paused after repeated failures. Please try again shortly."
         )
 
-    log.info("analysis.start")
-
-    secrets = get_secret("clairo/anthropic")
-    api_key = secrets.get("api_key", "")
-
-    client = anthropic.AsyncAnthropic(api_key=api_key)
+    provider = _llm_provider()
+    log.info("analysis.start", provider=provider)
 
     # CLR-016: document content goes into USER message — NEVER system message
     user_message = (
@@ -373,7 +446,12 @@ async def analyse_document(
     )
 
     try:
-        parsed = await _get_valid_json(client, user_message, log)
+        if provider == "openai":
+            parsed = await _openai_get_valid_json(user_message, log)
+        else:
+            api_key = get_secret("clairo/anthropic").get("api_key", "")
+            client = anthropic.AsyncAnthropic(api_key=api_key)
+            parsed = await _get_valid_json(client, user_message, log)
         _validate_schema(parsed)
     except (AnalysisServiceError, ValueError):
         await circuit_breaker.record_failure()
