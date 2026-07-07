@@ -29,12 +29,19 @@ EXPOSE 8000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
   CMD sh -c 'curl -f http://localhost:${PORT:-8000}/api/v1/health || exit 1'
 
-CMD ["sh", "-c", "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000} --workers 2"]
-
 # ── Development stage ────────────────────────────────────────────────────────
+# Built explicitly via `--target dev` (see backend/docker-compose.yml). Runs
+# with --reload and installs dev/test deps. NOT the default build target.
 FROM base AS dev
 USER root
 COPY requirements-dev.txt .
 RUN pip install --no-cache-dir -r requirements-dev.txt
 USER clairo
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+
+# ── Production stage (MUST be last) ──────────────────────────────────────────
+# Docker builds the final stage by default, so a plain `docker build` (Render,
+# Railway, etc.) selects THIS one. Runs migrations then uvicorn with workers,
+# no reload, binding the platform-assigned $PORT.
+FROM base AS production
+CMD ["sh", "-c", "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000} --workers 2"]
