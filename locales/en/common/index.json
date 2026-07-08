@@ -152,7 +152,8 @@
     "subheading": "Tell us about your document so we explain it in the right legal context.",
     "doc_lang": {
       "label": "Document language",
-      "placeholder": "Select document language"
+      "placeholder": "Select document language",
+      "tooltip": "The language your uploaded document is written in."
     },
     "country": {
       "label": "Country",
@@ -161,14 +162,17 @@
     },
     "expl_lang": {
       "label": "Explanation language",
-      "placeholder": "Select explanation language"
+      "placeholder": "Select explanation language",
+      "tooltip": "The language you want the explanation written in."
     },
     "confidence": {
       "high": "High confidence — this language and country pair is well supported",
       "medium": "Medium confidence — results may vary for this combination"
     },
     "cta": "Analyse document",
-    "cta_hint": "All three fields required to continue"
+    "cta_hint": "All three fields required to continue",
+    "search_placeholder": "Search…",
+    "no_results": "No results"
   },
   "processing": {
     "steps_label": "Analysis steps",

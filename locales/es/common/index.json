@@ -152,7 +152,8 @@
     "subheading": "Cuéntenos sobre su documento para explicarlo en el contexto legal correcto.",
     "doc_lang": {
       "label": "Idioma del documento",
-      "placeholder": "Seleccionar idioma del documento"
+      "placeholder": "Seleccionar idioma del documento",
+      "tooltip": "El idioma en que está escrito el documento que subiste."
     },
     "country": {
       "label": "País",
@@ -161,14 +162,17 @@
     },
     "expl_lang": {
       "label": "Idioma de explicación",
-      "placeholder": "Seleccionar idioma de explicación"
+      "placeholder": "Seleccionar idioma de explicación",
+      "tooltip": "El idioma en que quieres la explicación."
     },
     "confidence": {
       "high": "Alta confianza — este par idioma/país está bien soportado",
       "medium": "Confianza media — los resultados pueden variar para esta combinación"
     },
     "cta": "Analizar documento",
-    "cta_hint": "Los tres campos son obligatorios para continuar"
+    "cta_hint": "Los tres campos son obligatorios para continuar",
+    "search_placeholder": "Buscar…",
+    "no_results": "Sin resultados"
   },
   "processing": {
     "steps_label": "Pasos del análisis",

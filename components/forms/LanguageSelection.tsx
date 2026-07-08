@@ -175,6 +175,7 @@ function SearchableSelect({
   tooltip,
   required,
 }: SearchableSelectProps) {
+  const t = useTranslations('language_selection')
   const [query, setQuery] = useState('')
   const [open, setOpen] = useState(false)
   const [tipOpen, setTipOpen] = useState(false)
@@ -209,7 +210,7 @@ function SearchableSelect({
     <div className="relative">
       <label
         htmlFor={id}
-        className="flex items-center gap-1 text-sm font-medium text-dark-800 mb-1"
+        className="flex items-center gap-1 text-sm font-medium text-neutral-800 mb-1"
       >
         {label}
         {required && (
@@ -257,28 +258,28 @@ function SearchableSelect({
           'flex items-center justify-between gap-2',
           'focus:outline-none focus:ring-2 focus:ring-brand-500 focus-visible:ring-2',
           selected
-            ? 'border-brand-500 bg-white text-dark-900'
-            : 'border-dark-300 bg-white text-dark-400',
+            ? 'border-brand-500 bg-white text-neutral-900'
+            : 'border-neutral-300 bg-white text-neutral-400',
         ].join(' ')}
       >
         <span className="truncate">{selected ? selected.label : placeholder}</span>
-        <span aria-hidden className="text-dark-400 shrink-0">
+        <span aria-hidden className="text-neutral-400 shrink-0">
           ▾
         </span>
       </button>
 
       {open && (
         <div
-          className="absolute z-50 left-0 right-0 mt-1 bg-white border border-dark-200 rounded-lg shadow-lg overflow-hidden"
+          className="absolute z-50 left-0 right-0 mt-1 bg-white border border-neutral-200 rounded-lg shadow-lg overflow-hidden"
           role="listbox"
           aria-label={label}
         >
-          <div className="p-2 border-b border-dark-100">
+          <div className="p-2 border-b border-neutral-100">
             <input
               ref={searchRef}
               type="search"
-              className="w-full text-sm px-3 py-2 border border-dark-200 rounded focus:outline-none focus:ring-2 focus:ring-brand-500"
-              placeholder="Search…"
+              className="w-full text-sm px-3 py-2 border border-neutral-200 rounded focus:outline-none focus:ring-2 focus:ring-brand-500"
+              placeholder={t('search_placeholder')}
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               aria-label={`Search ${label}`}
@@ -286,7 +287,7 @@ function SearchableSelect({
           </div>
           <ul className="max-h-52 overflow-y-auto">
             {filtered.length === 0 && (
-              <li className="px-4 py-3 text-sm text-dark-500">No results</li>
+              <li className="px-4 py-3 text-sm text-neutral-500">{t('no_results')}</li>
             )}
             {filtered.map((opt) => (
               <li
@@ -306,12 +307,12 @@ function SearchableSelect({
                   'focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-inset hover:bg-brand-50',
                   opt.value === value
                     ? 'bg-brand-50 font-medium text-brand-700'
-                    : 'text-dark-900',
+                    : 'text-neutral-900',
                 ].join(' ')}
               >
                 <span>{opt.label}</span>
                 {opt.sublabel && (
-                  <span className="ml-1 text-dark-400">{opt.sublabel}</span>
+                  <span className="ml-1 text-neutral-400">{opt.sublabel}</span>
                 )}
               </li>
             ))}
@@ -405,8 +406,8 @@ export function LanguageSelection({
       className="flex flex-col min-h-screen bg-background px-4 pt-6 pb-8"
       noValidate
     >
-      <h1 className="text-xl font-bold text-dark-900 mb-1">{t('heading')}</h1>
-      <p className="text-sm text-dark-600 mb-6">{t('subheading')}</p>
+      <h1 className="text-xl font-bold text-neutral-900 mb-1">{t('heading')}</h1>
+      <p className="text-sm text-neutral-600 mb-6">{t('subheading')}</p>
 
       <div className="space-y-5 flex-1">
         {/* 1. Document language */}
@@ -417,6 +418,7 @@ export function LanguageSelection({
           options={docLangOptions}
           value={docLang}
           onChange={setDocLang}
+          tooltip={t('doc_lang.tooltip')}
           required
         />
 
@@ -443,6 +445,7 @@ export function LanguageSelection({
           options={explLangOptions}
           value={explLang}
           onChange={setExplLang}
+          tooltip={t('expl_lang.tooltip')}
           required
         />
       </div>
@@ -457,13 +460,13 @@ export function LanguageSelection({
           'focus:outline-none focus:ring-2 focus:ring-brand-500 focus-visible:ring-2',
           canSubmit
             ? 'bg-brand-600 text-white hover:bg-brand-700 motion-safe:transition-colors'
-            : 'bg-dark-200 text-dark-400 cursor-not-allowed',
+            : 'bg-neutral-200 text-neutral-400 cursor-not-allowed',
         ].join(' ')}
       >
         {t('cta')}
       </button>
 
-      <p className="mt-3 text-xs text-center text-dark-400">{t('cta_hint')}</p>
+      <p className="mt-3 text-xs text-center text-neutral-400">{t('cta_hint')}</p>
     </form>
   )
 }

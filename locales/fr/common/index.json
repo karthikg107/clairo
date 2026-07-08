@@ -152,7 +152,8 @@
     "subheading": "Informez-nous sur votre document pour l'expliquer dans le bon contexte juridique.",
     "doc_lang": {
       "label": "Langue du document",
-      "placeholder": "Sélectionner la langue du document"
+      "placeholder": "Sélectionner la langue du document",
+      "tooltip": "La langue dans laquelle votre document est rédigé."
     },
     "country": {
       "label": "Pays",
@@ -161,14 +162,17 @@
     },
     "expl_lang": {
       "label": "Langue d'explication",
-      "placeholder": "Sélectionner la langue d'explication"
+      "placeholder": "Sélectionner la langue d'explication",
+      "tooltip": "La langue dans laquelle vous voulez l'explication."
     },
     "confidence": {
       "high": "Haute confiance — cette paire langue/pays est bien prise en charge",
       "medium": "Confiance moyenne — les résultats peuvent varier pour cette combinaison"
     },
     "cta": "Analyser le document",
-    "cta_hint": "Les trois champs sont requis pour continuer"
+    "cta_hint": "Les trois champs sont requis pour continuer",
+    "search_placeholder": "Rechercher…",
+    "no_results": "Aucun résultat"
   },
   "processing": {
     "steps_label": "Étapes de l'analyse",

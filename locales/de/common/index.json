@@ -152,7 +152,8 @@
     "subheading": "Teilen Sie uns Details zu Ihrem Dokument mit, damit wir es im richtigen Rechtskontext erklären.",
     "doc_lang": {
       "label": "Dokumentsprache",
-      "placeholder": "Dokumentsprache auswählen"
+      "placeholder": "Dokumentsprache auswählen",
+      "tooltip": "Die Sprache, in der Ihr hochgeladenes Dokument verfasst ist."
     },
     "country": {
       "label": "Land",
@@ -161,14 +162,17 @@
     },
     "expl_lang": {
       "label": "Erklärungssprache",
-      "placeholder": "Erklärungssprache auswählen"
+      "placeholder": "Erklärungssprache auswählen",
+      "tooltip": "Die Sprache, in der die Erklärung verfasst sein soll."
     },
     "confidence": {
       "high": "Hohe Zuverlässigkeit — dieses Sprach-Land-Paar wird gut unterstützt",
       "medium": "Mittlere Zuverlässigkeit — Ergebnisse können bei dieser Kombination variieren"
     },
     "cta": "Dokument analysieren",
-    "cta_hint": "Alle drei Felder sind erforderlich"
+    "cta_hint": "Alle drei Felder sind erforderlich",
+    "search_placeholder": "Suchen…",
+    "no_results": "Keine Ergebnisse"
   },
   "processing": {
     "steps_label": "Analyseschritte",
