@@ -105,6 +105,28 @@ def _is_public(path: str) -> bool:
     return any(path.startswith(prefix) for prefix in _PUBLIC_PREFIXES)
 
 
+# Optional-auth routes: the analysis flow works ANONYMOUSLY (free tier — 2
+# analyses tracked by anonymous_id/IP, see analyse.py + quota.py). If a
+# signed-in user sends a valid token we still read it, so their analysis is
+# attributed and their quota/bonuses apply. A MISSING or INVALID token on
+# these paths does NOT 401 — the request proceeds as anonymous.
+#
+# Matched EXACTLY (not by prefix) so /api/v1/analyse (the action) never
+# widens to /api/v1/analyses (history list, which stays auth-required).
+_OPTIONAL_AUTH_PATHS = frozenset(
+    {
+        "/api/v1/upload/validate",
+        "/api/v1/ocr",
+        "/api/v1/classify",
+        "/api/v1/analyse",
+    }
+)
+
+
+def _is_optional_auth(path: str) -> bool:
+    return path.rstrip("/") in _OPTIONAL_AUTH_PATHS
+
+
 class JWTAuthMiddleware(BaseHTTPMiddleware):
     """
     Verifies Clerk JWT on every non-public request.
@@ -149,14 +171,24 @@ class JWTAuthMiddleware(BaseHTTPMiddleware):
         if _is_public(request.url.path):
             return await call_next(request)
 
+        optional = _is_optional_auth(request.url.path)
         token = _extract_bearer(request)
+
         if not token:
+            # Anonymous is allowed on the free-tier flow endpoints; everything
+            # else requires a token.
+            if optional:
+                return await call_next(request)
             await self._note_auth_failure(request, "missing_token")
             return _UNAUTHORIZED
 
         try:
             payload = await self._verify_token(token)
         except Exception:
+            # On optional-auth paths a bad/expired token degrades gracefully to
+            # anonymous rather than breaking the flow; elsewhere it's a 401.
+            if optional:
+                return await call_next(request)
             # Never leak the reason — just 401
             await self._note_auth_failure(request, "invalid_token")
             return _UNAUTHORIZED
