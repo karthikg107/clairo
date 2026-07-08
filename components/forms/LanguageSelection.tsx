@@ -230,7 +230,7 @@ function SearchableSelect({
             }}
             aria-label={tooltip}
             aria-expanded={tipOpen}
-            className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-dark-200 text-dark-600 text-[10px] leading-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+            className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-neutral-200 text-neutral-700 text-[10px] leading-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
           >
             ?
           </button>
@@ -240,7 +240,7 @@ function SearchableSelect({
       {tooltip && tipOpen && (
         <div
           role="tooltip"
-          className="mb-2 rounded-lg bg-dark-800 text-white text-xs leading-snug px-3 py-2"
+          className="mb-2 rounded-lg bg-neutral-800 text-white text-xs leading-snug px-3 py-2"
         >
           {tooltip}
         </div>
