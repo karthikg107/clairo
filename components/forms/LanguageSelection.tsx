@@ -177,6 +177,7 @@ function SearchableSelect({
 }: SearchableSelectProps) {
   const [query, setQuery] = useState('')
   const [open, setOpen] = useState(false)
+  const [tipOpen, setTipOpen] = useState(false)
   const searchRef = useRef<HTMLInputElement>(null)
 
   // Focus management for the just-opened popup — an effect rather than
@@ -217,15 +218,33 @@ function SearchableSelect({
           </span>
         )}
         {tooltip && (
-          <span
-            title={tooltip}
+          <button
+            type="button"
+            // preventDefault: this button lives inside the <label>, so a
+            // click would otherwise also focus the select. We only want it
+            // to toggle the help text — which now actually works on touch
+            // (the old title= tooltip never appeared on mobile).
+            onClick={(e) => {
+              e.preventDefault()
+              setTipOpen((o) => !o)
+            }}
             aria-label={tooltip}
-            className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-dark-200 text-dark-600 text-[10px] cursor-help"
+            aria-expanded={tipOpen}
+            className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-dark-200 text-dark-600 text-[10px] leading-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
           >
             ?
-          </span>
+          </button>
         )}
       </label>
+
+      {tooltip && tipOpen && (
+        <div
+          role="tooltip"
+          className="mb-2 rounded-lg bg-dark-800 text-white text-xs leading-snug px-3 py-2"
+        >
+          {tooltip}
+        </div>
+      )}
 
       <button
         type="button"

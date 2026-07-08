@@ -150,50 +150,55 @@ export function AnalysisResultsScreen({
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
-      {/* Sticky header */}
-      <header className="sticky top-0 z-50 bg-white border-b border-neutral-100 px-4 py-3">
-        <div className="flex items-center justify-between gap-3 max-w-2xl mx-auto">
-          <div className="min-w-0">
-            <p className="text-sm font-semibold text-neutral-900 truncate">
-              {t(`document_types.${result.document_type}`, {
-                fallback: t('document_types.default'),
-              })}
-            </p>
-            <p className="text-xs text-neutral-500 truncate">
-              {t('language_pair', { from: docLanguageName, to: outputLanguageName })}
-            </p>
-          </div>
-          {analysisId && (
-            <button
-              type="button"
-              onClick={handleShare}
-              disabled={creatingShareLink}
-              aria-label={t('share_aria')}
-              className="
+      {/* Header + permanent disclaimer as ONE sticky unit. Previously they
+          were two separate sticky elements and the disclaimer used a
+          hardcoded top-[57px] offset that assumed a fixed header height —
+          so any wrapping/scaling/RTL misaligned it. Stacking them in a
+          single sticky container removes that assumption entirely. */}
+      <div className="sticky top-0 z-50">
+        <header className="bg-white border-b border-neutral-100 px-4 py-3">
+          <div className="flex items-center justify-between gap-3 max-w-2xl mx-auto">
+            <div className="min-w-0">
+              <p className="text-sm font-semibold text-neutral-900 truncate">
+                {t(`document_types.${result.document_type}`, {
+                  fallback: t('document_types.default'),
+                })}
+              </p>
+              <p className="text-xs text-neutral-500 truncate">
+                {t('language_pair', { from: docLanguageName, to: outputLanguageName })}
+              </p>
+            </div>
+            {analysisId && (
+              <button
+                type="button"
+                onClick={handleShare}
+                disabled={creatingShareLink}
+                aria-label={t('share_aria')}
+                className="
                 shrink-0 w-11 h-11 rounded-full flex items-center justify-center
                 text-brand-700 hover:bg-brand-50 transition-colors
                 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500
                 disabled:opacity-50
               "
-            >
-              {creatingShareLink ? (
-                <Loader2 className="w-5 h-5 animate-spin" aria-hidden />
-              ) : (
-                <Share2 className="w-5 h-5" aria-hidden />
-              )}
-            </button>
+              >
+                {creatingShareLink ? (
+                  <Loader2 className="w-5 h-5 animate-spin" aria-hidden />
+                ) : (
+                  <Share2 className="w-5 h-5" aria-hidden />
+                )}
+              </button>
+            )}
+          </div>
+          {shareLinkError && (
+            <p className="max-w-2xl mx-auto text-xs text-danger-600 mt-1" role="alert">
+              {t('share.link_error')}
+            </p>
           )}
-        </div>
-        {shareLinkError && (
-          <p className="max-w-2xl mx-auto text-xs text-danger-600 mt-1" role="alert">
-            {t('share.link_error')}
-          </p>
-        )}
-      </header>
+        </header>
 
-      {/* Permanent, non-dismissable legal disclaimer */}
-      <div className="sticky top-[57px] z-40">
-        <LegalDisclaimer />
+        {/* Permanent, non-dismissable legal disclaimer — sticky handled by
+            the shared wrapper above, so opt this one out of its own sticky. */}
+        <LegalDisclaimer sticky={false} />
       </div>
 
       <main className="flex-1 max-w-2xl w-full mx-auto px-4 py-5 flex flex-col gap-4">

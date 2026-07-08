@@ -16,7 +16,14 @@
 import { useTranslations } from 'next-intl'
 import { AlertTriangle } from 'lucide-react'
 
-export function LegalDisclaimer() {
+/**
+ * @param sticky When true (default) the disclaimer pins itself to the top of
+ *   the scroll container. Pass false when a parent already provides the sticky
+ *   positioning — e.g. the results screen stacks it under a sticky header in a
+ *   single sticky wrapper, so a second `sticky top-0` here would fight it and
+ *   misalign (the old bug: header + a `top-[57px]` hardcoded offset).
+ */
+export function LegalDisclaimer({ sticky = true }: { sticky?: boolean }) {
   const t = useTranslations('disclaimer')
 
   return (
@@ -29,12 +36,12 @@ export function LegalDisclaimer() {
       role="note"
       aria-label={t('aria_label')}
       // Non-dismissable: no state, no close handler, always rendered
-      className="
-        sticky top-0 z-40
+      className={`
+        ${sticky ? 'sticky top-0 z-40' : ''}
         bg-danger-50 border-l-[3px] border-danger-700
         px-4 py-3
         w-full
-      "
+      `}
       style={{
         // Inline fallbacks for environments where Tailwind custom colors aren't loaded
         backgroundColor: '#FEF2F2',
@@ -50,8 +57,7 @@ export function LegalDisclaimer() {
         />
 
         <p className="text-sm text-danger-900 leading-snug" style={{ color: '#7F1D1D' }}>
-          <strong className="font-semibold">{t('heading')}</strong>{' '}
-          {t('body')}
+          <strong className="font-semibold">{t('heading')}</strong> {t('body')}
         </p>
       </div>
     </aside>
