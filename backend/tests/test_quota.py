@@ -115,7 +115,7 @@ class TestStatusForUser:
         assert status.allowed is True
         assert status.is_free_tier is True
         assert status.used == 1
-        assert status.remaining == 1
+        assert status.remaining == FREE_LIFETIME_LIMIT - 1
 
     def test_free_user_at_limit_blocked(self):
         user = _make_user(free_analyses_used=FREE_LIFETIME_LIMIT)

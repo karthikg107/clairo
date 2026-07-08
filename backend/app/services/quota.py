@@ -39,7 +39,7 @@ from app.models.user import User
 
 logger = get_logger(__name__)
 
-FREE_LIFETIME_LIMIT = 2
+FREE_LIFETIME_LIMIT = 10
 
 PREFIX_LIFETIME_QUOTA = "quota:lifetime:"
 # Long but finite TTL, purely for Redis storage hygiene on anonymous keys —

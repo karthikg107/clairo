@@ -202,17 +202,19 @@ async def test_completion_only_fires_once():
 # ── quota integration ──────────────────────────────────────────────────────────
 
 def test_bonus_analyses_extend_free_tier_limit():
-    user = _make_user(bonus=3, used=2)
+    used = 2
+    user = _make_user(bonus=3, used=used)
 
     status = _status_for_user(user)
 
     assert status.limit == FREE_LIFETIME_LIMIT + 3
     assert status.allowed is True
-    assert status.remaining == 3
+    assert status.remaining == FREE_LIFETIME_LIMIT + 3 - used
 
 
 def test_zero_bonus_keeps_original_limit():
-    user = _make_user(bonus=0, used=2)
+    # At the limit with no bonus → blocked.
+    user = _make_user(bonus=0, used=FREE_LIFETIME_LIMIT)
 
     status = _status_for_user(user)
 
