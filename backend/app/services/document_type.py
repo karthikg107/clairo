@@ -13,6 +13,7 @@ SECURITY:
 from __future__ import annotations
 
 import json
+import os
 from enum import Enum
 
 import anthropic
@@ -22,6 +23,41 @@ from app.core.logging import get_logger
 from app.core.secrets import get_secret
 
 logger = get_logger(__name__)
+
+
+async def _classify_raw(excerpt: str) -> str:
+    """
+    Send the excerpt to the configured LLM and return the raw JSON string.
+    Mirrors the LLM_PROVIDER switch in app/services/analysis.py: OpenAI when
+    LLM_PROVIDER=openai, otherwise Anthropic Claude (default / production).
+    """
+    user_content = f"Classify this document excerpt (respond with JSON):\n\n{excerpt}"
+
+    if os.getenv("LLM_PROVIDER", "anthropic").strip().lower() == "openai":
+        from openai import AsyncOpenAI
+
+        api_key = get_secret("clairo/openai").get("api_key", "")
+        client = AsyncOpenAI(api_key=api_key)
+        resp = await client.chat.completions.create(
+            model=os.getenv("OPENAI_MODEL", "gpt-4o-mini").strip(),
+            max_tokens=256,
+            messages=[
+                {"role": "system", "content": _SYSTEM_PROMPT},
+                {"role": "user", "content": user_content},
+            ],
+            response_format={"type": "json_object"},
+        )
+        return (resp.choices[0].message.content or "").strip()
+
+    api_key = get_secret("clairo/anthropic").get("api_key", "")
+    client = anthropic.AsyncAnthropic(api_key=api_key)
+    message = await client.messages.create(
+        model="claude-sonnet-4-6",
+        max_tokens=256,
+        system=_SYSTEM_PROMPT,
+        messages=[{"role": "user", "content": user_content}],
+    )
+    return message.content[0].text.strip()
 
 # ── Document types ────────────────────────────────────────────────────────────
 
@@ -150,28 +186,15 @@ async def detect_document_type(text: str) -> DocumentTypeResult:
     excerpt = _first_500_words(text)
     log = logger.bind(excerpt_words=len(excerpt.split()))
 
-    secrets = get_secret("clairo/anthropic")
-    api_key = secrets.get("api_key", "")
-
-    client = anthropic.AsyncAnthropic(api_key=api_key)
-
-    message = await client.messages.create(
-        model="claude-sonnet-4-6",
-        max_tokens=256,
-        system=_SYSTEM_PROMPT,
-        messages=[
-            {
-                "role": "user",
-                "content": (
-                    "Classify this document excerpt:\n\n"
-                    f"{excerpt}"
-                ),
-            }
-        ],
-    )
-
-    raw = message.content[0].text.strip()
+    raw = await _classify_raw(excerpt)
     log.info("document_type.raw_response", chars=len(raw))
+
+    # OpenAI/JSON-mode may wrap output in a code fence — strip it defensively.
+    if raw.startswith("```"):
+        import re
+
+        raw = re.sub(r"^```[a-z]*\n?", "", raw)
+        raw = re.sub(r"\n?```$", "", raw).strip()
 
     # Parse and validate
     try:
