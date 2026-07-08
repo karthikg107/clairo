@@ -55,10 +55,19 @@ _SECONDS_PER_DAY = 86_400
 _SECONDS_PER_HOUR = 3_600
 
 # (anonymous_limit, authenticated_limit)
+#
+# These are ABUSE-PREVENTION ceilings, not the product's free-tier gate —
+# that gate is the lifetime analysis quota enforced in the analyse endpoint
+# (anonymous = 2 free analyses). So these must be generous enough never to
+# block legitimate use. A single analysis run makes one call each to
+# ocr + classify + analyse, so those share a dedicated "analysis" bucket
+# sized for many runs — NOT the tiny "default" bucket (which would let an
+# anonymous user finish barely one analysis per hour and block the 2nd).
 _ENDPOINT_HOURLY_LIMITS: dict[str, tuple[int, int]] = {
-    "upload":  (3, 20),
-    "auth":    (10, 10),
-    "default": (3, 20),
+    "upload":   (20, 60),
+    "analysis": (45, 150),   # ocr + classify + analyse (3 calls per run)
+    "auth":     (10, 10),
+    "default":  (20, 60),
     # CLR-041 — public shared-analysis reads. Two planes:
     #   share_view — per-IP ceiling (middleware), generous enough for a
     #                human re-reading a shared page, tight enough to slow

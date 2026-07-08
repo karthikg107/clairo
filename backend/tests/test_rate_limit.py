@@ -38,16 +38,16 @@ def patch_get_redis(fake_redis):
 # ── Hourly endpoint limits ────────────────────────────────────────────────────
 
 @pytest.mark.asyncio
-async def test_upload_anonymous_allows_3_per_hour():
-    for i in range(3):
+async def test_upload_anonymous_allows_20_per_hour():
+    for i in range(20):
         result = await check_endpoint_rate_limit("1.2.3.4", "upload", authenticated=False)
         assert result.allowed, f"Request {i+1} should be allowed"
-        assert result.limit == 3
+        assert result.limit == 20
 
 
 @pytest.mark.asyncio
-async def test_upload_anonymous_blocks_4th():
-    for _ in range(3):
+async def test_upload_anonymous_blocks_21st():
+    for _ in range(20):
         await check_endpoint_rate_limit("1.2.3.5", "upload", authenticated=False)
 
     result = await check_endpoint_rate_limit("1.2.3.5", "upload", authenticated=False)
@@ -56,16 +56,16 @@ async def test_upload_anonymous_blocks_4th():
 
 
 @pytest.mark.asyncio
-async def test_upload_authenticated_allows_20_per_hour():
-    for i in range(20):
+async def test_upload_authenticated_allows_60_per_hour():
+    for i in range(60):
         result = await check_endpoint_rate_limit("user_abc", "upload", authenticated=True)
-        assert result.allowed, f"Request {i+1} should be allowed (limit=20)"
-        assert result.limit == 20
+        assert result.allowed, f"Request {i+1} should be allowed (limit=60)"
+        assert result.limit == 60
 
 
 @pytest.mark.asyncio
-async def test_upload_authenticated_blocks_21st():
-    for _ in range(20):
+async def test_upload_authenticated_blocks_61st():
+    for _ in range(60):
         await check_endpoint_rate_limit("user_xyz", "upload", authenticated=True)
 
     result = await check_endpoint_rate_limit("user_xyz", "upload", authenticated=True)
@@ -92,7 +92,7 @@ async def test_auth_endpoint_blocks_11th():
 
 @pytest.mark.asyncio
 async def test_different_identifiers_have_separate_buckets():
-    for _ in range(3):
+    for _ in range(20):
         await check_endpoint_rate_limit("ip_a", "upload", authenticated=False)
 
     # ip_a is at limit but ip_b should still be allowed
@@ -105,13 +105,13 @@ async def test_different_identifiers_have_separate_buckets():
 @pytest.mark.asyncio
 async def test_remaining_decrements_correctly():
     r1 = await check_endpoint_rate_limit("ip_c", "upload", authenticated=False)
-    assert r1.remaining == 2  # limit=3, count=1
+    assert r1.remaining == 19  # limit=20, count=1
 
     r2 = await check_endpoint_rate_limit("ip_c", "upload", authenticated=False)
-    assert r2.remaining == 1  # count=2
+    assert r2.remaining == 18  # count=2
 
     r3 = await check_endpoint_rate_limit("ip_c", "upload", authenticated=False)
-    assert r3.remaining == 0  # count=3
+    assert r3.remaining == 17  # count=3
 
 
 # ── Sentry alert at 50/hr ─────────────────────────────────────────────────────
@@ -147,6 +147,32 @@ async def test_sentry_alert_fires_only_once_per_window():
             await check_endpoint_rate_limit("spammer2", "upload", authenticated=True)
 
     assert len(sentry_calls) == 1
+
+
+# ── Analysis-flow bucket (ocr + classify + analyse) ──────────────────────────
+# Regression guard: a single anonymous analysis run makes one call each to
+# ocr, classify and analyse. The dedicated "analysis" bucket must comfortably
+# allow the product's 2 free analyses (+ retries) — NOT block after one run
+# the way the old shared 3/hr "default" bucket did.
+
+@pytest.mark.asyncio
+async def test_analysis_bucket_allows_many_anonymous_runs():
+    # 45 anonymous calls = 15 full runs of (ocr+classify+analyse) — all allowed.
+    for i in range(45):
+        result = await check_endpoint_rate_limit("anon_flow_ip", "analysis", authenticated=False)
+        assert result.allowed, f"analysis call {i+1} should be allowed"
+        assert result.limit == 45
+
+
+def test_flow_endpoints_map_to_analysis_bucket_not_default():
+    from app.middleware.rate_limit import _endpoint_key
+
+    assert _endpoint_key("/api/v1/ocr") == "analysis"
+    assert _endpoint_key("/api/v1/classify") == "analysis"
+    assert _endpoint_key("/api/v1/analyse") == "analysis"
+    # history list must NOT fall into the analysis-flow bucket
+    assert _endpoint_key("/api/v1/analyses") == "default"
+    assert _endpoint_key("/api/v1/upload/validate") == "upload"
 
 
 # ── Daily analysis quota ──────────────────────────────────────────────────────

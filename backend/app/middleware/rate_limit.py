@@ -34,12 +34,18 @@ _EXEMPT_PATHS = {
     "/api/v1/billing/webhook",  # called by Stripe, not end users (CLR-026)
 }
 
-# Path-prefix → endpoint key for hourly limits
+# Path-prefix → endpoint key for hourly limits. Order matters: first match
+# wins (see _endpoint_key). "/api/v1/analyses" (history) is listed BEFORE
+# "/api/v1/analyse" so it doesn't fall into the analysis-flow bucket.
 _ENDPOINT_KEYS: list[tuple[str, str]] = [
-    ("/api/v1/upload", "upload"),
-    ("/api/v1/auth",   "auth"),
-    ("/api/v1/sign",   "auth"),   # Clerk webhook paths
-    ("/api/v1/shared", "share_view"),  # public shared-analysis reads (CLR-041)
+    ("/api/v1/upload",    "upload"),
+    ("/api/v1/ocr",       "analysis"),
+    ("/api/v1/classify",  "analysis"),
+    ("/api/v1/analyses",  "default"),    # history list (must precede /analyse)
+    ("/api/v1/analyse",   "analysis"),   # the analysis action
+    ("/api/v1/auth",      "auth"),
+    ("/api/v1/sign",      "auth"),   # Clerk webhook paths
+    ("/api/v1/shared",    "share_view"),  # public shared-analysis reads (CLR-041)
 ]
 
 
