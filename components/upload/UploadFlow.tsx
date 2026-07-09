@@ -40,6 +40,7 @@ import {
 import { AnalysisResultsScreen } from '@/components/results'
 import type { AnalysisResult } from '@/components/results/types'
 import { getAnonymousId } from '@/lib/anonymousId'
+import { imageToJpeg } from '@/lib/imageToJpeg'
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? ''
 
@@ -105,10 +106,13 @@ export function UploadFlow() {
     async (file: File) => {
       setStep({ name: 'processing' })
       try {
+        // Normalise images (esp. iPhone HEIC) to JPEG in-browser so the OCR
+        // backend can read them; PDFs/DOCX pass through unchanged.
+        const uploadFile = await imageToJpeg(file)
         const headers = await apiHeaders(false)
 
         const validateBody = new FormData()
-        validateBody.append('file', file)
+        validateBody.append('file', uploadFile)
         const validateRes = await fetch(`${API_BASE}/api/v1/upload/validate`, {
           method: 'POST',
           credentials: 'include',
@@ -122,7 +126,7 @@ export function UploadFlow() {
         }
 
         const ocrBody = new FormData()
-        ocrBody.append('file', file)
+        ocrBody.append('file', uploadFile)
         const ocrRes = await fetch(`${API_BASE}/api/v1/ocr`, {
           method: 'POST',
           credentials: 'include',
