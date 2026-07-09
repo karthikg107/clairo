@@ -4,6 +4,7 @@ Tests for CLR-010 — OCR pipeline and endpoint.
 from __future__ import annotations
 
 import io
+import os
 import struct
 from unittest.mock import AsyncMock, MagicMock, patch
 
@@ -14,6 +15,7 @@ from app.services.ocr import (
     ConfidenceLevel,
     OcrPage,
     OcrResult,
+    OcrUnavailableError,
     OcrWord,
     _classify_word,
     _NUMBER_PATTERN,
@@ -149,7 +151,26 @@ class TestRunOcrPdf:
 
 class TestRunOcrGcv:
     @pytest.mark.asyncio
-    async def test_image_uses_gcv(self):
+    async def test_image_uses_tesseract_by_default(self):
+        # Default OCR_PROVIDER is the free in-container Tesseract engine.
+        fake = OcrResult(
+            pages=[OcrPage(page_number=1, words=[OcrWord(
+                text="amount", confidence=0.9, confidence_level=ConfidenceLevel.HIGH,
+            )])],
+            source="tesseract",
+            total_pages=1,
+        )
+        with patch.dict("os.environ", {}, clear=False):
+            os.environ.pop("OCR_PROVIDER", None)
+            with patch(
+                "app.services.ocr._ocr_with_tesseract",
+                new_callable=AsyncMock, return_value=fake,
+            ):
+                result = await run_ocr(b"\xff\xd8\xffstub", "image/jpeg", "test.jpg")
+        assert result.source == "tesseract"
+
+    @pytest.mark.asyncio
+    async def test_image_uses_gcv_when_configured(self):
         fake_result = OcrResult(
             pages=[OcrPage(page_number=1, words=[OcrWord(
                 text="amount",
@@ -159,7 +180,9 @@ class TestRunOcrGcv:
             source="gcv",
             total_pages=1,
         )
-        with patch("app.services.ocr._ocr_with_gcv", new_callable=AsyncMock, return_value=fake_result):
+        with patch.dict("os.environ", {"OCR_PROVIDER": "gcv"}), patch(
+            "app.services.ocr._ocr_with_gcv", new_callable=AsyncMock, return_value=fake_result
+        ):
             result = await run_ocr(b"\xff\xd8\xffstub", "image/jpeg", "test.jpg")
 
         assert result.source == "gcv"
@@ -172,12 +195,25 @@ class TestRunOcrGcv:
             total_pages=1,
         )
         with (
+            patch.dict("os.environ", {"OCR_PROVIDER": "gcv"}),
             patch("app.services.ocr._ocr_with_gcv", new_callable=AsyncMock, side_effect=Exception("GCV unavailable")),
             patch("app.services.ocr._ocr_with_textract", new_callable=AsyncMock, return_value=textract_result),
         ):
             result = await run_ocr(b"\x89PNGstub", "image/png", "test.png")
 
         assert result.source == "textract"
+
+    @pytest.mark.asyncio
+    async def test_image_ocr_failure_raises_unavailable(self):
+        # An engine crash surfaces as OcrUnavailableError (clean 422), not a 500.
+        with patch.dict("os.environ", {}, clear=False):
+            os.environ.pop("OCR_PROVIDER", None)
+            with patch(
+                "app.services.ocr._ocr_with_tesseract",
+                new_callable=AsyncMock, side_effect=Exception("tesseract missing"),
+            ):
+                with pytest.raises(OcrUnavailableError):
+                    await run_ocr(b"\xff\xd8\xffstub", "image/jpeg", "test.jpg")
 
 
 # ---------------------------------------------------------------------------

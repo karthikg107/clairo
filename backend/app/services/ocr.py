@@ -15,6 +15,7 @@ Architecture:
 from __future__ import annotations
 
 import io
+import os
 import re
 from dataclasses import dataclass, field
 from enum import Enum
@@ -22,6 +23,25 @@ from enum import Enum
 from app.core.logging import get_logger
 
 logger = get_logger(__name__)
+
+
+class OcrUnavailableError(Exception):
+    """
+    OCR could not read the file — e.g. an image OCR engine is unavailable,
+    or the photo was unreadable. Surfaced to the user as a clear
+    "couldn't read that image, try a PDF" message rather than a raw 500.
+    """
+
+
+# HEIC/HEIF (default iPhone photo format) needs an extra Pillow plugin.
+# Registered once at import — best-effort so a missing plugin never breaks
+# non-HEIC paths.
+try:
+    import pillow_heif  # type: ignore[import]
+
+    pillow_heif.register_heif_opener()
+except Exception:  # noqa: S110 — HEIC support is optional
+    pass
 
 # ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -159,6 +179,7 @@ async def _ocr_with_textract(image_bytes: bytes) -> OcrResult:
     SECURITY: image_bytes consumed here, deleted by caller.
     """
     import asyncio
+
     import boto3  # type: ignore[import]
 
     loop = asyncio.get_event_loop()
@@ -186,6 +207,53 @@ async def _ocr_with_textract(image_bytes: bytes) -> OcrResult:
         total_pages=1,
     )
     logger.info("ocr.textract_complete", word_count=len(words))
+    return result
+
+
+# ── Tesseract (free, in-container — default image engine) ────────────────────
+
+async def _ocr_with_tesseract(image_bytes: bytes) -> OcrResult:
+    """
+    OCR via the bundled Tesseract engine (no external account / cost). Runs
+    in a thread — Tesseract is CPU-bound and blocking.
+
+    SECURITY: image_bytes consumed here, deleted by caller.
+    """
+    import asyncio
+
+    import pytesseract  # type: ignore[import]
+    from PIL import Image  # type: ignore[import]
+
+    def _run() -> list[OcrWord]:
+        image = Image.open(io.BytesIO(image_bytes))
+        if image.mode not in ("L", "RGB"):
+            image = image.convert("RGB")
+        data = pytesseract.image_to_data(image, output_type=pytesseract.Output.DICT)
+        words: list[OcrWord] = []
+        for text, raw_conf in zip(data["text"], data["conf"], strict=False):
+            text = (text or "").strip()
+            if not text:
+                continue
+            try:
+                conf = float(raw_conf) / 100.0
+            except (TypeError, ValueError):
+                conf = 0.5
+            if conf < 0:  # Tesseract uses -1 for non-text regions
+                conf = 0.5
+            words.append(
+                OcrWord(text=text, confidence=conf, confidence_level=_classify_word(text, conf))
+            )
+        return words
+
+    loop = asyncio.get_event_loop()
+    words = await loop.run_in_executor(None, _run)
+
+    result = OcrResult(
+        pages=[OcrPage(page_number=1, words=words)],
+        source="tesseract",
+        total_pages=1,
+    )
+    logger.info("ocr.tesseract_complete", word_count=len(words))
     return result
 
 
@@ -268,12 +336,29 @@ async def run_ocr(
         if mime_type == AllowedMime.DOCX.value:
             return _extract_docx_text(data)
 
-        # Image path: GCV → Textract fallback
+        # ── Image path — pluggable engine (OCR_PROVIDER) ──────────────────
+        # Default "tesseract": free, in-container, no external account.
+        # Set OCR_PROVIDER=gcv (+ Google credentials) to switch to Google
+        # Cloud Vision (higher accuracy) with a Textract fallback — no code
+        # change needed, just config.
+        provider = os.getenv("OCR_PROVIDER", "tesseract").strip().lower()
         try:
-            return await _ocr_with_gcv(data, mime_type)
-        except Exception as gcv_err:
-            logger.warning("ocr.gcv_failed_falling_back_to_textract", error=str(gcv_err))
-            return await _ocr_with_textract(data)
+            if provider == "gcv":
+                try:
+                    return await _ocr_with_gcv(data, mime_type)
+                except Exception as gcv_err:
+                    logger.warning("ocr.gcv_failed_falling_back_to_textract", error=str(gcv_err))
+                    return await _ocr_with_textract(data)
+            return await _ocr_with_tesseract(data)
+        except OcrUnavailableError:
+            raise
+        except Exception as exc:
+            # Any image-OCR failure → a clear, user-facing error instead of a 500.
+            logger.error("ocr.image_failed", provider=provider, error=str(exc))
+            raise OcrUnavailableError(
+                "Could not read text from that image. Try a clearer photo, "
+                "or upload a PDF or Word document."
+            ) from exc
 
     finally:
         # NOTE: caller must also `del data` after calling this function.

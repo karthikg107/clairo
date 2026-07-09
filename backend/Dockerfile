@@ -3,8 +3,13 @@ FROM python:3.12-slim AS base
 WORKDIR /app
 
 # System deps
+# - curl: container HEALTHCHECK
+# - tesseract-ocr + English data: free in-container image OCR (photos/scans),
+#   the default OCR_PROVIDER. Set OCR_PROVIDER=gcv to use Google Vision instead.
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
+    tesseract-ocr \
+    tesseract-ocr-eng \
     && rm -rf /var/lib/apt/lists/*
 
 # Dependencies layer (cached unless requirements change)

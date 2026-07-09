@@ -14,7 +14,7 @@ from pydantic import BaseModel
 
 from app.core.logging import get_logger
 from app.services.file_validation import AllowedMime, validate_file
-from app.services.ocr import ConfidenceLevel, OcrResult, run_ocr
+from app.services.ocr import ConfidenceLevel, OcrResult, OcrUnavailableError, run_ocr
 
 router = APIRouter()
 logger = get_logger(__name__)
@@ -84,6 +84,13 @@ async def ocr_endpoint(
             mime_type=file.content_type,
             filename=file.filename or "upload",
         )
+    except OcrUnavailableError as exc:
+        # Image OCR couldn't read the file — a clear, actionable message
+        # instead of a generic 500 (the finally below still purges the bytes).
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail={"error_code": "OCR_FAILED", "message": str(exc)},
+        ) from exc
     finally:
         # SECURITY: Purge document from memory immediately after OCR
         del data
