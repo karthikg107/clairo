@@ -14,7 +14,7 @@ python-multipart>=0.0.9
 # app/middleware/jwt_auth.py uses PyJWT's API directly (`import jwt`, RS256 via
 # the cryptography backend) — NOT python-jose, which was listed here but never
 # imported anywhere in the app. [crypto] pulls in `cryptography` for RS256.
-PyJWT[crypto]>=2.8.0
+PyJWT[crypto]>=2.13.0
 structlog>=24.2.0
 sentry-sdk[fastapi]>=2.7.1
 httpx>=0.27.0
