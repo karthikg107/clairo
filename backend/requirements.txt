@@ -26,7 +26,7 @@ python-dotenv>=1.0.0
 # imported by production code (only ever installed as ad hoc test-env extras).
 clamd>=1.0.2
 langdetect>=1.0.9
-pypdf>=4.2.0
+pypdf>=6.14.2
 python-docx>=1.1.0
 pytesseract>=0.3.10
 Pillow>=10.3.0
