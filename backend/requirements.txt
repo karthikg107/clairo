@@ -29,5 +29,5 @@ langdetect>=1.0.9
 pypdf>=4.2.0
 python-docx>=1.1.0
 pytesseract>=0.3.10
-Pillow>=10.3.0
+Pillow>=12.3.0
 pillow-heif>=0.16.0
