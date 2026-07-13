@@ -20,7 +20,7 @@ sentry-sdk[fastapi]>=2.7.1
 httpx>=0.27.0
 tenacity>=8.4.2
 stripe>=10.1.0
-python-dotenv>=1.0.0
+python-dotenv>=1.2.2
 # Used by app/services/file_validation.py (ClamAV scan) and
 # app/services/language_detection.py — both were missing here despite being
 # imported by production code (only ever installed as ad hoc test-env extras).
